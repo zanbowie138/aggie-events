@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: app_container
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: backend_container
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+  db:
+    container_name: postgres_container
+    image: postgres
+    restart: always
+    volumes: 
+      - ./pgdata:/var/lib/postgresql/data
+    ports: 
+      # Port 5433 is mapped to 5432 to avoid conflicts with the host machine
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: "agev"
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports: 
+      - "5050:80"
