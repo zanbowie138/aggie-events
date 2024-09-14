@@ -1,6 +1,11 @@
 import React from 'react'
+// import Dashboard from '@/dashboard/dashboard'
+import Link from 'next/link'
+
 export default function Page() {
     return (<>
-    <h1>Aggie Events Frontpage!</h1>
+    
+    <Link href="/dashboard">Dashboard</Link>
+    
     </>)
 }
