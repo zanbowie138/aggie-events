@@ -10,7 +10,7 @@ export default function RootLayout({children}: {
     return (
         <html lang="en">
             <head />
-            <body>
+            <body className="flex flex-col min-h-[100vh]"> 
                 <Header />
                 <div className="px-2 py-5">
                     {children}
