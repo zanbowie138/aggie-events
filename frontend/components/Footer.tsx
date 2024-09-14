@@ -4,7 +4,7 @@ import React from 'react'
 
 export default function Footer() {
   return (
-      <footer className="bg-slate-700 text-white">
+      <footer className="bg-slate-700 text-white mt-auto">
         {/* Navigation links */}
         <nav>
           <div className="flex">
