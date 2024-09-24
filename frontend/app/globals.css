@@ -1,3 +1,132 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+/* Homepage Styling */
+.homepage-container {
+  font-family: 'Arial', sans-serif;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #54619b; /* Same green as header */
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hero-title {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.cta-button {
+  background-color: #2b2b43; /* Same orange as header */
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #2b2b43;
+}
+
+/* Features Section */
+.features-section {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.features-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.feature-item {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 250px;
+}
+
+.feature-item h3 {
+  font-size: 1.8rem;
+  color: #54619b; /* Same green as header */
+  margin-bottom: 10px;
+}
+
+.feature-item p {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* Upcoming Events Section */
+.events-section {
+  padding: 50px 20px;
+}
+
+.events-list {
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+}
+
+.event-item {
+  background-color: #f0f0f0;
+  margin-bottom: 15px;
+  padding: 10px 20px;
+  border-left: 5px solid #54619b; /* Same green as header */
+  font-size: 1.3rem;
+  border-radius: 4px;
+}
+
+/* Footer Section */
+.footer-section {
+  text-align: center;
+  padding: 20px;
+  margin-top: 50px;
+  background-color: #54619b; /* Same green as header */
+  color: white;
+  border-radius: 8px;
+}
+
+footer {
+    background-color: #4B5563; /* Slate color */
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  footer a:hover {
+    color: #D1D5DB; /* Light gray on hover */
+  }
+  
+  footer .flex {
+    display: flex;
+    align-items: center;
+  }
+  

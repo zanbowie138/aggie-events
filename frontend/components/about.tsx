@@ -35,7 +35,9 @@ const About = () => {
         </div>
       </section>
 
-      
+      <footer className="about-footer">
+        <p>&copy; {new Date().getFullYear()} Our Company. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
