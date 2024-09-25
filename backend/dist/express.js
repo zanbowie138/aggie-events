@@ -3,17 +3,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.app = void 0;
+exports.authRouter = exports.apiRouter = void 0;
 // server.js
 const express_1 = __importDefault(require("express"));
+const passport_1 = __importDefault(require("passport"));
+const express_session_1 = __importDefault(require("express-session"));
+const passport_google_oauth2_1 = __importDefault(require("passport-google-oauth2"));
 const app = (0, express_1.default)();
-exports.app = app;
-// Middleware to parse JSON request bodies
-app.use(express_1.default.json());
+const apiRouter = express_1.default.Router();
+exports.apiRouter = apiRouter;
+const authRouter = express_1.default.Router();
+exports.authRouter = authRouter;
+const GoogleStrategy = passport_google_oauth2_1.default.Strategy;
 // Start the Express server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+app.use('/api', apiRouter);
+app.use('/auth', authRouter);
+authRouter.use((0, express_session_1.default)({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+}));
+authRouter.use(passport_1.default.initialize());
+authRouter.use(passport_1.default.session());
+passport_1.default.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:5000/auth/google/callback', // Adjust as needed
+}, (accessToken, refreshToken, profile, done) => {
+    // Save user profile information (or create a new user if necessary)
+    return done(null, profile);
+}));
+passport_1.default.serializeUser((user, done) => {
+    done(null, user);
+});
+passport_1.default.deserializeUser((obj, done) => {
+    done(null, obj);
+});
+// Middleware to parse JSON request bodies
 const cors = require("cors");
-app.use(cors());
+apiRouter.use(cors(), express_1.default.json());
+authRouter.use(cors());

@@ -2,7 +2,6 @@
 import { db } from './database'
 import { Users } from 'kysely-codegen'
 import { Selectable, Insertable, Updateable } from 'kysely'
-import { app } from './express'
 
 export type SelectableUsers = Selectable<Users>
 export type InsertableUsers = Insertable<Users>
