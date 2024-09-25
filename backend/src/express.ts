@@ -25,6 +25,17 @@ authRouter.use(session({
   saveUninitialized: true,
 }));
 
+// Middleware to parse JSON request bodies
+const cors = require("cors");
+apiRouter.use(cors(), express.json());
+
+const corsOptions = {
+  origin: 'http://localhost:3000',  // Allow requests from your frontend's origin
+  credentials: true,  // Allow credentials (cookies, session data)
+};
+
+authRouter.use(cors(corsOptions));
+
 authRouter.use(passport.initialize());
 authRouter.use(passport.session());
 
@@ -45,10 +56,5 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((obj: any, done) => {
   done(null, obj);
 });
-
-// Middleware to parse JSON request bodies
-const cors = require("cors");
-apiRouter.use(cors(), express.json());
-authRouter.use(cors());
 
 export { apiRouter, authRouter };

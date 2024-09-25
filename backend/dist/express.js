@@ -27,6 +27,14 @@ authRouter.use((0, express_session_1.default)({
     resave: false,
     saveUninitialized: true,
 }));
+// Middleware to parse JSON request bodies
+const cors = require("cors");
+apiRouter.use(cors(), express_1.default.json());
+const corsOptions = {
+    origin: 'http://localhost:3000', // Allow requests from your frontend's origin
+    credentials: true, // Allow credentials (cookies, session data)
+};
+authRouter.use(cors(corsOptions));
 authRouter.use(passport_1.default.initialize());
 authRouter.use(passport_1.default.session());
 passport_1.default.use(new GoogleStrategy({
@@ -43,7 +51,3 @@ passport_1.default.serializeUser((user, done) => {
 passport_1.default.deserializeUser((obj, done) => {
     done(null, obj);
 });
-// Middleware to parse JSON request bodies
-const cors = require("cors");
-apiRouter.use(cors(), express_1.default.json());
-authRouter.use(cors());

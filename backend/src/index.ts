@@ -14,12 +14,26 @@ authRouter.get('/google', passport.authenticate('google', {
 
 // OAuth callback route
 authRouter.get('/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
+    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
     (req, res) => {
         // Successful authentication
         res.redirect('http://localhost:3000/login'); // Redirect to frontend
     }
 );
+
+authRouter.post('/logout', (req, res) => {
+    // Destroy the session
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Logout failed' });
+        }
+        // Clear the session cookie
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid');  // Clear the session cookie
+            return res.status(200).json({ message: 'Logged out successfully' });
+        });
+    });
+});
 
 apiRouter.get('/users/usernames', async (req, res) => {
     try {

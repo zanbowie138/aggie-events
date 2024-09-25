@@ -23,9 +23,22 @@ express_1.authRouter.get('/google', passport_1.default.authenticate('google', {
     scope: ['profile', 'email'],
 }));
 // OAuth callback route
-express_1.authRouter.get('/google/callback', passport_1.default.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+express_1.authRouter.get('/google/callback', passport_1.default.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }), (req, res) => {
     // Successful authentication
     res.redirect('http://localhost:3000/login'); // Redirect to frontend
+});
+express_1.authRouter.post('/logout', (req, res) => {
+    // Destroy the session
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Logout failed' });
+        }
+        // Clear the session cookie
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid'); // Clear the session cookie
+            return res.status(200).json({ message: 'Logged out successfully' });
+        });
+    });
 });
 express_1.apiRouter.get('/users/usernames', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
