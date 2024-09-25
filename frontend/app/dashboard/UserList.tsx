@@ -20,12 +20,14 @@ export default function UserList({ update = false }: { update: boolean }) {
 
     return (
         <>
-            <h2>All usernames: </h2>
-            <ul>
-                {usernames.map((username, index) => (
-                    <li key={index}>{username}</li>
-                ))}
-            </ul>
+            <div className="my-3">
+                <h2 className="text-xl font-bold">All usernames: </h2>
+                <ul>
+                    {usernames.map((username, index) => (
+                        <li key={index}>{username}</li>
+                    ))}
+                </ul>
+            </div>
         </>
     );
 }

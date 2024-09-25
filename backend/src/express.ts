@@ -22,18 +22,24 @@ app.use('/auth', authRouter);
 authRouter.use(session({
   secret: process.env.SECRET!,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',  // Set to true in production
+    sameSite: 'strict',  // Or 'strict', depending on your use case
+  },
 }));
 
 // Middleware to parse JSON request bodies
 const cors = require("cors");
-apiRouter.use(cors(), express.json());
+
 
 const corsOptions = {
   origin: 'http://localhost:3000',  // Allow requests from your frontend's origin
   credentials: true,  // Allow credentials (cookies, session data)
 };
 
+apiRouter.use(cors(corsOptions), express.json());
 authRouter.use(cors(corsOptions));
 
 authRouter.use(passport.initialize());
