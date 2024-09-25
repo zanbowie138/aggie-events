@@ -2,24 +2,10 @@
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
-import gauth from 'passport-google-oauth2';
 
 const app = express();
 
-const apiRouter = express.Router();
-const authRouter = express.Router();
-const GoogleStrategy = gauth.Strategy;
-
-// Start the Express server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-app.use('/api', apiRouter);
-app.use('/auth', authRouter);
-
-authRouter.use(session({
+app.use(session({
   secret: process.env.SECRET!,
   resave: false,
   saveUninitialized: false,
@@ -30,37 +16,9 @@ authRouter.use(session({
   },
 }));
 
-// Middleware to parse JSON request bodies
-const cors = require("cors");
+const apiRouter = express.Router();
+const authRouter = express.Router();
 
+app.use('/api', apiRouter);
+app.use('/auth', authRouter);
 
-const corsOptions = {
-  origin: 'http://localhost:3000',  // Allow requests from your frontend's origin
-  credentials: true,  // Allow credentials (cookies, session data)
-};
-
-apiRouter.use(cors(corsOptions), express.json());
-authRouter.use(cors(corsOptions));
-
-authRouter.use(passport.initialize());
-authRouter.use(passport.session());
-
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID!,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-  callbackURL: 'http://localhost:5000/auth/google/callback', // Adjust as needed
-}, (accessToken, refreshToken, profile, done) => {
-  // Save user profile information (or create a new user if necessary)
-  return done(null, profile);
-}
-));
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((obj: any, done) => {
-  done(null, obj);
-});
-
-export { apiRouter, authRouter };
