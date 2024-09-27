@@ -24,3 +24,13 @@ apiRouter.post('/users', async (req, res) => {
         res.status(500).send("Error creating user!")
     }
 })
+
+apiRouter.delete('/users', async (req, res) => {
+    try {
+        await db.deleteFrom('users').execute()
+        res.send("Users deleted!")
+    } catch (error) {
+        console.error('Error deleting users:', error)
+        res.status(500).send("Error deleting users!")
+    }
+})

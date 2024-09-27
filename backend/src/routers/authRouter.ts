@@ -1,10 +1,10 @@
 import express from 'express'
 import passport from 'passport';
-import gauth from 'passport-google-oauth2';
+import GAuth from 'passport-google-oauth2';
 
 export const authRouter = express.Router();
 
-const GoogleStrategy = gauth.Strategy;
+const GoogleStrategy = GAuth.Strategy;
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID!,
@@ -17,10 +17,12 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser((user, done) => {
+    console.log('Serializing user');
     done(null, user);
 });
 
 passport.deserializeUser((obj: any, done) => {
+    console.log('Deserializing user');
     done(null, obj);
 });
 

@@ -1,5 +1,4 @@
 import express from 'express';
-import passport from 'passport';
 import session from 'express-session';
 import { apiRouter } from './routers/apiRouter';
 import { authRouter } from './routers/authRouter';
@@ -31,13 +30,8 @@ app.use(session({
 app.use('/api', apiRouter);
 app.use('/auth', authRouter);
 
-
-
-
 const init = async () => {
     return app;
 }
-
-
 
 export { init };
