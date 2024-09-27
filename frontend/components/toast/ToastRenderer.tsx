@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react'
-import ToastManager, { ToastType } from './ToastManager'
+import ToastManager from './ToastManager'
+import { ToastType } from './Toast'
 import Toast from './Toast';
 
 
@@ -35,7 +36,8 @@ export function ToastRenderer() {
         <>
             {toasts.map((toast) => {
                 return (
-                    <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => onClose(toast.id)} fading={toast.fading} />)
+                    <Toast key={toast.id} message={toast.message} type={toast.type} 
+                    onClose={() => onClose(toast.id)} fading={toast.fading} />)
             })}
         </>
     )

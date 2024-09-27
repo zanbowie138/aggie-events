@@ -15,6 +15,10 @@ apiRouter.get('/users', authMiddleware, async (req, res) => {
     }
 })
 
+apiRouter.get('/auth', authMiddleware, async (req, res) => {
+    res.status(200).json({ message: 'Authenticated' });
+})
+
 
 
 apiRouter.post('/users', authMiddleware, async (req, res) => {

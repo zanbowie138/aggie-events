@@ -1,40 +1,16 @@
 "use client"
 import React, { useEffect, useState } from "react";
-
-export interface User {
-    user_email: string;
-    user_id: number;
-    user_mod: boolean;
-    user_name: string;
-  }
+import { User, fetchUsernames } from '@/api/user'
 
 export default function UserList({ update = false }: { update: boolean }) {
     const [users, setUsers] = useState<User[]>();
 
     useEffect(() => {
-        const fetchUsernames = async (): Promise<void> => {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        
-            if (!apiUrl) {
-                console.error('API URL is not defined');
-                return;
-            }
-        
-            try {
-                const response = await fetch(`${apiUrl}/users`, { credentials: 'include' });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-        
-                const usersData = await response.json();
-                console.log('Users:', usersData);
-                setUsers(usersData ?? []);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
+        const fetchData = async () => {
+            const data = await fetchUsernames();
+            setUsers(data);
         };
-        console.log("Fetching users...");
-        fetchUsernames();
+        fetchData();
     }, [update]);
 
     return (

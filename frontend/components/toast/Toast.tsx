@@ -1,7 +1,15 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-export default function Toast({ message, type, onClose, fading }) {
+export interface ToastType {
+    id: number;
+    message: string;
+    type: string;
+    fading: boolean;
+}
+
+export default function Toast({ message, type, onClose, fading }: 
+    { message: string, type: string, onClose: () => void, fading: boolean }) {
     const [visible, setVisible] = useState(true);
     const color = type === "error" ? " bg-red-500" : " bg-green-500";
     const border_color = type === "error" ? " border-red-700" : " border-green-700";
