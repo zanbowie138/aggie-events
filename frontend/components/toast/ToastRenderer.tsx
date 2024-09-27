@@ -20,7 +20,6 @@ export function ToastRenderer() {
 
         // Start fading out the toast after the timeout
         setTimeout(() => {
-            console.log('Fading out toast', newToast.id);
             setToasts(toasts => toasts.map(toast => toast.id === newToast.id ? { ...toast, fading: true } : toast));
             setTimeout(() => {
                 onClose(newToast.id);
@@ -29,7 +28,6 @@ export function ToastRenderer() {
     }
 
     const onClose = (id: number) => {
-        console.log('Closing toast', id);
         setToasts(toasts => toasts.filter((toast) => toast.id !== id));
     }
 

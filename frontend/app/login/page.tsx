@@ -8,7 +8,7 @@ export default function Login() {
     return (
         <>
             <h1 className="text-3xl my-4">User Page</h1>
-            <button onClick={() => {window.location.href = `${process.env.NEXT_PUBLIC_AUTH_URL}/google`;}}
+            <button onClick={() => { window.location.href = `${process.env.NEXT_PUBLIC_AUTH_URL}/google`; }}
                 className="bg-blue-400 p-4 m-2 rounded-md">
                 Log in with Google
             </button>
@@ -19,10 +19,10 @@ export default function Login() {
             </button>
 
             {user && (<>
-                <h2>Welcome, {user.displayName}!</h2>
-                <h2>Email: {user.email}</h2>
+                <h2>Welcome, {user.user_name}!</h2>
+                <h2>Email: {user.user_email}</h2>
                 <Image src={user.picture} width={200} height={200} alt="User Picture" /></>
-                )}
+            )}
         </>
     )
 }

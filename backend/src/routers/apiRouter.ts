@@ -1,9 +1,10 @@
 import express from 'express'
 import { db } from '../database'
+import { authMiddleware } from '../middlewares/authMiddleware'
 
 export const apiRouter = express.Router();
 
-apiRouter.get('/users', async (req, res) => {
+apiRouter.get('/users', authMiddleware, async (req, res) => {
     try {
         const users = await db.selectFrom('users').selectAll().execute()
         res.json(users)
@@ -14,8 +15,11 @@ apiRouter.get('/users', async (req, res) => {
     }
 })
 
-apiRouter.post('/users', async (req, res) => {
+
+
+apiRouter.post('/users', authMiddleware, async (req, res) => {
     const { username, email } = req.body
+    console.log("Post user req.user: " + req.user)
     try {
         await db.insertInto('users').values({ user_name: username, user_email: email }).execute()
         res.send("User created!")
@@ -25,7 +29,7 @@ apiRouter.post('/users', async (req, res) => {
     }
 })
 
-apiRouter.delete('/users', async (req, res) => {
+apiRouter.delete('/users', authMiddleware, async (req, res) => {
     try {
         await db.deleteFrom('users').execute()
         res.send("Users deleted!")

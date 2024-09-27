@@ -17,6 +17,7 @@ export default function AddUserForm() {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({ username: username, email: email })
     }).then((response) => {
       if (response.ok) {
@@ -38,9 +39,11 @@ export default function AddUserForm() {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
-      }
+      }, 
+      credentials: 'include'
     }).then((response) => {
       if (response.ok) {
+        console.log(response)
         console.log('Users deleted successfully');
         ToastManager.addToast('Users deleted successfully', 'success', 1000)
         setUpdate(!update)

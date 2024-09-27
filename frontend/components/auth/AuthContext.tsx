@@ -12,8 +12,8 @@ export const useAuth = () => {
 };
 
 interface User {
-    displayName: string;
-    email: string;
+    user_name: string;
+    user_email: string;
     picture: string;
     // add other properties if needed
 }
@@ -25,11 +25,13 @@ export const AuthProvider = ({ children }) => {
         const fetchUser = async () => fetch(`${process.env.NEXT_PUBLIC_AUTH_URL}/user`, { credentials: 'include' })
             .then((response) => response.json())
             .then((data) => {
-                if (!data.displayName) {
+                console.log("Data:", data)
+                if (!data.user_email) {
+                    console.log('No user logged in')
                     setUser(null)
                 } else {
                     setUser(data)
-                    console.log(data)
+                    console.log("Auth context: " + JSON.stringify(data))
                 }
             })
             .catch((error) => console.error('Error checking user authentication:', error));

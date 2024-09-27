@@ -14,12 +14,12 @@ export default function RootLayout({ children }: {
             <head />
             <body className="flex flex-col min-h-screen relative">
                 <AuthProvider>
-                        <Header />
-                        <ToastRenderer />
-                        <div className="px-2 py-5">
-                            {children}
-                        </div>
-                        <Footer />
+                    <Header />
+                    <ToastRenderer />
+                    <div className="px-2 py-5">
+                        {children}
+                    </div>
+                    <Footer />
                 </AuthProvider>
             </body>
         </html>

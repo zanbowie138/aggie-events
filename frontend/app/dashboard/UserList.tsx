@@ -12,11 +12,23 @@ export default function UserList({ update = false }: { update: boolean }) {
     const [users, setUsers] = useState<User[]>();
 
     useEffect(() => {
-        const fetchUsernames = async () => {
+        const fetchUsernames = async (): Promise<void> => {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        
+            if (!apiUrl) {
+                console.error('API URL is not defined');
+                return;
+            }
+        
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`);
-                const users_response = await response.json();
-                setUsers(users_response);
+                const response = await fetch(`${apiUrl}/users`, { credentials: 'include' });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+        
+                const usersData = await response.json();
+                console.log('Users:', usersData);
+                setUsers(usersData ?? []);
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
