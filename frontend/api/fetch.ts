@@ -24,6 +24,7 @@ export const fetchUtil = async (url: string, options: FetchOptions = {}) => {
     if (response.status === 401) {
         const errorText = response.text();
         console.error('Unauthorized:', errorText);
+        ToastManager.addToast('Unauthorized', 'error', 1000);
         throw new Error("Unauthorized resource");
     }
     
