@@ -5,6 +5,7 @@ const links: { href: string, label: string }[] = [
     { href: '/', label: 'Home' },
     { href: '/posts', label: 'Search' },
     { href: '/about', label: 'About' },
+    { href: '/calendar', label: 'Calendar' },
 ]
 
 export default function Header() {
@@ -14,7 +15,7 @@ export default function Header() {
                 {/* Logo section */}
                 <div>
                     <a href='/'>
-                        <Image src="/logo.png" alt="logo" width={75} height={75} priority={true} />
+                        <Image src="/logo2.png" alt="logo" width={75} height={75} />
                     </a>
                 </div>
 
