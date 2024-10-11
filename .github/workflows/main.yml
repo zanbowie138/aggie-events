@@ -1,0 +1,58 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - production_testing
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: VPS
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Create root .env file
+        run: |
+          touch .env
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+      
+      - name: Create frontend .env file
+        run: |
+          touch frontend/.env
+          echo API_URL=${{ vars.API_URL }} >> frontend/.env
+          echo AUTH_URL=${{ vars.AUTH_URL }} >> frontend/.env
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> frontend/.env
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> frontend/.env
+
+      - name: Create backend .env file
+        run: |
+          touch backend/.env
+          echo FRONTEND_URL=${{ vars.FRONTEND_URL }} >> frontend/.env
+          echo BACKEND_URL=${{ vars.BACKEND_URL }} >> frontend/.env
+          echo DATABASE_URL=${{ vars.DATABASE_URL }} >> backend/.env
+
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> backend/.env
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> backend/.env
+          echo BACKEND_SECRET=${{ secrets.BACKEND_SECRET }} >> backend/.env
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> backend/.env
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: user/app:latest
