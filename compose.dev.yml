@@ -1,39 +1,43 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    container_name: app_container
-    environment:
-      - NODE_ENV=development
-    depends_on:
-      - backend
-    ports:
-      - "3000:3000"
-  backend:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
-    container_name: backend_container
-    environment:
-      - NODE_ENV=development
-    depends_on:
-      - db
-    ports:
-      - "5000:5000"
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: frontend/Dockerfile
+  #   container_name: app_container
+  #   environment:
+  #     - NODE_ENV=development
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - "3000:3000"
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: backend/Dockerfile
+  #   container_name: backend_container
+  #   environment:
+  #     - NODE_ENV=development
+  #   depends_on:
+  #     - db
+  #   ports:
+  #     - "5000:5000"
   db:
     container_name: postgres_container
-    image: postgres
+    image: postgres:17
     restart: always
     volumes: 
       - ./pgdata:/var/lib/postgresql/data
     ports: 
-      # Port 5433 is mapped to 5432 to avoid conflicts with the host machine
-      - "5433:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: "aggieevents"
       POSTGRES_DB: "agev"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4

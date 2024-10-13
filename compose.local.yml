@@ -1,6 +1,11 @@
 services:
   app:
-    image: agev/frontend:latest
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        API_URL: ${NEXT_PUBLIC_API_URL}
+        AUTH_URL: ${NEXT_PUBLIC_AUTH_URL}
     container_name: app_container
     restart: always
     environment:
@@ -20,7 +25,9 @@ services:
     networks:
       - traefik-network
   backend:
-    image: agev/backend:latest
+    build:
+      context: backend
+      dockerfile: Dockerfile
     container_name: backend_container
     restart: always
     environment:

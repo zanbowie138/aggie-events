@@ -4,6 +4,7 @@ import Image from 'next/image'
 const links: { href: string, label: string }[] = [
     { href: '/', label: 'Home' },
     { href: '/posts', label: 'Search' },
+    { href: '/dashboard', label: 'Dashboard' },
     { href: '/about', label: 'About' },
 ]
 
@@ -14,7 +15,7 @@ export default function Header() {
                 {/* Logo section */}
                 <div>
                     <a href='/'>
-                        <Image src="/logo.png" alt="logo" width={75} height={75} />
+                        <Image src="/logo.png" alt="logo" width={75} height={75} priority={true} />
                     </a>
                 </div>
 

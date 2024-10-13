@@ -41,4 +41,11 @@ pgdata
 
 .env
 
-.secrets
+.env.*
+
+dist/
+
+letsencrypt/
+
+*.secrets
+*.pem
