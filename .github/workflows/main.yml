@@ -3,7 +3,8 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - production_testing
+      - main
+  workflow_dispatch:
 
 
 jobs:
@@ -15,6 +16,9 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repo
         uses: actions/checkout@v3
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -25,34 +29,64 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Build and push frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: frontend
+          push: true
+          build-args: |
+            API_URL=${{ vars.API_URL }}
+            AUTH_URL=${{ vars.AUTH_URL }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+
       - name: Create root .env file
         run: |
-          touch .env
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
       
       - name: Create frontend .env file
         run: |
-          touch frontend/.env
-          echo API_URL=${{ vars.API_URL }} >> frontend/.env
-          echo AUTH_URL=${{ vars.AUTH_URL }} >> frontend/.env
-          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> frontend/.env
-          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> frontend/.env
+          echo NEXT_PUBLIC_API_URL=${{ vars.API_URL }} >> .env.frontend
+          echo NEXT_PUBLIC_AUTH_URL=${{ vars.AUTH_URL }} >> .env.frontend
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.frontend
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env.frontend
 
       - name: Create backend .env file
         run: |
-          touch backend/.env
-          echo FRONTEND_URL=${{ vars.FRONTEND_URL }} >> frontend/.env
-          echo BACKEND_URL=${{ vars.BACKEND_URL }} >> frontend/.env
-          echo DATABASE_URL=${{ vars.DATABASE_URL }} >> backend/.env
-
-          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> backend/.env
-          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> backend/.env
-          echo BACKEND_SECRET=${{ secrets.BACKEND_SECRET }} >> backend/.env
-          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> backend/.env
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
+          echo FRONTEND_URL=${{ vars.FRONTEND_URL }} >> .env.backend
+          echo BACKEND_URL=${{ vars.BACKEND_URL }} >> .env.backend
+          echo DATABASE_URL=${{ vars.DATABASE_URL }} >> .env.backend
+          
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env.backend
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env.backend
+          echo BACKEND_SECRET=${{ secrets.BACKEND_SECRET }} >> .env.backend
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env.backend
+        
+      - name: Copy environment variables and run script
+        uses: appleboy/scp-action@v0.1.7
         with:
-          context: .
-          push: true
-          tags: user/app:latest
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "compose.prod.yml,compose.deps.yml,.env,.env.frontend,.env.backend,run_prod.sh"
+          target: ~/deploy/
+        
+      - name: Run Docker Compose
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/deploy
+            sudo bash run_prod.sh
+      
+      

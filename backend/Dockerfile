@@ -25,6 +25,8 @@ RUN npm run build
 # Production image, copy all the files and run node
 FROM base AS runner
 
+ENV NODE_ENV=production
+
 WORKDIR /app
 
 COPY --from=builder /app/node_modules ./node_modules

@@ -20,8 +20,12 @@ const init = async () => {
 
     app.use(cors(corsOptions));
 
+    if (process.env.NODE_ENV === 'production') {
+        app.set('trust proxy', 1) // trust first proxy
+    }
+
     app.use(session({
-        secret: process.env.SECRET!,
+        secret: process.env.BACKEND_SECRET!,
         resave: false,
         saveUninitialized: false,
         cookie: {
