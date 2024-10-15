@@ -28,7 +28,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | undefined | null>(undefined)
 
     useEffect(() => {
+<<<<<<< HEAD
         const fetchUser = async () => fetch(`${process.env.AUTH_URL}/user`, { credentials: 'include' })
+=======
+        const fetchUser = async () => fetch(`${process.env.NEXT_PUBLIC_AUTH_URL}/user`, { credentials: 'include' })
+>>>>>>> main
             .then((response) => response.json())
             .then((data) => {
                 console.log("Data:", data)
@@ -45,7 +49,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [])
 
     async function logout(): Promise<void> {
+<<<<<<< HEAD
         fetch(`${process.env.AUTH_URL}/logout`, { method: 'POST', credentials: 'include' })
+=======
+        fetch(`${process.env.NEXT_PUBLIC_AUTH_URL}/logout`, { method: 'POST', credentials: 'include' })
+>>>>>>> main
             .then((response) => {
                 if (response.ok) { setUser(null) }
                 else { console.error('Failed to log out:', response.statusText) }
