@@ -11,11 +11,7 @@ export interface User {
 
 export const addUser = async (username: string, email: string) => {
   try {
-<<<<<<< HEAD
-    const response = await fetchUtil(`${process.env.API_URL}/users`, {
-=======
     const response = await fetchUtil(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
->>>>>>> main
       method: 'POST',
       body: { username, email },
     });
@@ -27,11 +23,7 @@ export const addUser = async (username: string, email: string) => {
 
 export const fetchUsernames = async (): Promise<User[]> => {
   try {
-<<<<<<< HEAD
-    const response = await fetchUtil(`${process.env.API_URL}/users`, {
-=======
     const response = await fetchUtil(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
->>>>>>> main
       method: 'GET',
     });
     return response.json() ?? [];
@@ -42,11 +34,7 @@ export const fetchUsernames = async (): Promise<User[]> => {
 
 export const deleteUser = async () => {
   try {
-<<<<<<< HEAD
-    const response = await fetchUtil(`${process.env.API_URL}/users`, {
-=======
     const response = await fetchUtil(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
->>>>>>> main
       method: 'DELETE',
     });
   } catch (error) {
