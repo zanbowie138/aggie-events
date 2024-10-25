@@ -8,9 +8,7 @@ module.exports = {
         satoshi: ['Satoshi', 'sans-serif'], // Add Satoshi font
       },
       colors: {
-        maroon: {
-          800: '#800000', // Customize maroon color here
-        }
+        maroon: '#500000'
       }
     },
   },
