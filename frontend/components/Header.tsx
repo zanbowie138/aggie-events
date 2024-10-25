@@ -5,6 +5,7 @@ const links: { href: string, label: string }[] = [
     { href: '/', label: 'Home' },
     { href: '/posts', label: 'Search' },
     { href: '/about', label: 'About' },
+    { href: '/meet-the-team', label: 'Meet the Team' },
 ]
 
 export default function Header() {
