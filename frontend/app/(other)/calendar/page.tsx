@@ -2,10 +2,9 @@
 "use client";
 
 import React from 'react'
-import '../globals.css'
 import { useState } from 'react';
-import Calendar from '../../components/Calendar';
-import EventModal from '../../components/EventModal';
+import Calendar from '@/components/Calendar';
+import EventModal from '@/components/EventModal';
 
 interface Events {
   [key: string]: string[];  // Date string as key, event array as value
