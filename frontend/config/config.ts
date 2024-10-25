@@ -11,4 +11,5 @@ export const TypingText: string[] = [
     "Find Organizations.",
     "Find Career Opportunities.",
     "Find Friends.",
+    "Find a life. (JOKING PLEASE REMOVE THIS BEFORE LAUNCH :>)"
 ]
