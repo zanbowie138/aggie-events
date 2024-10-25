@@ -41,3 +41,14 @@ export const deleteUser = async () => {
     throw new Error('Error deleting users');
   }
 };
+
+export const updateUser = async (username: string, email: string) => {
+  try {
+    const response = await fetchUtil(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+      method: 'PUT',
+      body: { username, email },
+    });
+  } catch (error) {
+    throw new Error('Error updating user');
+  }
+}

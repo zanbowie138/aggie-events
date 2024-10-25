@@ -40,6 +40,17 @@ apiRouter.post('/users', authMiddleware, async (req, res) => {
     }
 })
 
+apiRouter.put('/users', authMiddleware, async (req, res) => {
+    const { username, email } = req.body
+    try {
+        await db.updateTable('users').set('user_name', username).where('user_email', '=', email).execute()
+        res.send("User updated!")
+    } catch (error) {
+        console.error('Error updating user:', error)
+        res.status(500).send("Error updating user!")
+    }
+})
+
 apiRouter.delete('/users', authMiddleware, async (req, res) => {
     try {
         await db.deleteFrom('users').execute()

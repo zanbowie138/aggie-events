@@ -62,6 +62,15 @@ CREATE TABLE userorgs (
 	FOREIGN KEY(org_id) REFERENCES orgs(org_id) ON DELETE CASCADE
 );
 
+-- Stores all of the events that a user saves
+CREATE TABLE savedevents (
+	user_id INT,
+	event_id INT,
+	PRIMARY KEY(user_id, event_id),
+	FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+	FOREIGN KEY(event_id) REFERENCES events(event_id) ON DELETE CASCADE
+);
+
 -- Stores event org affiliations
 CREATE TABLE eventorgs (
 	event_id INT,

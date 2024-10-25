@@ -1,11 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const links: { href: string, label: string }[] = [
     { href: '/', label: 'Home' },
     { href: '/posts', label: 'Search' },
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/about', label: 'About' },
+    { href: '/settings', label: 'Settings' },
 ]
 
 export default function Header() {
@@ -24,7 +26,7 @@ export default function Header() {
                     <ul className="flex gap-x-[4vw]">
                         {links.map(({ href, label }, index) => (
                             <li key={index}>
-                                <a href={href} className="text-lg">{label}</a>
+                                <Link href={href} className="text-lg">{label}</Link>
                             </li>
                         ))}
                     </ul>
