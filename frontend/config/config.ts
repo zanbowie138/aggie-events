@@ -5,10 +5,11 @@ export const Links: { href: string, label: string }[] = [
     { href: '/calendar', label: 'Calendar' },
 ]
 
+export const TypingTextBase = "Find "
 export const TypingText: string[] = [
-    "Find Study Groups.",
-    "Find Free Food.",
-    "Find Organizations.",
-    "Find Career Opportunities.",
-    "Find Friends.",
+    "Study Groups",
+    "Free Food",
+    "Organizations",
+    "Career Opportunities",
+    "Friends",
 ]
