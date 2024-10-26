@@ -4,9 +4,13 @@ module.exports = {
             "./components/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
-      colors: {
-        maroon: '#500000'
+      fontFamily: {
+        satoshi: ['Satoshi', 'sans-serif'], // Add Satoshi font
       },
+      colors: {
+        maroon: "#500000"
+      
+      }
     },
   },
   plugins: [],
