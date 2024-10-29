@@ -20,9 +20,9 @@ export default function Homepage() {
 
             <div className="absolute bottom-5 w-full">
                 <div className="flex justify-evenly">
-                    <button className="bg-maroon text-white px-7 py-2 
+                    <button className="bg-lightmaroon text-white px-7 py-2 
                     rounded-lg mt-4 shadow-md hover:shadow-lg text-xl border-2 border-black">Find Events</button>
-                    <button className="bg-maroon text-white px-4 py-2
+                    <button className="bg-lightmaroon text-white px-4 py-2
                      rounded-lg mt-4 shadow-md hover:shadow-lg text-xl border-2 border-black">Register Your Club</button>
                 </div>
             </div>
@@ -40,14 +40,9 @@ export default function Homepage() {
             <div className="absolute bg-maroon/50 w-full h-full -z-[9] top-0 left-0" />
         </div>
 
-        <div className="bg-gray-950 text-white">
-            <h1 className="text-3xl">Aggie Events Homepage!</h1>
-            <h1 className="text-3xl">Aggie Events Homepage!</h1>
-            <h1 className="text-3xl">Aggie Events Homepage!</h1>
-            <h1 className="text-3xl">Aggie Events Homepage!</h1>
-            <h1 className="text-3xl">Aggie Events Homepage!</h1>
-            <h1 className="text-3xl">Aggie Events Homepage!</h1>
-            <h1 className="text-3xl">Aggie Events Homepage!</h1>
+        <div className="bg-white text-black px-4 py-8">
+            <h1 className="text-3xl font-semibold">Featured Events</h1>
+            
         </div>
     </>)
 }
