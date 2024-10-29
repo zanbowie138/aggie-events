@@ -1,14 +1,16 @@
 import React from 'react'
 import Image from 'next/image'
 import AnimText from '@/components/typing_animation/AnimText'
-import { TypingText } from '@/config/config'
+import { TypingText, TypingTextBase } from '@/config/config'
+import HomeHeader from '@/components/headers/HomeHeader'
 
 export default function Homepage() {
     return (<>
-        <div className="relative w-full h-[400px]">
+        <div className="relative w-full h-[600px]">
+            <HomeHeader />
             <div className="p-5 md:pl-14 md:pt-14">
                 <div className="mb-4 w-full">
-                    <AnimText texts={TypingText} delay={0} />
+                    <AnimText baseText={TypingTextBase} texts={TypingText} delay={0} />
                 </div>
                 <div className="w-fit">
                     <hr></hr>
@@ -38,12 +40,14 @@ export default function Homepage() {
             <div className="absolute bg-maroon/50 w-full h-full -z-[9] top-0 left-0" />
         </div>
 
-        <h1 className="text-3xl">Aggie Events Homepage!</h1>
-        <h1 className="text-3xl">Aggie Events Homepage!</h1>
-        <h1 className="text-3xl">Aggie Events Homepage!</h1>
-        <h1 className="text-3xl">Aggie Events Homepage!</h1>
-        <h1 className="text-3xl">Aggie Events Homepage!</h1>
-        <h1 className="text-3xl">Aggie Events Homepage!</h1>
-        <h1 className="text-3xl">Aggie Events Homepage!</h1>
+        <div className="bg-gray-950 text-white">
+            <h1 className="text-3xl">Aggie Events Homepage!</h1>
+            <h1 className="text-3xl">Aggie Events Homepage!</h1>
+            <h1 className="text-3xl">Aggie Events Homepage!</h1>
+            <h1 className="text-3xl">Aggie Events Homepage!</h1>
+            <h1 className="text-3xl">Aggie Events Homepage!</h1>
+            <h1 className="text-3xl">Aggie Events Homepage!</h1>
+            <h1 className="text-3xl">Aggie Events Homepage!</h1>
+        </div>
     </>)
 }

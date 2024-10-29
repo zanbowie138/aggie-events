@@ -1,8 +1,9 @@
 import React from 'react'
 import '@/app/globals.css'
 
-import Header from '@/components/headers/Header'
+import HomeHeader from '@/components/headers/HomeHeader'
 import Footer from '@/components/Footer'
+import Header from '@/components/headers/Header'
 
 export const metadata = {
   title: 'Next.js',
@@ -17,7 +18,6 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <Header />
       <div className="">
         {children}
       </div>
