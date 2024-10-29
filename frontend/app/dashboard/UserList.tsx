@@ -1,14 +1,20 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { User, fetchUsernames } from '@/api/user'
+import { User, fetchUsernames } from '@/api/user';
+import { useAuth } from "@/components/auth/AuthContext";
+
 
 export default function UserList({ update = false }: { update: boolean }) {
     const [users, setUsers] = useState<User[]>();
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await fetchUsernames();
-            setUsers(data);
+            if (user){
+                const data = await fetchUsernames();
+                console.log(JSON.stringify(data));
+                setUsers(data);
+            }
         };
         fetchData();
     }, [update]);
@@ -32,7 +38,6 @@ export default function UserList({ update = false }: { update: boolean }) {
                             <td className="py-2 px-4 border-b">{user.user_email}</td>
                             <td className="py-2 px-4 border-b">{user.user_mod.toString()}</td>
                         </tr>
-                        
                     ))}
                 </tbody>
             </table>

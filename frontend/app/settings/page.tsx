@@ -1,9 +1,12 @@
 "use client"
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { updateUser } from '@/api/user';
+import { updateUser, verifyUserUpdate } from '@/api/user';
 import { useAuth } from '@/components/auth/AuthContext';
 import AuthRedirect from '@/components/auth/AuthRedirect';
+import ToastManager from '@/components/toast/ToastManager';
+import Toast from '@/components/toast/Toast';
+
 
 export default function() {
     const { user, logout } = useAuth();
@@ -17,11 +20,12 @@ export default function() {
         if (user){
             setUsername(user.user_name);
         }
-    }, [user]);
+    }, []);
 
     const handleUpdate = () => {
         if (user) {
             updateUser(username!, user.user_email);
+            verifyUserUpdate(username!);
         } else {
             console.error("User is not authenticated");
         }
