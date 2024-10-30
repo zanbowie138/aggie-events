@@ -49,3 +49,5 @@ letsencrypt/
 
 *.secrets
 *.pem
+
+.idea
