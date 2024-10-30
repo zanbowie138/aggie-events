@@ -6,6 +6,7 @@ import { useAuth } from '@/components/auth/AuthContext';
 import AuthRedirect from '@/components/auth/AuthRedirect';
 import ToastManager from '@/components/toast/ToastManager';
 import Toast from '@/components/toast/Toast';
+import AuthSuspense from '@/components/auth/AuthSuspense';
 
 // TODOLIST:
 // - Add a loading spinner while updating the user or other items
@@ -52,30 +53,29 @@ export default function() {
 
     return (
             <>
-                {!user ? <div>
-                    <p>loading...</p>
-                </div> :
-                <div>
-                    <div className='border p-6 rounded-lg shadow-lg bg-white max-w-md mx-auto mt-10'>
-                        <h1 className='text-2xl font-extrabold mb-4'>Settings Page</h1>
-                        <p className='mb-4'>Welcome to the settings page!</p>
-                        <div className='mb-4'>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>Update Username:</label>
-                            <input
-                                type="text"
-                                placeholder="Enter new username"
-                                onChange={(e) => setUsername(e.target.value)}
-                                className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
-                            />
+                <AuthSuspense>
+                    <div>
+                        <div className='border p-6 rounded-lg shadow-lg bg-white max-w-md mx-auto mt-10'>
+                            <h1 className='text-2xl font-extrabold mb-4'>Settings Page</h1>
+                            <p className='mb-4'>Welcome to the settings page!</p>
+                            <div className='mb-4'>
+                                <label className='block text-sm font-medium text-gray-700 mb-2'>Update Username:</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter new username"
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    className='w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500'
+                                />
+                            </div>
+                            <button
+                                onClick={handleUpdate}
+                                className='w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                            >
+                                Update
+                            </button>
                         </div>
-                        <button
-                            onClick={handleUpdate}
-                            className='w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
-                        >
-                            Update
-                        </button>
                     </div>
-                </div>}
+                </AuthSuspense>
             </>
     );
 };
