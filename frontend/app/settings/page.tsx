@@ -7,6 +7,13 @@ import AuthRedirect from '@/components/auth/AuthRedirect';
 import ToastManager from '@/components/toast/ToastManager';
 import Toast from '@/components/toast/Toast';
 
+// TODOLIST:
+// - Add a loading spinner while updating the user or other items
+// - abstract these update functions, update confirmations, and loading
+// - abstract the userAuth redirect conditional rendering or use built in react suspense component
+// - input validation
+// - duplicate username checking
+// - rate limiting
 
 export default function() {
     const { user, logout } = useAuth();
