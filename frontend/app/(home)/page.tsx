@@ -3,10 +3,12 @@ import Image from 'next/image'
 import AnimText from '@/components/typing_animation/AnimText'
 import { TypingText, TypingTextBase } from '@/config/config'
 import HomeHeader from '@/components/headers/HomeHeader'
+import ParallaxBanner from '@/components/ParallaxBanner'
+import EventCard from '@/components/cards/EventCard'
 
 export default function Homepage() {
     return (<>
-        <div className="relative w-full h-[600px]">
+        <ParallaxBanner imgSrc="/tamu_campus.jpg" imgAlt="Image Description">
             <HomeHeader />
             <div className="p-5 md:pl-14 md:pt-14">
                 <div className="mb-4 w-full">
@@ -28,21 +30,25 @@ export default function Homepage() {
             </div>
 
             {/* Background image and color filter */}
-            <Image
+            {/* <Image
                 src="/tamu_campus.jpg"
                 quality={100}
                 fill={true}
                 // placeholder='blur'
                 alt="TAMU Campus"
-                className="-z-10 object-cover"
+                className="-z-10 object-cover bg-fixed"
                 priority={true}
-            />
-            <div className="absolute bg-maroon/50 w-full h-full -z-[9] top-0 left-0" />
-        </div>
+            /> */}
+            <div className="absolute bg-maroon/50 w-full h-full -z-[20] top-0 left-0" />
+        </ParallaxBanner>
 
-        <div className="bg-white text-black px-4 py-8">
+        <div className="bg-white text-black px-4 py-8 h-[1000px]">
             <h1 className="text-3xl font-semibold">Featured Events</h1>
-            
+            <div className="my-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <EventCard />
+                <EventCard />
+                <EventCard />
+            </div>
         </div>
     </>)
 }
