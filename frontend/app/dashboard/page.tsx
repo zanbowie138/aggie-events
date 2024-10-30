@@ -9,7 +9,6 @@ export default function Database() {
   const { user } = useAuth();
   return (
     <>
-      <AuthRedirect url={'/login'}/>
       <AuthSuspense>
         <div>
               <h1 className="text-3xl font-bold">Dashboard</h1>

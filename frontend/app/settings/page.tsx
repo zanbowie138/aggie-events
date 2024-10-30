@@ -3,9 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { updateUser } from '@/api/user';
 import { useAuth } from '@/components/auth/AuthContext';
-import AuthRedirect from '@/components/auth/AuthRedirect';
 import ToastManager from '@/components/toast/ToastManager';
-import Toast from '@/components/toast/Toast';
 import AuthSuspense from '@/components/auth/AuthSuspense';
 
 // TODOLIST:
@@ -17,13 +15,8 @@ import AuthSuspense from '@/components/auth/AuthSuspense';
 // - rate limiting
 
 export default function() {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
     const [username, setUsername] = useState<string | undefined>(undefined);
-    if (!user) {
-        // redirect to login page
-        AuthRedirect({ url: '/login' });
-        return null;
-    }
     useEffect(() => {
         if (user){
             setUsername(user.user_name);
