@@ -4,17 +4,17 @@ import { useAuth } from "@/components/auth/AuthContext";
 import { useEffect } from "react";
 
 export default function AuthRedirect({ url }: { url: string }) {
-  const router = useRouter();
-  const { user } = useAuth();
-  useEffect(() => {
-    if (user === undefined) {
-      // User state is still loading, do nothing
-      return;
-    }
+    const router = useRouter();
+    const { user } = useAuth();
+    useEffect(() => {
+        if (user === undefined) {
+            // User state is still loading, do nothing
+            return;
+        }
 
-    if (!user) {
-      router.push(url);
-    }
-  }, [user]);
-  return null;
+        if (!user) {
+            router.push(url);
+        }
+    }, [user]);
+    return null;
 }
