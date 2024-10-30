@@ -44,3 +44,5 @@ pgdata
 .secrets
 
 dist/
+
+.idea/
