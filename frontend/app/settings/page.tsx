@@ -9,7 +9,7 @@ import AuthSuspense from '@/components/auth/AuthSuspense';
 // TODOLIST:
 // - Add a loading spinner while updating the user or other items
 // - abstract these update functions, update confirmations, and loading
-// - abstract the userAuth redirect conditional rendering or use built in react suspense component
+// - use built in react suspense component
 // - input validation
 // - duplicate username checking
 // - rate limiting
