@@ -48,21 +48,30 @@ export const updateUser = async (username: string, email: string) => {
       method: 'PUT',
       body: { username, email },
     });
+    return response;
   } catch (error) {
     throw new Error('Error updating user');
   }
-}
+};
 
 // TODO: wait until update is finished then check or keep checking asynchronously for a bit then return error. Make loading animation while updating backend
+// updateResponse is the response from the updateUser function to verify that the user has been updated
 export const verifyUserUpdate = async (username: string) => {
-  console.log("Testing api route")
   console.log(`${process.env.NEXT_PUBLIC_API_URL}/users`)
   const response = await fetchUtil(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
       method: 'GET',
   }).catch((error) => {
       throw new Error('Error modifying user: ' + error);
-  }); // TODO: properly access the username. Currently returning [Object object]
-  const message = await response.json().then(data => {for (let user of data) {console.log(user.user_name);if (user.user_name === username) {return "User updated successfully to " + {username}}} return "User not updated!"})
+  });
+  const message = await response.json().then(data => {for (let user of data) {
+    console.log(user.user_name);
+    if (user.user_name === username) {
+          return `User updated successfully to ${username}`;
+        }
+      }
+      return "User not updated!";
+    }
+  )
 
   console.log("API Tested: " + message)
   ToastManager.addToast('API Message: ' + message, 'success', 1000);

@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { updateUser, verifyUserUpdate } from '@/api/user';
+import { updateUser } from '@/api/user';
 import { useAuth } from '@/components/auth/AuthContext';
 import AuthRedirect from '@/components/auth/AuthRedirect';
 import ToastManager from '@/components/toast/ToastManager';
@@ -22,10 +22,22 @@ export default function() {
         }
     }, []);
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         if (user) {
-            updateUser(username!, user.user_email);
-            verifyUserUpdate(username!);
+            try{
+                let response = await updateUser(username!, user.user_email);
+                if (response.body){
+                    const message = await "Successfully updated username to " + await response.text();
+                    await ToastManager.addToast(message, 'success', 1000);
+                } else {
+                    const message = "Error updating username!";
+                    ToastManager.addToast(message, 'error', 1000);
+                }
+            } catch (error) {
+                console.error('Error updating user:', error);
+                const message = "Error updating username!";
+                ToastManager.addToast(message, 'error', 1000);
+            }
         } else {
             console.error("User is not authenticated");
         }
