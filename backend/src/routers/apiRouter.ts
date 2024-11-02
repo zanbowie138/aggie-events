@@ -29,6 +29,7 @@ apiRouter.get('/test', async (req, res) => {
 })
 
 apiRouter.post('/users', authMiddleware, async (req, res) => {
+    // TODO: check if username is already existent
     const { username, email } = req.body
     console.log("Post user req.user: " + req.user)
     try {
@@ -41,6 +42,7 @@ apiRouter.post('/users', authMiddleware, async (req, res) => {
 })
 
 apiRouter.put('/users', authMiddleware, async (req, res) => {
+    // TODO: check if user is already existent
     const { username, email } = req.body
     try {
         await db.updateTable('users').set('user_name', username).where('user_email', '=', email).execute()

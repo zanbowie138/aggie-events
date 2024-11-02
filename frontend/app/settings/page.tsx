@@ -13,6 +13,7 @@ import AuthSuspense from '@/components/auth/AuthSuspense';
 // - input validation
 // - duplicate username checking
 // - rate limiting
+// - improved toasts with more sensible UI
 
 export default function() {
     const { user } = useAuth();

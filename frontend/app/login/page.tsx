@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useAuth } from '@/components/auth/AuthContext'
 
 export default function Login() {
+    // TODO: add option to create new account. Account creation page will ask for username if their username already axists
     const { user, logout } = useAuth()
     const handleGoogleLogin = () => {
         window.location.href = `${process.env.NEXT_PUBLIC_AUTH_URL}/google`
