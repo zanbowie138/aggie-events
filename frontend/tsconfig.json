@@ -23,11 +23,20 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/app/*": ["app/*"],
-      "@/components/*": ["components/*"],
-      "@/api/*": ["api/*"]
+      "@/app/*": [
+        "app/*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/api/*": [
+        "api/*"
+      ],
+      "@/config/*": [
+        "config/*"
+      ]
     },
-    
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
