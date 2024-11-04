@@ -3,9 +3,10 @@ import { FaSearch } from "react-icons/fa";
 import EventList from "@/app/search/components/EventList";
 import CollapsableConfig from "@/app/search/components/CollapsableConfig";
 import FilterInput from "@/app/search/components/FilterInput";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthContext';
 import { searchEvents } from '@/api/event';
+import { useRouter } from "next/navigation";
 
 // Filters
 // - Date Range
@@ -36,13 +37,29 @@ export default function Search() {
   const { user } = useAuth();
   const [query, setQuery] = useState<string | undefined>(undefined);
   const [results, setResults] = useState<string[] | undefined>(undefined);
+  const router = useRouter();
 
   const handleSearch = async () => {
       // response is an array of events that are similar to the query
       const response = await searchEvents(query!);
       console.log("Search button clicked!" + response[0].event_name);
   }
-  
+
+  // update the query according the url on mount (might need to change if component doesn't remount everytime the url changes)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryParam = urlParams.get('query');
+    if (queryParam) {
+      setQuery(queryParam);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (query) {
+      handleSearch();
+    }
+  }, [query]);
+
   return (
     <div className="flex flex-row w-full grow justify-center bg-white">
       <div className="flex flex-col grow-0 h-full min-h-fit basis-[1500px] bg-white relative">
