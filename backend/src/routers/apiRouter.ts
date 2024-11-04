@@ -70,7 +70,7 @@ apiRouter.get('/search', async (req, res) => {
 
     try { // TODO: make case insensitive // TODO: check for typos
         const results = await db.selectFrom('events')
-            .select(['event_name', 'event_description'])
+            .select(['event_id', 'event_name', 'event_description', 'event_likes', 'start_time', 'end_time', 'date_created', 'date_modified'])
             .where('event_name', 'like', `%${query}%`)
             .execute();
         console.log(results);
