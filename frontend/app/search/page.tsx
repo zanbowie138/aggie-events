@@ -9,8 +9,9 @@ export default function SearchPage() {
     const [results, setResults] = useState<string[] | undefined>(undefined);
 
     const handleSearch = async () => {
+        // response is an array of events that are similar to the query
         const response = await searchEvents(query!);
-        console.log("Search button clicked!" + response[0]);
+        console.log("Search button clicked!" + response[0].event_name);
     }
 
 
@@ -25,6 +26,8 @@ export default function SearchPage() {
                 onChange={(e) => setQuery(e.target.value)}
             />
             <button className="bg-blue-400 p-4 m-2 rounded-md" onClick={() => handleSearch()}>Search</button>
+            {results && results.forEach((result.event_name) => (<p>{result}</p>
+            ))}
         </>
     )
 }
