@@ -60,3 +60,24 @@ apiRouter.delete('/users', authMiddleware, async (req, res) => {
         res.status(500).send("Error deleting users!")
     }
 })
+
+// ************ SEARCH ROUTERS ************
+apiRouter.get('/search', async (req, res) => {
+    const { query } = req.query;
+    if (!query) {
+        return res.status(400).json({ message: 'Query parameter is required' });
+    }
+
+    try {
+        const results = await db.selectFrom('events')
+            .select(['event_name', 'event_description'])
+            .where('event_name', 'like', `%${query}%`)
+            .execute();
+        console.log(results);
+
+        res.status(200).json(results);
+    } catch (error) {
+        console.error('Error searching events:', error);
+        res.status(500).json({ message: 'Error searching events' });
+    }
+});
