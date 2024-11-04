@@ -38,6 +38,12 @@ export default function Header() {
             focus:border-[#202020] focus:border-y-2 focus:border-l-2 peer"
             placeholder="Search..."
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                window.location.href = `/search?query=${query}`;
+              }
+            }}
           />
             <Link href={`/search?query=${query}`}>
               <button
