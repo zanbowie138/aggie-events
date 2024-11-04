@@ -5,9 +5,11 @@ import Image from "next/image";
 import { Links } from "@/config/config";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [query, setQuery] = useState<string | undefined>(undefined);
+  const router = useRouter();
 
   return (
     <header className="dark:bg-gray-950 bg-lightmaroon border-b-[1px] border-b-gray-300 dark:border-b-white flex">
@@ -45,14 +47,15 @@ export default function Header() {
               }
             }}
           />
-            <Link href={`/search?query=${query}`}>
-              <button
-                className="bg-maroon rounded-r-md py-2 px-3
-              peer-focus:border-[#202020] peer-focus:border-y-2 peer-focus:border-r-2"
-              >
-                <FaSearch color="white" />
-              </button>
-            </Link>
+          <button
+            className="bg-maroon rounded-r-md py-2 px-3
+          peer-focus:border-[#202020] peer-focus:border-y-2 peer-focus:border-r-2"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`/search?query=${query}`)}}
+          >
+            <FaSearch color="white" />
+          </button>
         </form>
 
         {/* User section */}

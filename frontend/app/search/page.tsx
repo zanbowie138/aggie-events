@@ -1,6 +1,7 @@
 'use client'
 import { FaSearch } from "react-icons/fa";
 import EventList from "@/app/search/components/EventList";
+import { Event } from "@/app/search/components/EventDisplay";
 import CollapsableConfig from "@/app/search/components/CollapsableConfig";
 import FilterInput from "@/app/search/components/FilterInput";
 import React, { useState, useEffect } from 'react';
@@ -36,18 +37,18 @@ const viewOptions = ["List View", "Calendar View"];
 export default function Search() {
   const { user } = useAuth();
   const [query, setQuery] = useState<string | undefined>(undefined);
-  const [results, setResults] = useState<string[] | undefined>(undefined);
+  const [results, setResults] = useState<Event[] | undefined>(undefined);
   const router = useRouter();
 
   const handleSearch = async () => {
       // response is an array of events that are similar to the query
       const response = await searchEvents(query!);
-      console.log("Search button clicked!" + response[0].event_name);
+      setResults(response);
   }
 
   // update the query according the url on mount (might need to change if component doesn't remount everytime the url changes)
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search); // TODO: change this to router?
     const queryParam = urlParams.get('query');
     if (queryParam) {
       setQuery(queryParam);
@@ -110,7 +111,15 @@ export default function Search() {
           <div className="grow py-3 px-5">
             <h1 className="text-2xl font-bold">Search Results</h1>
             <h3>3 results (0.12 seconds)</h3>
-            <EventList />
+            {!results ?
+            <>
+              <div>
+                <p>No Results</p>
+              </div>
+            </>
+            :
+            <EventList events={results} />
+            }
           </div>
         </div>
       </div>

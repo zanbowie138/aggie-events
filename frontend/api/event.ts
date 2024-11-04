@@ -1,17 +1,5 @@
 import { fetchUtil } from '@/api/fetch';
-
-export interface Event {
-    event_id: number;
-    contributer_id: number;
-    event_name: string;
-    event_description: string;
-    event_likes: number;
-    event_location: string;
-    start_time: Date;
-    end_time: Date;
-    date_created: Date;
-    date_modified: Date;
-}
+import { Event } from '@/app/search/components/EventDisplay';
 
 export const searchEvents = async (query: string): Promise<Event[]> => {
     try {

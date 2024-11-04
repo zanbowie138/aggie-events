@@ -68,7 +68,7 @@ apiRouter.get('/search', async (req, res) => {
         return res.status(400).json({ message: 'Query parameter is required' });
     }
 
-    try {
+    try { // TODO: make case insensitive // TODO: check for typos
         const results = await db.selectFrom('events')
             .select(['event_name', 'event_description'])
             .where('event_name', 'like', `%${query}%`)
