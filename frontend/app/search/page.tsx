@@ -26,8 +26,7 @@ export default function SearchPage() {
                 onChange={(e) => setQuery(e.target.value)}
             />
             <button className="bg-blue-400 p-4 m-2 rounded-md" onClick={() => handleSearch()}>Search</button>
-            {results && results.forEach((result.event_name) => (<p>{result}</p>
-            ))}
+
         </>
     )
 }
