@@ -1,5 +1,5 @@
 export const Links: { href: string; label: string }[] = [
-  { href: "/search1", label: "Search" },
+  { href: "/search", label: "Search" },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/tags", label: "Tags" },
   { href: "/calendar", label: "Calendar" },

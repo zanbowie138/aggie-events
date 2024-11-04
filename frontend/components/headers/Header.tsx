@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 import { Links } from "@/config/config";
@@ -6,6 +7,8 @@ import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 
 export default function Header() {
+  const [query, setQuery] = useState<string | undefined>(undefined);
+
   return (
     <header className="dark:bg-gray-950 bg-lightmaroon border-b-[1px] border-b-gray-300 dark:border-b-white flex">
       <nav className="flex items-center mx-5 w-full text-white dark:text-white">
@@ -25,6 +28,8 @@ export default function Header() {
           </a>
         </div>
 
+        {/* Search section */}
+        // TODO: move search section into its own component
         <form className="flex grow justify-center hover:drop-shadow-lg">
           <input
             alt="Test"
@@ -32,13 +37,16 @@ export default function Header() {
             w-full h-10 outline-none
             focus:border-[#202020] focus:border-y-2 focus:border-l-2 peer"
             placeholder="Search..."
+            onChange={(e) => setQuery(e.target.value)}
           />
-          <button
-            className="bg-maroon rounded-r-md py-2 px-3
-          peer-focus:border-[#202020] peer-focus:border-y-2 peer-focus:border-r-2"
-          >
-            <FaSearch color="white" />
-          </button>
+            <Link href={`/search?query=${query}`}>
+              <button
+                className="bg-maroon rounded-r-md py-2 px-3
+              peer-focus:border-[#202020] peer-focus:border-y-2 peer-focus:border-r-2"
+              >
+                <FaSearch color="white" />
+              </button>
+            </Link>
         </form>
 
         {/* User section */}
