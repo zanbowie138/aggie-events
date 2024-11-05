@@ -7,7 +7,7 @@ import FilterInput from "@/app/search/components/FilterInput";
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthContext';
 import { searchEvents } from '@/api/event';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 // Filters
 // - Date Range
@@ -36,9 +36,9 @@ const sortOptions = [
 const viewOptions = ["List View", "Calendar View"];
 export default function Search() {
   const { user } = useAuth();
-  const [query, setQuery] = useState<string | undefined>(undefined);
+  const [query, setQuery] = useState<string | undefined>(undefined); // TODO: bring the query into a context. Will make things faster
   const [results, setResults] = useState<Event[] | undefined>(undefined);
-  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleSearch = async () => {
       // response is an array of events that are similar to the query
@@ -52,14 +52,17 @@ export default function Search() {
     const queryParam = urlParams.get('query');
     if (queryParam) {
       setQuery(queryParam);
+      console.log(queryParam)
     }
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     if (query) {
       handleSearch();
     }
   }, [query]);
+
+  
 
   return (
     <div className="flex flex-row w-full grow justify-center bg-white">
@@ -111,15 +114,13 @@ export default function Search() {
           <div className="grow py-3 px-5">
             <h1 className="text-2xl font-bold">Search Results</h1>
             <h3>3 results (0.12 seconds)</h3>
-            {!results ?
-            <>
+            {!results ? (
               <div>
                 <p>No Results</p>
               </div>
-            </>
-            :
-            <EventList events={results} />
-            }
+            ) : (
+              <EventList events={results} />
+            )}
           </div>
         </div>
       </div>

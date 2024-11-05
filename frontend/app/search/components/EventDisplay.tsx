@@ -18,7 +18,6 @@ export interface Event {
 }
 
 export default function EventDisplay({ event }: { event: Event }) {
-  console.log(event.event_location);
   return (
     <div className="flex flex-col gap-1 bg-gray-50 rounded-md">
       <div className="flex gap-2 relative w-full m-2">
