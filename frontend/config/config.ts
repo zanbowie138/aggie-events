@@ -1,15 +1,15 @@
 export const Links: { href: string, label: string }[] = [
-    { href: '/', label: 'Home' },
-    { href: '/posts', label: 'Search' },
-    { href: '/about', label: 'About' },
-    { href: '/calendar', label: 'Calendar' },
+    { href: '/', label: 'HOME' },
+    { href: '/posts', label: 'SEARCH' },
+    { href: '/about', label: 'ABOUT' },
+    { href: '/calendar', label: 'CALENDAR' },
 ]
 
-export const TypingTextBase = "Find "
+export const TypingTextBase = "FIND "
 export const TypingText: string[] = [
-    "Study Groups",
-    "Free Food",
-    "Organizations",
-    "Career Opportunities",
-    "Friends",
+    "STUDY GROUPS...",
+    "FREE FOOD...",
+    "ORGANIZATIONS...",
+    "CAREER OPPORTUNITIES...",
+    "FRIENDS...",
 ]

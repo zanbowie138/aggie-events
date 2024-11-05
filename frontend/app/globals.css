@@ -3,14 +3,103 @@
 @import 'tailwindcss/utilities';
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Sriracha&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-@font-face {
-    font-family: 'Satoshi';
+
+.montserrat-regular {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.montserrat-italic {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 50;
+  font-style: italic;
+  color: white;
+}
+
+.playfair-display-regular {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.cormorant-garamond-light {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.cormorant-garamond-regular {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.cormorant-garamond-medium {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-style: normal;
+  color: white;
+}
+
+.cormorant-garamond-semibold {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.cormorant-garamond-bold {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.cormorant-garamond-light-italic {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+  font-style: italic;
+  color: white;
+}
+
+.cormorant-garamond-regular-italic {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.cormorant-garamond-medium-italic {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.cormorant-garamond-semibold-italic {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.cormorant-garamond-bold-italic {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+
+/* @font-face {
+  
+    font-family: "Cormorant Garamond", serif;
     src: url('/Satoshi-Variable.ttf') format('truetype');
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
   }
-  
+   */
 @font-face {
     font-family: 'Light';
     src: url('/Satoshi-Variable.ttf') format('truetype');
@@ -29,3 +118,57 @@
     transform: translateY(0);
   }
   
+
+  hr {
+    border: none;
+    border-top: 0.5px solid white;
+    opacity: 1;
+    width: 1200px; /* this needs to not be a set value, but rn its tied to its container... i want it tied to the screen */
+    margin-top: 20px
+}
+
+
+.max-w-xs {
+  max-width: 600px; /* Adjust the value to control how wide the text can be */
+}
+
+a {
+  display: inline-flex; /* Makes sure the text and triangle align properly */
+  align-items: center; /* Centers the text and triangle vertically */
+  text-decoration: none; /* Removes the underline from the link */
+  position: relative; /* For positioning the triangle */
+}
+
+.triangle {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent; /* Top part of the triangle */
+  border-bottom: 6px solid transparent; /* Bottom part of the triangle */
+  border-left: 6px solid currentColor; /* Left part of the triangle (color of the text) */
+  margin-left: 8px; /* Space between text and triangle */
+}
+
+
+
+.overlay {
+  position: relative; /* To allow absolute positioning for the overlay */
+  z-index: 1; /* Ensure overlay is below the text */
+}
+
+.overlay:before {
+  content: ""; /* Required for pseudo-element */
+  position: absolute;
+  top: -10px; /* Move the overlay up */
+  left: -10px; /* Move the overlay left */
+  right: -25px; /* Move the overlay right */
+  bottom: -10px; /* Move the overlay down */
+  background-color: rgba(56, 56, 56, 0); /* Adjust color and opacity */
+  z-index: -1; /* Position it behind the text */
+  transition: background-color 0.3s; /* Optional: smooth transition */
+}
+
+.overlay:hover:before {
+  background-color: rgba(99, 2, 2, 0.5); /* Change on hover for effect */
+}
+
