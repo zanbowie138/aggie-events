@@ -64,7 +64,7 @@
   font-family: "Cormorant Garamond", serif;
   font-weight: 300;
   font-style: italic;
-  color: white;
+  color: #FFF4E6;
 }
 
 .cormorant-garamond-regular-italic {
@@ -121,9 +121,9 @@
 
   hr {
     border: none;
-    border-top: 0.5px solid white;
+    border-top: 0.5px solid rgb(212, 175, 55);
     opacity: 1;
-    width: 1200px; /* this needs to not be a set value, but rn its tied to its container... i want it tied to the screen */
+    width: 1200px;
     margin-top: 20px
 }
 
