@@ -114,7 +114,7 @@ export default function Search() {
           </div>
 
           <div className="flex grow">
-            <TagList />
+            <TagList tags={currentTags}/>
           </div>
 
           <div className="flex border-l-[1px] border-gray-200 px-3 py-1 items-center shrink-0">
