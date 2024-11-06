@@ -39,6 +39,9 @@ export default function Search() {
   const { user } = useAuth();
   const [query, setQuery] = useState<string | undefined>(undefined); // TODO: bring the query into a context. Will make things faster
   const [results, setResults] = useState<Event[] | undefined>(undefined);
+  // TODO: these filter params are going to be done in a very inneeficient way. Need to change this. Currently will have a bajillion states
+  const [newTag, setNewTag] = useState<HTMLInputElement | undefined>(undefined);
+  const [name, setNewName] = useState<HTMLInputElement | undefined>(undefined);
   const searchParams = useSearchParams();
 
   const handleSearch = async () => {
@@ -62,6 +65,20 @@ export default function Search() {
       handleSearch();
     }
   }, [query]);
+  
+  const updateQuery = () => { // TODO: make this add to currently existing tags instead of replacing the tabs query
+    const params = new URLSearchParams(window.location.search);
+    console.log(params.toString()); // TODO: fix the search so that it doesn't stop rendering the results for whatever reason
+    if (newTag) {
+      params.set('tag', newTag.value);
+    }
+    if (name) {
+      params.set('name', name.value);
+    }
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, '', newUrl);
+    setQuery(params.toString());
+  }
 
   return (
     <div className="flex flex-row w-full grow justify-center bg-white">
@@ -107,11 +124,12 @@ export default function Search() {
               </select>
             </div>
             <CollapsableConfig title="Name">
-              <FilterInput />
+              <FilterInput onChange={(val) => {setNewName(val)}}/>
             </CollapsableConfig>
             <CollapsableConfig title="Tag">
-              <FilterInput />
+              <FilterInput onChange={(val) => {setNewTag(val)}}/>
             </CollapsableConfig>
+            <button className="bg-maroon text-white w-full py-2 rounded-lg" onClick={()=>{updateQuery()}}>Submit</button>
           </div>
 
           <div className="grow py-3 px-5">
