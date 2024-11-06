@@ -56,6 +56,40 @@ apiRouter.put("/users", authMiddleware, async (req, res) => {
         console.error("Error updating user:", error);
         res.status(500).send("Error updating user!");
     }
+})
+
+apiRouter.post('/orgs', authMiddleware, async (req, res) => {
+    const { username, email } = req.body
+    console.log("Post user req.user: " + req.user)
+    try {
+        await db.insertInto('orgs').values({ org_name: username, org_email: email }).execute()
+        res.send("Org created!")
+    } catch (error) {
+        console.error('Error creating Org:', error)
+        res.status(500).send("Error creating Org!")
+    }
+})
+apiRouter.get('/orgs', authMiddleware, async (req, res) => {
+    try {
+        const orgs = await db.selectFrom('orgs').selectAll().execute()
+        res.json(orgs)
+        console.log(orgs)
+        console.log("Org requested!")
+    } catch (error) {
+        console.error('Error fetching Orgs:', error)
+        res.status(500).send("Error fetching Orgs!")
+    }
+})
+apiRouter.delete('/orgs', authMiddleware, async (req, res) => {
+  try {
+      await db.deleteFrom('orgs').execute()
+      res.send("Orgs deleted!")
+  } catch (error) {
+      console.error('Error deleting Orgs:', error)
+      res.status(500).send("Error deleting users!")
+  }
+})
+
 });
 
 apiRouter.delete("/users", authMiddleware, async (req, res) => {
