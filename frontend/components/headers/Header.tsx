@@ -53,7 +53,7 @@ export default function Header() {
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
-                window.location.href = `/search?query=${query}`; // TODO: should I make it not remove all the search params when a new main search term is entered
+                router.push(`/search?query=${query}`); // TODO: should I make it not remove all the search params when a new main search term is entered
               }
             }}
           />
