@@ -1,12 +1,12 @@
-'use client'
+"use client";
 import { FaSearch } from "react-icons/fa";
 import EventList from "@/app/search/components/EventList";
 import { Event } from "@/config/dbtypes";
 import CollapsableConfig from "@/app/search/components/CollapsableConfig";
 import FilterInput from "@/app/search/components/FilterInput";
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/components/auth/AuthContext';
-import { searchEvents } from '@/api/event';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "@/components/auth/AuthContext";
+import { searchEvents } from "@/api/event";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import TagList from "@/app/search/components/TagList";
 
@@ -42,18 +42,18 @@ export default function Search() {
   const searchParams = useSearchParams();
 
   const handleSearch = async () => {
-      // response is an array of events that are similar to the query
-      const response = await searchEvents(query!);
-      setResults(response);
-  }
+    // response is an array of events that are similar to the query
+    const response = await searchEvents(query!);
+    setResults(response);
+  };
 
   // update the query according the url on mount (might need to change if component doesn't remount everytime the url changes)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search); // TODO: change this to router?
-    const queryParam = urlParams.get('query');
+    const queryParam = urlParams.get("query");
     if (queryParam) {
       setQuery(queryParam);
-      console.log(queryParam)
+      console.log(queryParam);
     }
   }, [searchParams]);
 
@@ -62,8 +62,6 @@ export default function Search() {
       handleSearch();
     }
   }, [query]);
-
-  
 
   return (
     <div className="flex flex-row w-full grow justify-center bg-white">
@@ -87,7 +85,7 @@ export default function Search() {
             <TagList />
           </div>
 
-          <div className="flex border-l-[1px] border-gray-200 px-3 py-1 items-center">
+          <div className="flex border-l-[1px] border-gray-200 px-3 py-1 items-center shrink-0">
             <span className="mr-2">Sort by:</span>
             <select className="bg-gray-200 p-1 outline-0">
               {sortOptions.map((option) => (
