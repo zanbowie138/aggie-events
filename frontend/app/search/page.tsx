@@ -67,13 +67,13 @@ export default function Search() {
   }, [query]);
   
   const updateQuery = () => { // TODO: make this add to currently existing tags instead of replacing the tabs query
+    // TODO: able to handle more than one tag
     const params = new URLSearchParams(window.location.search);
-    console.log(params.toString()); // TODO: fix the search so that it doesn't stop rendering the results for whatever reason
     if (newTag) {
-      params.set('tag', newTag.value);
+      params.append('tag', newTag.value);
     }
     if (name) {
-      params.set('name', name.value);
+      params.append('name', name.value);
     }
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
@@ -124,10 +124,10 @@ export default function Search() {
               </select>
             </div>
             <CollapsableConfig title="Name">
-              <FilterInput onChange={(val) => {setNewName(val)}}/>
+              <FilterInput onChange={(val) => {setNewName(val)}} onEnter={updateQuery}/>
             </CollapsableConfig>
             <CollapsableConfig title="Tag">
-              <FilterInput onChange={(val) => {setNewTag(val)}}/>
+              <FilterInput onChange={(val) => {setNewTag(val)}} onEnter={updateQuery}/>
             </CollapsableConfig>
             <button className="bg-maroon text-white w-full py-2 rounded-lg" onClick={()=>{updateQuery()}}>Submit</button>
           </div>
