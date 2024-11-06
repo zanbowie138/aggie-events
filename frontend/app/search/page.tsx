@@ -79,11 +79,10 @@ export default function Search() {
     setQuery(query ? query : "");
   }, []);
   
-  const updateQuery = () => { // TODO: make this add to currently existing tags instead of replacing the tabs query
-    // TODO: able to handle more than one tag // TODO: fix the results disappearing if submitting the same requests twice
+  const updateQuery = () => { // TODO: make this add to currently existing tags instead of replacing the tabs query // TODO: fix the results disappearing if submitting the same requests twice
     const params = new URLSearchParams(window.location.search); // TODO: set the value of the forms to blank after submitting
     if (newTag && !currentTags.includes(newTag.value)) {
-      params.append('tag', newTag.value);
+      params.append('tag', newTag.value); // TODO: if the x is pressed on the tag it will disappear and get removed from the URL query
       setCurrentTags([...currentTags, newTag.value]);
     }
     if (name && !currentNames.includes(name.value)) {
