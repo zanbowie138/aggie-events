@@ -8,6 +8,7 @@ export default function TagDisplay({ text }: { text: string }) {
     searchParams.delete("tag", text);
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
     window.history.pushState({ path: newUrl }, '', newUrl);
+    window.dispatchEvent(new Event('popstate'));
   };
 
   return (

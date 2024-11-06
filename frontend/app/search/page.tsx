@@ -62,6 +62,20 @@ export default function Search() {
     }
   }, [searchParams]);
 
+  useEffect(() => { // TODO: change all this listening to one system based on url search params where everything is just listening for changes in the url search params instead of creating a bunch of random bs events
+    const handlePopState = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tags = urlParams.getAll("tag");
+      setCurrentTags(tags);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   useEffect(() => {
     if (query) {
       handleSearch();
