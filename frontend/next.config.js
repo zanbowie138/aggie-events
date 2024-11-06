@@ -1,14 +1,14 @@
 module.exports = {
-    reactStrictMode: true,
-    output: 'standalone',
-    images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'lh3.googleusercontent.com',
+  reactStrictMode: true,
+  output: "standalone",
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
         //   port: '',
         //   pathname: '/account123/**',
-        },
-      ],
-    },
-  }
+      },
+    ],
+  },
+};

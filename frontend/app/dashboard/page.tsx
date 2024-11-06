@@ -1,14 +1,17 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import AddUserForm from "./AddUserForm";
-import AuthRedirect from '@/components/auth/AuthRedirect'
+import AuthSuspense from "@/components/auth/AuthSuspense";
 
 export default function Database() {
-  return (
-    <>
-      <AuthRedirect url={'/login'}/>
-      <h1 className="text-3xl font-bold">Dashboard</h1>
-      <AddUserForm />
-    </>
-  );
+    return (
+        <>
+            <AuthSuspense>
+                <div>
+                    <h1 className="text-3xl font-bold">Dashboard</h1>
+                    <AddUserForm />
+                </div>
+            </AuthSuspense>
+        </>
+    );
 }

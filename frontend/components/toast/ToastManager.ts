@@ -1,14 +1,17 @@
-import { ToastType } from './Toast';
+import { ToastType } from "./Toast";
 
 class ToastManager {
     toasts: ToastType[];
-    addToastCallback: (message: string, type: string, timeout: number) => void = () => {};
+    addToastCallback: (message: string, type: string, timeout: number) => void =
+        () => {};
 
     constructor() {
         this.toasts = [];
     }
 
-    public setAddNotificationCallback(callback: (message: string, type: string, timeout: number) => void) {
+    public setAddNotificationCallback(
+        callback: (message: string, type: string, timeout: number) => void,
+    ) {
         this.addToastCallback = callback;
     }
 
