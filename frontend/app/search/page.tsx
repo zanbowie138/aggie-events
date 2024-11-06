@@ -1,5 +1,4 @@
 "use client";
-import { FaSearch } from "react-icons/fa";
 import EventList from "@/app/search/components/EventList";
 import { Event } from "@/config/dbtypes";
 import CollapsableConfig from "@/app/search/components/CollapsableConfig";
@@ -28,13 +27,14 @@ import TagList from "@/app/search/components/TagList";
 
 const sortOptions = [
   "Chronological",
+  "Most Popular",
   "Date Posted",
   "Date Updated",
   "Alphabetical (A-Z)",
   "Alphabetical (Z-A)",
-  "Most Popular",
 ];
 const viewOptions = ["List View", "Calendar View"];
+
 export default function Search() {
   const { user } = useAuth();
   const [query, setQuery] = useState<string | undefined>(undefined); // TODO: bring the query into a context. Will make things faster
@@ -117,13 +117,7 @@ export default function Search() {
           <div className="grow py-3 px-5">
             <h1 className="text-2xl font-bold">Search Results</h1>
             <h3>3 results (0.12 seconds)</h3>
-            {!results ? (
-              <div>
-                <p>No Results</p>
-              </div>
-            ) : (
-              <EventList events={results} />
-            )}
+            <EventList events={results} />
           </div>
         </div>
       </div>

@@ -1,16 +1,26 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
 import EventDisplay from "../../search/components/EventDisplay";
 import { Event } from "@/config/dbtypes";
 
-export default function EventList({ events }: { events: Event[] }) {
+export default function EventList({ events }: { events: Event[] | undefined }) {
   const [lastEvents, setLastEvents] = useState<Event[]>([]);
 
-  return (
-    <div className="flex flex-col gap-3 my-2" key={0}> // TODO: resolve the key error
-      {events.map((event) => (
-        <EventDisplay event={event} key={event.event_id}/>
-      ))}
-    </div>
-  );
+  if (!events) {
+    return (
+      <div className="my-2">
+        <div>
+          <p>No Results</p>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex flex-col gap-3 my-2">
+        {events.map((event: Event) => (
+          <EventDisplay event={event} key={event.event_id} />
+        ))}
+      </div>
+    );
+  }
 }

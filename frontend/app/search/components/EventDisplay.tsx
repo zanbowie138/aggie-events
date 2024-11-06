@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaClock } from "react-icons/fa";
 import IconLabel from "@/app/search/components/IconLabel";
@@ -15,7 +13,11 @@ export default function EventDisplay({ event }: { event: Event }) {
   return (
     <div>
       <motion.div
-        className="flex gap-2 max-w-[800px] opacity-0 translate-y-2"
+        className="flex gap-2 max-w-[800px]"
+        initial={{
+          opacity: 0,
+          transform: "translateY(4px)",
+        }}
         animate={{
           transform: "translateY(0px)",
           opacity: 1,
