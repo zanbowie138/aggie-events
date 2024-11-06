@@ -159,7 +159,7 @@ export default function Search() {
             <CollapsableConfig title="Tag">
               <FilterInput onChange={(val) => {setNewTag(val)}} onEnter={updateQuery}/>
             </CollapsableConfig>
-            <button className="bg-maroon text-white w-full py-2 rounded-lg" onClick={() => {updateQuery();}}>Submit</button>
+            <button className="bg-maroon text-white w-full py-2 rounded-lg" onClick={updateQuery}>Submit</button>
           </div>
 
           <div className="grow py-3 px-5">

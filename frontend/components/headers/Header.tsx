@@ -54,6 +54,7 @@ export default function Header() {
               if (e.key === 'Enter') {
                 e.preventDefault();
                 router.push(`/search?query=${query}`); // TODO: should I make it not remove all the search params when a new main search term is entered
+                window.dispatchEvent(new Event('popstate'));
               }
             }}
           />
@@ -62,7 +63,11 @@ export default function Header() {
           peer-focus:border-[#202020] peer-focus:border-y-2 peer-focus:border-r-2"
             onClick={(e) => {
               e.preventDefault();
-              router.push(`/search?query=${query}`)}}
+              router.push(`/search?query=${query}`)
+              window.dispatchEvent(new Event('popstate')); // TODO: abstract these two commands into a function
+              // TODO: fix this to update the tags on the first popstate
+            }}
+
           >
             <FaSearch color="white" />
           </button>
