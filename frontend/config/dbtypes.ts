@@ -10,3 +10,13 @@ export interface Event {
   date_created: string;
   date_modified: string;
 }
+
+export interface Organization {
+  org_description: string | null;
+  org_email: string | null;
+  org_icon: string | null;
+  org_id: number;
+  org_name: string;
+  org_reputation: number;
+  org_verified: boolean;
+}
