@@ -106,6 +106,8 @@ export default function Search() {
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
     setQuery(params.toString());
+    if (newTag) newTag.value = "";
+    if (name) name.value = "";
   }
 
   return (
@@ -151,13 +153,13 @@ export default function Search() {
                 <option className="font-semibold bg-white">Organization</option>
               </select>
             </div>
-            <CollapsableConfig title="Name"> // TODO: check for duplicates (don't just append every time) // TODO: modify the tags shown on screen // TODO: properly address holding multiple tags
+            <CollapsableConfig title="Name">
               <FilterInput onChange={(val) => {setNewName(val)}} onEnter={updateQuery}/>
             </CollapsableConfig>
             <CollapsableConfig title="Tag">
               <FilterInput onChange={(val) => {setNewTag(val)}} onEnter={updateQuery}/>
             </CollapsableConfig>
-            <button className="bg-maroon text-white w-full py-2 rounded-lg" onClick={()=>{updateQuery()}}>Submit</button>
+            <button className="bg-maroon text-white w-full py-2 rounded-lg" onClick={() => {updateQuery();}}>Submit</button>
           </div>
 
           <div className="grow py-3 px-5">
