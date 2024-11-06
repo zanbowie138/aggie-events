@@ -6,7 +6,8 @@ export default function TagDisplay({ text }: { text: string }) {
     const searchParams = new URLSearchParams(window.location.search);
     const tags = searchParams.getAll("tag");
     searchParams.delete("tag", text);
-    window.location.search = searchParams.toString();
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
   };
 
   return (
