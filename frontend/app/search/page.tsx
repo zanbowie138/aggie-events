@@ -36,13 +36,15 @@ const sortOptions = [
 const viewOptions = ["List View", "Calendar View"];
 
 export default function Search() {
-  const { user } = useAuth();
+  const { user } = useAuth(); // TODO: choose a less confusing name than query. Query is the enter query string in the URL
   const [query, setQuery] = useState<string | undefined>(undefined); // TODO: bring the query into a context. Will make things faster
   const [results, setResults] = useState<Event[] | undefined>(undefined);
   // TODO: these filter params are going to be done in a very inneeficient way. Need to change this. Currently will have a bajillion states
   const [newTag, setNewTag] = useState<HTMLInputElement | undefined>(undefined);
   const [name, setNewName] = useState<HTMLInputElement | undefined>(undefined);
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // TODO: really need to clean up these state variables. Should create a query.ts to track everything
+  const [currentTags, setCurrentTags] = useState<string[]>([]);
+  const [currentNames, setCurrentNames] = useState<string[]>([]);
 
   const handleSearch = async () => {
     // response is an array of events that are similar to the query
@@ -65,15 +67,28 @@ export default function Search() {
       handleSearch();
     }
   }, [query]);
+
+  // set the current tags and current name and query to the url search params on component mount (ex: if someone sent the link with the search in it)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tags = urlParams.getAll("tag");
+    const name = urlParams.getAll("name");
+    const query = urlParams.get("query");
+    setCurrentTags(tags);
+    setCurrentNames(name);
+    setQuery(query ? query : "");
+  }, []);
   
   const updateQuery = () => { // TODO: make this add to currently existing tags instead of replacing the tabs query
-    // TODO: able to handle more than one tag
-    const params = new URLSearchParams(window.location.search);
-    if (newTag) {
+    // TODO: able to handle more than one tag // TODO: fix the results disappearing if submitting the same requests twice
+    const params = new URLSearchParams(window.location.search); // TODO: set the value of the forms to blank after submitting
+    if (newTag && !currentTags.includes(newTag.value)) {
       params.append('tag', newTag.value);
+      setCurrentTags([...currentTags, newTag.value]);
     }
-    if (name) {
+    if (name && !currentNames.includes(name.value)) {
       params.append('name', name.value);
+      setCurrentNames([...currentNames, name.value]);
     }
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, '', newUrl);
@@ -123,7 +138,7 @@ export default function Search() {
                 <option className="font-semibold bg-white">Organization</option>
               </select>
             </div>
-            <CollapsableConfig title="Name">
+            <CollapsableConfig title="Name"> // TODO: check for duplicates (don't just append every time) // TODO: modify the tags shown on screen // TODO: properly address holding multiple tags
               <FilterInput onChange={(val) => {setNewName(val)}} onEnter={updateQuery}/>
             </CollapsableConfig>
             <CollapsableConfig title="Tag">
