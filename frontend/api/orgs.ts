@@ -3,10 +3,9 @@ import { fetchUtil } from '@/api/fetch';
 import Toast from '@/components/toast/Toast';
 
 export interface Organization {
-  user_email: string;
-  user_id: number;
-  user_mod: boolean;
-  user_name: string;
+  org_name: string; 
+  org_email: string;
+  org_id: number;
 }
 
 export const addOrganization = async (username: string, email: string) => {
