@@ -1,13 +1,14 @@
 'use client'
 import { FaSearch } from "react-icons/fa";
 import EventList from "@/app/search/components/EventList";
-import { Event } from "@/app/search/components/EventDisplay";
+import { Event } from "@/config/dbtypes";
 import CollapsableConfig from "@/app/search/components/CollapsableConfig";
 import FilterInput from "@/app/search/components/FilterInput";
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth/AuthContext';
 import { searchEvents } from '@/api/event';
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import TagList from "@/app/search/components/TagList";
 
 // Filters
 // - Date Range
@@ -66,13 +67,13 @@ export default function Search() {
 
   return (
     <div className="flex flex-row w-full grow justify-center bg-white">
-      <div className="flex flex-col grow-0 h-full min-h-fit basis-[1500px] bg-white relative">
+      <div className="flex flex-col grow-0 h-full min-h-fit basis-[1500px] relative">
         {/* Banner footer */}
         <div
-          className="flex w-full border-b-[1px] border-gray-200 h-12 items-center
+          className="flex w-full border-b-[1px] border-gray-200 min-h-12 items-center
         sticky top-0 bg-white z-20"
         >
-          <div className="grow px-1">
+          <div className="px-3">
             <select className="bg-gray-100 text-md px-1 outline-0">
               {viewOptions.map((option) => (
                 <option key={option} className="bg-white">
@@ -80,6 +81,10 @@ export default function Search() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="flex grow">
+            <TagList />
           </div>
 
           <div className="flex border-l-[1px] border-gray-200 px-3 py-1 items-center">
@@ -95,7 +100,7 @@ export default function Search() {
         </div>
 
         <div className="flex gap-2 grow">
-          <div className="p-3 basis-72 shrink-0">
+          <div className="px-5 py-5 basis-72 shrink-0">
             <div className="flex gap-2">
               <div className="text-lg font-semibold">Search For: </div>
               <select className="bg-gray-100 text-lg px-1 outline-0 font-semibold">

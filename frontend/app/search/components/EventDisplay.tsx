@@ -1,64 +1,45 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaLocationDot } from "react-icons/fa6";
-import { FaCalendar, FaClock } from "react-icons/fa";
+import { FaClock } from "react-icons/fa";
+import IconLabel from "@/app/search/components/IconLabel";
+import EventCard from "@/app/search/components/EventCard";
+import { motion } from "framer-motion";
+import { Event } from "@/config/dbtypes";
 
-export interface Event {
-  event_id: number;
-  contributer_id: number;
-  event_name: string;
-  event_description: string;
-  event_likes: number;
-  start_time: string;
-  end_time: string;
-  event_location: string;
-  date_created: string;
-  date_modified: string;
-}
+const hasOrg = true;
 
 export default function EventDisplay({ event }: { event: Event }) {
   return (
-    <div className="flex flex-col gap-1 bg-gray-50 rounded-md">
-      <div className="flex gap-2 relative w-full m-2">
-        <div className="flex gap-2">
-          <div>
-            <Image
-              src="/cat.webp"
-              alt="event"
-              width={50}
-              height={50}
-              className="object-cover rounded-full"
-            />
-          </div>
-          <div className="">
-            <h4 className="text-xl font-semibold text-maroon">{event.event_name}</h4>
-            <h4 className="text-md text-gray-400">Aggie Events</h4>
-          </div>
+    <motion.div
+      className="flex gap-2 max-w-[800px] opacity-0 translate-y-2"
+      animate={{
+        transform: "translateY(0px)",
+        opacity: 1,
+      }}
+    >
+      <div className="flex flex-col border-r-2 border-gray-100 shrink-0 pr-2 ">
+        <div className="text-maroon-400 font-semibold text-xl">
+          {new Date(event.start_time).toLocaleDateString("en-US", {
+            weekday: "long",
+          }) + ","}
         </div>
-        <div className="grow">
-          <div className="flex items-center gap-1">
-            <FaLocationDot color="maroon" />
-            <h4 className="text-md font-semibold mb">{event.event_location}</h4>
-          </div>
-          {/*<div className="flex items-center gap-1">*/}
-          {/*  <FaCalendar color="maroon" />*/}
-          {/*  <h4 className="text-md font-semibold mb">{event.date}</h4>*/}
-          {/*</div>*/}
-          <div className="flex items-center gap-1">
-            <FaClock color="maroon" />
-            <h4 className="text-md font-semibold mb">{event.start_time}</h4> // TODO: format the timestamp
-          </div>
+        <div className="font-semibold text-xl">
+          {new Date(event.end_time).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+          })}
         </div>
+        <IconLabel text={event.event_location}>
+          <FaLocationDot color="maroon" />
+        </IconLabel>
+        <IconLabel text={event.start_time.toString()}>
+          <FaClock color="maroon" />
+        </IconLabel>
       </div>
-
-      <div className="px-2">
-        <span>
-          <p className="h-max line-clamp-3">{event.event_description}</p>
-        </span>
-      </div>
-
-      <div className="border-t-[1px] border-gray-200 px-2"></div>
-    </div>
+      <EventCard event={event} />
+    </motion.div>
   );
 }

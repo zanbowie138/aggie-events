@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 
 export default function EventCard({ event }: { event: Event }) {
   return (
-    <div className="flex flex-col gap-1 bg-gray-50 rounded-lg py-2 px-4">
+    <div className="flex flex-col gap-1 bg-gray-50 rounded-lg py-2 px-4 grow">
       <div className="flex flex-col">
         <div className="flex justify-center gap-2">
           <div className="flex items-center">
@@ -33,12 +33,12 @@ export default function EventCard({ event }: { event: Event }) {
       </div>
       <h1 className="">
         <a className="text-xl font-semibold text-maroon" href="/">
-          {event.title}
+          {event.event_name}
         </a>
       </h1>
       <div className="">
         <span>
-          <p className="h-max line-clamp-3">{event.description}</p>
+          <p className="h-max line-clamp-3">{event.event_description}</p>
         </span>
       </div>
       <div className="flex gap-2">
