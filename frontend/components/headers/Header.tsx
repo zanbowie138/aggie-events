@@ -11,6 +11,15 @@ export default function Header() {
   const [query, setQuery] = useState<string | undefined>(undefined);
   const router = useRouter();
 
+  useEffect(()=>{
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryParam = urlParams.get("query");
+    if (queryParam) {
+      setQuery(queryParam);
+    }
+    document.getElementById("search-input")?.setAttribute("value", queryParam!);
+  }, []);
+
   return (
     <header className="dark:bg-gray-950 bg-lightmaroon border-b-[1px] border-b-gray-300 dark:border-b-white flex">
       <nav className="flex items-center mx-5 w-full text-white dark:text-white">
@@ -34,6 +43,7 @@ export default function Header() {
         // TODO: move search section into its own component
         <form className="flex grow justify-center hover:drop-shadow-lg">
           <input
+            id="search-input"
             alt="Test"
             className="text-black bg-gray-100 rounded-l-md px-2 py-1 max-w-[700px]
             w-full h-10 outline-none
@@ -43,7 +53,7 @@ export default function Header() {
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
-                window.location.href = `/search?query=${query}`;
+                window.location.href = `/search?query=${query}`; // TODO: should I make it not remove all the search params when a new main search term is entered
               }
             }}
           />
