@@ -33,7 +33,7 @@ export default function AddUserForm() {
           setUpdate(!update)
         }}
           className="bg-blue-500 rounded-md px-2 py-1">
-          Create user
+          Create Organization
         </button>
       </div>
       <div className="my-2">
@@ -41,7 +41,7 @@ export default function AddUserForm() {
           deleteOrganization()
           setUpdate(!update)
         }}>
-          Delete users
+          Delete Organization
         </button>
       </div>
       <div className="my-2">
