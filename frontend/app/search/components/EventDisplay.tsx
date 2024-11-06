@@ -13,33 +13,35 @@ const hasOrg = true;
 
 export default function EventDisplay({ event }: { event: Event }) {
   return (
-    <motion.div
-      className="flex gap-2 max-w-[800px] opacity-0 translate-y-2"
-      animate={{
-        transform: "translateY(0px)",
-        opacity: 1,
-      }}
-    >
-      <div className="flex flex-col border-r-2 border-gray-100 shrink-0 pr-2 ">
-        <div className="text-maroon-400 font-semibold text-xl">
-          {new Date(event.start_time).toLocaleDateString("en-US", {
-            weekday: "long",
-          }) + ","}
+    <div>
+      <motion.div
+        className="flex gap-2 max-w-[800px] opacity-0 translate-y-2"
+        animate={{
+          transform: "translateY(0px)",
+          opacity: 1,
+        }}
+      >
+        <div className="flex flex-col border-r-2 border-gray-100 shrink-0 pr-2 ">
+          <div className="text-maroon-400 font-semibold text-xl">
+            {new Date(event.start_time).toLocaleDateString("en-US", {
+              weekday: "long",
+            }) + ","}
+          </div>
+          <div className="font-semibold text-xl">
+            {new Date(event.end_time).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+            })}
+          </div>
+          <IconLabel text={event.event_location}>
+            <FaLocationDot color="maroon" />
+          </IconLabel>
+          <IconLabel text={event.start_time.toString()}>
+            <FaClock color="maroon" />
+          </IconLabel>
         </div>
-        <div className="font-semibold text-xl">
-          {new Date(event.end_time).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-          })}
-        </div>
-        <IconLabel text={event.event_location}>
-          <FaLocationDot color="maroon" />
-        </IconLabel>
-        <IconLabel text={event.start_time.toString()}>
-          <FaClock color="maroon" />
-        </IconLabel>
-      </div>
-      <EventCard event={event} />
-    </motion.div>
+        <EventCard event={event} />
+      </motion.div>
+    </div>
   );
 }

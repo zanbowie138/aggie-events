@@ -18,7 +18,7 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           <ToastRenderer />
-          <div className="px-2 py-5">{children}</div>
+          <div className="">{children}</div>
           <Footer />
         </AuthProvider>
       </body>
