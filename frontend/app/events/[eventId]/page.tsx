@@ -5,8 +5,11 @@ import { useParams, useRouter } from "next/navigation";
 import { FaLocationDot } from "react-icons/fa6";
 import IconLabel from "@/app/search/components/IconLabel";
 import { formatDateInterval } from "@/utils/date";
-import SoloTagDisplay from "@/app/search/components/SoloTagDisplay";
+import SoloTagDisplay from "@/components/tag/SoloTagDisplay";
 import { EventPageInformation } from "@/config/query-types";
+import { FaClock } from "react-icons/fa";
+import TagDisplay from "@/app/search/components/TagDisplay";
+import EventTagList from "@/components/tag/EventTagList";
 
 export default function EventDetails({
   params,
@@ -69,18 +72,21 @@ function EventData({ event }: { event: EventPageInformation }) {
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-3xl font-bold text-maroon">{event.event_name}</h1>
-      {event.event_location && (
-        <IconLabel text={event.event_location}>
-          <FaLocationDot color="maroon" />
-        </IconLabel>
-      )}
       <h2 className="font-semibold">
         {formatDateInterval(
           new Date(event.start_time),
           new Date(event.end_time),
         )}
       </h2>
-      <p className="text-md text-black">{event.event_description}</p>
+      {event.event_location && (
+        <IconLabel text={event.event_location}>
+          <FaLocationDot color="maroon" />
+        </IconLabel>
+      )}
+      <EventTagList tags={event.tags} />
+
+      <p className="text-md text-black my-2">{event.event_description}</p>
+      <hr />
       <p className="text-gray-400">Posted by: {event.contributor_name}</p>
     </div>
   );

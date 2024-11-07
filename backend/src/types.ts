@@ -29,6 +29,7 @@ export interface Events {
   event_name: string;
   start_time: Timestamp;
   event_location: string | null;
+  event_img: string | null;
 }
 
 export interface Eventtags {

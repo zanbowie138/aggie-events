@@ -213,7 +213,7 @@ apiRouter.get("/events/:event_id", async (req, res) => {
 
     const tags = await db
       .selectFrom("eventtags as e_t")
-      .where("e_t.tag_id", "=", page_data.event_id)
+      .where("e_t.event_id", "=", page_data.event_id)
       .innerJoin("tags as t", "e_t.tag_id", "t.tag_id")
       .select(["t.tag_name as tag_name"])
       .execute()
@@ -227,6 +227,7 @@ apiRouter.get("/events/:event_id", async (req, res) => {
 
     res.json({ ...page_data, tags } as EventPageInformation);
     console.log("Event requested!");
+    console.log("Tags: " + tags);
   } catch (error) {
     console.error("Error fetching event:", error);
     res.status(500).send("Error fetching event!");

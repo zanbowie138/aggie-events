@@ -5,7 +5,7 @@ import IconLabel from "@/app/search/components/IconLabel";
 import { HiEye } from "react-icons/hi";
 import { FaHeart } from "react-icons/fa";
 import { Event } from "@/config/dbtypes";
-import EventTagList from "@/app/search/components/EventTagList";
+import EventTagList from "@/components/tag/EventTagList";
 import Link from "next/link";
 
 export default function EventCard({ event }: { event: Event }) {
@@ -44,7 +44,7 @@ export default function EventCard({ event }: { event: Event }) {
         </Link>
       </h1>
       <div>
-        <EventTagList />
+        <EventTagList tags={["Engineering", "Yes"]} />
       </div>
       <div className="">
         <span>
