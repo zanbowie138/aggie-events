@@ -1,5 +1,6 @@
 import { fetchUtil } from "@/api/fetch";
 import { Event } from "@/config/dbtypes";
+import { EventPageInformation } from "@/config/query-types";
 
 export const searchEvents = async (query: string): Promise<Event[]> => {
   try {
@@ -29,7 +30,9 @@ export const fetchEvents = async (): Promise<Event[]> => {
   }
 };
 
-export const fetchEventByID = async (eventID: number): Promise<Event> => {
+export const fetchEventById = async (
+  eventID: number,
+): Promise<EventPageInformation> => {
   try {
     const response = await fetchUtil(
       `${process.env.NEXT_PUBLIC_API_URL}/events/${eventID}`,

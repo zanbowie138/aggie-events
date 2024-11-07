@@ -6,6 +6,7 @@ import { HiEye } from "react-icons/hi";
 import { FaHeart } from "react-icons/fa";
 import { Event } from "@/config/dbtypes";
 import EventTagList from "@/app/search/components/EventTagList";
+import Link from "next/link";
 
 export default function EventCard({ event }: { event: Event }) {
   return (
@@ -22,19 +23,25 @@ export default function EventCard({ event }: { event: Event }) {
             />
           </div>
           <h3 className="flex flex-col justify-center grow">
-            <a className="text-md font-medium text-maroon" href="/">
+            <Link
+              className="text-md font-medium text-maroon"
+              href={`/org/${event.event_id}`}
+            >
               Aggie Events
-            </a>
-            <a className="text-sm">
+            </Link>
+            <Link className="text-sm" href="/">
               Posted by <span className="text-maroon">John Doe</span>
-            </a>
+            </Link>
           </h3>
         </div>
       </div>
       <h1 className="">
-        <a className="text-xl font-semibold text-maroon" href="/">
+        <Link
+          className="text-xl font-semibold text-maroon"
+          href={`/events/${event.event_id}`}
+        >
           {event.event_name}
-        </a>
+        </Link>
       </h1>
       <div>
         <EventTagList />

@@ -28,23 +28,23 @@ CREATE TABLE events (
 	event_name VARCHAR(255) NOT NULL,
 	event_description TEXT NULL,
 	event_likes INT DEFAULT 0 NOT NULL,
-	event_location VARCHAR(255) NOT NULL,
+	event_location VARCHAR(255),
 
-	start_time TIMESTAMP NULL,
-    end_time TIMESTAMP NULL,
+	start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
 	date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	date_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 
 
 	-- If both start_time and end_time are not null, then start_time must be less than end_time
-	CHECK (start_time IS NULL OR end_time IS NULL OR start_time < end_time),
+	CHECK (start_time < end_time),
 	FOREIGN KEY(contributor_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE FUNCTION update_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
+    NEW.date_modified = CURRENT_TIMESTAMP;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

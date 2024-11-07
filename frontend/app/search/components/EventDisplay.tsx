@@ -35,9 +35,11 @@ export default function EventDisplay({ event }: { event: Event }) {
               day: "numeric",
             })}
           </div>
-          <IconLabel text={event.event_location}>
-            <FaLocationDot color="maroon" />
-          </IconLabel>
+          {event.event_location && (
+            <IconLabel text={event.event_location}>
+              <FaLocationDot color="maroon" />
+            </IconLabel>
+          )}
           <IconLabel text={event.start_time.toString()}>
             <FaClock color="maroon" />
           </IconLabel>
