@@ -11,16 +11,11 @@ import { FaClock } from "react-icons/fa";
 import TagDisplay from "@/app/search/components/TagDisplay";
 import EventTagList from "@/components/tag/EventTagList";
 
-export default function EventDetails({
-  params,
-}: {
-  params: { eventID: number };
-}) {
+export default function EventDetails() {
   const [event, setEvent] = useState<EventPageInformation | undefined | null>(
     undefined,
   );
   const { eventId } = useParams<{ eventId: string }>();
-  const router = useRouter();
 
   useEffect(() => {
     fetchEventById(parseInt(eventId, 10))

@@ -1,6 +1,7 @@
 import express from "express";
 import { db } from "../database";
 import { authMiddleware } from "../middlewares/authMiddleware";
+import { SerializedUser } from "../types/customtypes";
 
 export const apiRouter = express.Router();
 
@@ -231,5 +232,67 @@ apiRouter.get("/events/:event_id", async (req, res) => {
   } catch (error) {
     console.error("Error fetching event:", error);
     res.status(500).send("Error fetching event!");
+  }
+});
+
+export interface EventCreate {
+  event_name: string;
+  event_description: string | null;
+  event_location: string | null;
+  start_time: Date;
+  end_time: Date;
+  tags: string[];
+}
+
+apiRouter.post("/events", authMiddleware, async (req, res) => {
+  const {
+    event_name,
+    event_description,
+    event_location,
+    start_time,
+    end_time,
+    tags,
+  } = req.body as EventCreate;
+
+  try {
+    const event = await db
+      .insertInto("events")
+      .values({
+        event_name: event_name,
+        event_description: event_description,
+        event_location: event_location,
+        start_time: start_time,
+        end_time: end_time,
+        contributor_id: (req.user! as SerializedUser).user_id,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow();
+
+    console.log("Event ID: " + event.event_id);
+    const event_id =
+      event.event_id !== undefined ? Number(event.event_id) : null;
+
+    if (event_id === null) {
+      console.error("Error creating event!");
+      res.status(500).send("Error creating event!");
+      return;
+    }
+
+    for (const tag of tags) {
+      const tag_id = await db
+        .selectFrom("tags")
+        .where("tag_name", "=", tag)
+        .select(["tag_id"])
+        .executeTakeFirstOrThrow()
+        .then((tag) => tag.tag_id);
+
+      await db.insertInto("eventtags").values({ event_id, tag_id }).execute();
+    }
+
+    res.json(event);
+    console.log("Event created!");
+  } catch (error) {
+    console.error("Error creating event:", error);
+    res.status(500).send("Error creating event!");
   }
 });

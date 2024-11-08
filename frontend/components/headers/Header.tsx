@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
@@ -6,12 +6,14 @@ import { Links } from "@/config/config";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/auth/AuthContext";
 
 export default function Header() {
   const [query, setQuery] = useState<string | undefined>(undefined);
   const router = useRouter();
+  const { user } = useAuth();
 
-  useEffect(()=>{
+  useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const queryParam = urlParams.get("query");
     if (queryParam) {
@@ -21,7 +23,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="dark:bg-gray-950 bg-lightmaroon border-b-[1px] border-b-gray-300 dark:border-b-white flex">
+    <header className="dark:bg-gray-950 bg-lightmaroon flex">
       <nav className="flex items-center mx-5 w-full text-white dark:text-white">
         {/* Logo section */}
         <div className="mb-2">
@@ -31,6 +33,7 @@ export default function Header() {
               alt="logo"
               width={50}
               height={50}
+              priority={true}
               className="mb-2 mt-1"
             />
             <div className="text-xl font-bold italic leading-none w-10 mt-2">
@@ -40,7 +43,7 @@ export default function Header() {
         </div>
 
         {/* Search section */}
-        // TODO: move search section into its own component
+        {/*// TODO: move search section into its own component*/}
         <form className="flex grow justify-center hover:drop-shadow-lg">
           <input
             id="search-input"
@@ -51,10 +54,10 @@ export default function Header() {
             placeholder="Search..."
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 e.preventDefault();
                 router.push(`/search?query=${query}`); // TODO: should I make it not remove all the search params when a new main search term is entered
-                window.dispatchEvent(new Event('popstate'));
+                window.dispatchEvent(new Event("popstate"));
               }
             }}
           />
@@ -63,11 +66,10 @@ export default function Header() {
           peer-focus:border-[#202020] peer-focus:border-y-2 peer-focus:border-r-2"
             onClick={(e) => {
               e.preventDefault();
-              router.push(`/search?query=${query}`)
-              window.dispatchEvent(new Event('popstate')); // TODO: abstract these two commands into a function
+              router.push(`/search?query=${query}`);
+              window.dispatchEvent(new Event("popstate")); // TODO: abstract these two commands into a function
               // TODO: fix this to update the tags on the first popstate
             }}
-
           >
             <FaSearch color="white" />
           </button>
@@ -84,16 +86,24 @@ export default function Header() {
               </li>
             ))}
           </ul>
-          {/*<Link href="/login" className="">*/}
-          {/*  Sign in*/}
-          {/*</Link>*/}
-          <Image
-            src="/cat.webp"
-            alt="user"
-            width={40}
-            height={40}
-            className="rounded-full ring-2 ring-maroon-500 hover:ring-[3px] cursor-pointer"
-          />
+          {user ? (
+            <Image
+              src={user.picture}
+              alt="user"
+              width={35}
+              height={35}
+              className="rounded-full ring-2 ring-maroon-500 hover:ring-[4px] cursor-pointer"
+            />
+          ) : (
+            <button className="py-1 px-3 rounded-md border-[1px] border-white">
+              <Link
+                href={`${process.env.NEXT_PUBLIC_AUTH_URL}/google`}
+                className=""
+              >
+                Sign in
+              </Link>
+            </button>
+          )}
         </div>
       </nav>
     </header>

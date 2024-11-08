@@ -1,6 +1,6 @@
 import { fetchUtil } from "@/api/fetch";
 import { Event } from "@/config/dbtypes";
-import { EventPageInformation } from "@/config/query-types";
+import { EventCreate, EventPageInformation } from "@/config/query-types";
 
 export const searchEvents = async (query: string): Promise<Event[]> => {
   try {
@@ -43,5 +43,20 @@ export const fetchEventById = async (
     return response.json() ?? null;
   } catch (error) {
     throw new Error("Error fetching event");
+  }
+};
+
+export const createEvent = async (event: EventCreate) => {
+  try {
+    const response = await fetchUtil(
+      `${process.env.NEXT_PUBLIC_API_URL}/events`,
+      {
+        method: "POST",
+        body: event,
+      },
+    );
+    return response.json() ?? null;
+  } catch (error) {
+    throw new Error("Error creating event");
   }
 };

@@ -18,7 +18,7 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           <ToastRenderer />
-          <div className="">{children}</div>
+          {children}
           <Footer />
         </AuthProvider>
       </body>

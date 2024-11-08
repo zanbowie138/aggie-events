@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-maroon dark:bg-gray-950 text-white font-semibold dark:text-white mt-auto border-t-2 border-black dark:border-gray-200">
+    <footer className="bg-maroon dark:bg-gray-950 text-white font-semibold dark:text-white mt-auto">
       {/* Navigation links */}
       <nav>
         <div className="flex"></div>
@@ -10,7 +10,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <div>
-        <div className="flex items-center justify-between w-[92%] mx-auto p-5">
+        <div className="flex items-center justify-between w-[92%] mx-auto p-4">
           <div>
             <p>© 2024 Aggie Events</p>
           </div>

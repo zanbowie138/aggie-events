@@ -62,7 +62,8 @@ export default function Search() {
     }
   }, [searchParams]);
 
-  useEffect(() => { // TODO: change all this listening to one system based on url search params where everything is just listening for changes in the url search params instead of creating a bunch of random bs events
+  useEffect(() => {
+    // TODO: change all this listening to one system based on url search params where everything is just listening for changes in the url search params instead of creating a bunch of random bs events
     const handlePopState = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const tags = urlParams.getAll("tag");
@@ -92,26 +93,27 @@ export default function Search() {
     setCurrentNames(name);
     setQuery(query ? query : "");
   }, []);
-  
-  const updateQuery = () => { // TODO: make this add to currently existing tags instead of replacing the tabs query // TODO: fix the results disappearing if submitting the same requests twice
+
+  const updateQuery = () => {
+    // TODO: make this add to currently existing tags instead of replacing the tabs query // TODO: fix the results disappearing if submitting the same requests twice
     const params = new URLSearchParams(window.location.search); // TODO: set the value of the forms to blank after submitting
     if (newTag && !currentTags.includes(newTag.value)) {
-      params.append('tag', newTag.value); // TODO: if the x is pressed on the tag it will disappear and get removed from the URL query
+      params.append("tag", newTag.value); // TODO: if the x is pressed on the tag it will disappear and get removed from the URL query
       setCurrentTags([...currentTags, newTag.value]);
     }
     if (name && !currentNames.includes(name.value)) {
-      params.append('name', name.value);
+      params.append("name", name.value);
       setCurrentNames([...currentNames, name.value]);
     }
     const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.pushState({}, '', newUrl);
+    window.history.pushState({}, "", newUrl);
     setQuery(params.toString());
     if (newTag) newTag.value = "";
     if (name) name.value = "";
-  }
+  };
 
   return (
-    <div className="flex flex-row w-full grow justify-center bg-white">
+    <div className="flex flex-row w-full grow justify-center">
       <div className="flex flex-col grow-0 h-full min-h-fit basis-[1500px] relative">
         {/* Banner footer */}
         <div
@@ -129,7 +131,7 @@ export default function Search() {
           </div>
 
           <div className="flex grow">
-            <TagList tags={currentTags}/>
+            <TagList tags={currentTags} />
           </div>
 
           <div className="flex border-l-[1px] border-gray-200 px-3 py-1 items-center shrink-0">
@@ -154,12 +156,27 @@ export default function Search() {
               </select>
             </div>
             <CollapsableConfig title="Name">
-              <FilterInput onChange={(val) => {setNewName(val)}} onEnter={updateQuery}/>
+              <FilterInput
+                onChange={(val) => {
+                  setNewName(val);
+                }}
+                onEnter={updateQuery}
+              />
             </CollapsableConfig>
             <CollapsableConfig title="Tag">
-              <FilterInput onChange={(val) => {setNewTag(val)}} onEnter={updateQuery}/>
+              <FilterInput
+                onChange={(val) => {
+                  setNewTag(val);
+                }}
+                onEnter={updateQuery}
+              />
             </CollapsableConfig>
-            <button className="bg-maroon text-white w-full py-2 rounded-lg" onClick={updateQuery}>Submit</button>
+            <button
+              className="bg-maroon text-white w-full py-2 rounded-lg"
+              onClick={updateQuery}
+            >
+              Submit
+            </button>
           </div>
 
           <div className="grow py-3 px-5">

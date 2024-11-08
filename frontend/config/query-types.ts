@@ -13,3 +13,12 @@ export interface EventPageInformation {
   org_id: number | null;
   tags: string[];
 }
+
+export interface EventCreate {
+  event_name: string;
+  event_description: string | null;
+  event_location: string | null;
+  start_time: Date;
+  end_time: Date;
+  tags: string[];
+}
