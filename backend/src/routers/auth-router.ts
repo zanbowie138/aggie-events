@@ -4,6 +4,7 @@ import { UserStorage } from "../types/customtypes";
 
 export const authRouter = express.Router();
 
+// Route to check if user is authenticated
 authRouter.get("/user", async (req, res) => {
   const user = req.user as UserStorage;
   res.send(
