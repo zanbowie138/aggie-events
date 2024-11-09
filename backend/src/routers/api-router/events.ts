@@ -8,8 +8,8 @@ export const eventRouter = express.Router();
 eventRouter.get("/", async (req, res) => {
   try {
     const events = await db.selectFrom("events").selectAll().execute();
-    res.json(events);
     console.log("Events requested!");
+    res.json(events);
   } catch (error) {
     console.error("Error fetching events:", error);
     res.status(500).send("Error fetching events!");

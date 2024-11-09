@@ -7,14 +7,17 @@ export default function TagDisplay({ text }: { text: string }) {
     const tags = searchParams.getAll("tag");
     searchParams.delete("tag", text);
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-    window.history.pushState({ path: newUrl }, '', newUrl);
-    window.dispatchEvent(new Event('popstate'));
+    window.history.pushState({ path: newUrl }, "", newUrl);
+    window.dispatchEvent(new Event("popstate"));
   };
 
   return (
-    <div className="bg-maroon rounded-md py-1 px-2 text-sm text-white flex items-center font-semibold gap-1 w-max">
+    <button
+      className="bg-maroon rounded-md py-1 px-2 text-sm text-white flex items-center font-semibold gap-1 w-max"
+      onClick={onClose}
+    >
       <div>{text}</div>
-      <IoClose onClick={onClose} />
-    </div>
+      <IoClose />
+    </button>
   );
 }

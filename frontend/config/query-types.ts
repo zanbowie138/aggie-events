@@ -22,3 +22,11 @@ export interface EventCreate {
   end_time: Date;
   tags: string[];
 }
+
+export interface SearchFilters {
+  name?: string;
+  tags?: string[];
+  dateRange?: Date[];
+  location?: string;
+  organizations?: string[];
+}

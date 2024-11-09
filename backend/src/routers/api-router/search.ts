@@ -5,9 +5,11 @@ export const searchRouter = express.Router();
 
 searchRouter.get("/", async (req, res) => {
   const { query } = req.query;
-  if (!query) {
-    return res.status(400).json({ message: "Query parameter is required" });
-  }
+
+  // if (!query) {
+  //   res.status(400).json({ message: "Query parameter required" });
+  //   return;
+  // }
 
   try {
     // TODO: check for typos
@@ -25,7 +27,7 @@ searchRouter.get("/", async (req, res) => {
       ])
       .where("event_name", "ilike", `%${query}%`)
       .execute();
-    console.log(results);
+    // console.log(results);
 
     res.status(200).json(results);
   } catch (error) {

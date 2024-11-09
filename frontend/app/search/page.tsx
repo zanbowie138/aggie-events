@@ -4,10 +4,10 @@ import { Event } from "@/config/dbtypes";
 import CollapsableConfig from "@/app/search/components/CollapsableConfig";
 import FilterInput from "@/app/search/components/FilterInput";
 import React, { useState, useEffect } from "react";
-import { useAuth } from "@/components/auth/AuthContext";
 import { searchEvents } from "@/api/event";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import TagList from "@/app/search/components/TagList";
+import { SearchFilters } from "@/config/query-types";
 
 // Filters
 // - Date Range
@@ -36,65 +36,52 @@ const sortOptions = [
 const viewOptions = ["List View", "Calendar View"];
 
 export default function Search() {
-  const { user } = useAuth(); // TODO: choose a less confusing name than query. Query is the enter query string in the URL
-  const [query, setQuery] = useState<string | undefined>(undefined); // TODO: bring the query into a context. Will make things faster
+  const [query, setQuery] = useState<string | null>(null); // TODO: bring the query into a context. Will make things faster
   const [results, setResults] = useState<Event[] | undefined>(undefined);
-  // TODO: these filter params are going to be done in a very inneeficient way. Need to change this. Currently will have a bajillion states
+  // TODO: these filter params are going to be done in a very inefficient way. Need to change this. Currently will have a bajillion states
+  // TODO: Solution: use one state variable, SearchFilters, from query-types.ts
   const [newTag, setNewTag] = useState<HTMLInputElement | undefined>(undefined);
   const [name, setNewName] = useState<HTMLInputElement | undefined>(undefined);
   const searchParams = useSearchParams(); // TODO: really need to clean up these state variables. Should create a query.ts to track everything
   const [currentTags, setCurrentTags] = useState<string[]>([]);
   const [currentNames, setCurrentNames] = useState<string[]>([]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (query: string | null) => {
     // response is an array of events that are similar to the query
-    const response = await searchEvents(query!);
+    const response = await searchEvents(query);
     setResults(response);
   };
 
-  // update the query according the url on mount (might need to change if component doesn't remount everytime the url changes)
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search); // TODO: change this to router?
-    const queryParam = urlParams.get("query");
-    if (queryParam) {
-      setQuery(queryParam);
-      console.log(queryParam);
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
-    // TODO: change all this listening to one system based on url search params where everything is just listening for changes in the url search params instead of creating a bunch of random bs events
-    const handlePopState = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const tags = urlParams.getAll("tag");
-      setCurrentTags(tags);
-    };
-
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (query) {
-      handleSearch();
-    }
-  }, [query]);
-
-  // set the current tags and current name and query to the url search params on component mount (ex: if someone sent the link with the search in it)
-  useEffect(() => {
+  const updateFilters = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const tags = urlParams.getAll("tag");
     const name = urlParams.getAll("name");
     const query = urlParams.get("query");
+
     setCurrentTags(tags);
     setCurrentNames(name);
     setQuery(query ? query : "");
-  }, []);
+    console.log("Query is now: " + query);
+    await handleSearch(query);
+  };
 
-  const updateQuery = () => {
+  // // update the query according the url on mount (might need to change if component doesn't remount everytime the url changes)
+  // useEffect(() => {
+  //   // TODO: change all this listening to one system based on url search params where everything is just listening for changes in the url search params instead of creating a bunch of random bs events
+  //   // set the current tags and current name and query to the url search params on component mount (ex: if someone sent the link with the search in it)
+  //   updateFilters();
+  //
+  //   window.addEventListener("popstate", updateFilters);
+  //   return () => {
+  //     window.removeEventListener("popstate", updateFilters);
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    updateFilters();
+  }, [searchParams]);
+
+  const updateQuery = async () => {
     // TODO: make this add to currently existing tags instead of replacing the tabs query // TODO: fix the results disappearing if submitting the same requests twice
     const params = new URLSearchParams(window.location.search); // TODO: set the value of the forms to blank after submitting
     if (newTag && !currentTags.includes(newTag.value)) {
@@ -107,9 +94,11 @@ export default function Search() {
     }
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.pushState({}, "", newUrl);
-    setQuery(params.toString());
+    // setQuery(params.toString());
+    console.log("Setting query to: " + params.toString());
     if (newTag) newTag.value = "";
     if (name) name.value = "";
+    await handleSearch(query);
   };
 
   return (
