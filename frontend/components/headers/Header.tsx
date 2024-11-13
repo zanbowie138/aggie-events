@@ -65,7 +65,7 @@ export default function Header() {
               e.preventDefault();
               router.push(`/search?query=${query}`)
               window.dispatchEvent(new Event('popstate')); // TODO: abstract these two commands into a function
-              // TODO: fix this to update the tags on the first popstate
+              // TODO: fix this to update the tags on the first popstate (need to press enter or search twice for some reason)
             }}
 
           >

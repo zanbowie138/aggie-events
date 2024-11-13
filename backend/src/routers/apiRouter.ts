@@ -81,3 +81,25 @@ apiRouter.get('/search', async (req, res) => {
         res.status(500).json({ message: 'Error searching events' });
     }
 });
+
+
+// ************ TAG ROUTERS ************
+apiRouter.get('/tags', async (req, res) => {
+    const { query } = req.body;
+    if (!query) {
+        return res.status(400).json({ message: 'Query parameter is required' });
+    }
+
+    try {
+        const results = await db.selectFrom('tags')
+            .select(['tag_id', 'tag_name'])
+            .where('tag_id', '=', query)
+            .execute();
+        console.log(results);
+
+        res.status(200).json(results);
+    } catch (error) {
+        console.error('Error searching tags:', error);
+        res.status(500).json({ message: 'Error searching tags' });
+    }
+});
