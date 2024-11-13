@@ -26,7 +26,7 @@ export interface EventCreate {
 // TODO: Add general query type
 export type SearchFilters = {
   name?: string;
-  tags?: string[];
+  tags?: Set<string>;
   dateRange?: Date[];
   location?: string;
   page?: number;

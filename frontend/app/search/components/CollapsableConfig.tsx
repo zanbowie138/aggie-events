@@ -9,12 +9,10 @@ export default function CollapsableConfig({
 }) {
   return (
     <>
-      <form className="flex flex-col my-2">
-        <div className="flex">
-          <div className="text-lg font-semibold">{title}</div>
-        </div>
-        {children}
-      </form>
+      <div className="flex my-2">
+        <div className="text-lg font-semibold">{title}</div>
+      </div>
+      {children}
     </>
   );
 }

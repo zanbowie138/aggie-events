@@ -38,26 +38,49 @@ export default function Search() {
   const pathname = usePathname();
   const { push } = useRouter();
 
+  function castParam(
+    key: string,
+    value: string,
+  ): SearchFilters[keyof SearchFilters] {
+    // TODO: Add all the other types
+    switch (key) {
+      case "tags":
+        return new Set(value.split(" "));
+      default:
+        return value;
+    }
+  }
+
+  // Get the filters from the URL query parameters
   function getFilters(): SearchFilters {
     const params = new URLSearchParams(searchParams);
     let newFilters: SearchFilters = {};
+    console.log("Getting filters!");
     // TODO: Goofy ahh typescript
     for (const [key, value] of params.entries()) {
-      newFilters[key as keyof SearchFilters] = value as any;
+      const val = castParam(key, value);
+      // TODO: Figure out how to type this
+      newFilters[key as keyof SearchFilters] = val as any;
     }
     console.log("Filters: ", newFilters);
     return newFilters;
   }
 
+  // Updates the query parameters in the URL using the filters variable
   function updateUrl() {
     // Manipulate url query parameters
     const params = new URLSearchParams(searchParams);
     Object.keys(filters.current).forEach((key) => {
-      if (filters.current[key as keyof SearchFilters]) {
-        params.set(
-          key,
-          filters.current[key as keyof SearchFilters]!.toString(),
-        );
+      const val = filters.current[key as keyof SearchFilters];
+      if (val) {
+        // TODO: Consider just hard typing this to remove jank
+        if (val instanceof Set) {
+          params.set(key, Array.from(val).join(" "));
+        } else if (Array.isArray(val)) {
+          params.set(key, val.join(" "));
+        } else {
+          params.set(key, val.toString());
+        }
       } else {
         params.delete(key);
       }
@@ -88,10 +111,7 @@ export default function Search() {
               <TagList
                 tags={filters.current.tags}
                 onTagClose={(tag) => {
-                  filters.current = {
-                    ...filters.current,
-                    tags: filters.current.tags?.filter((t) => t !== tag),
-                  };
+                  filters.current.tags?.delete(tag);
                   updateUrl();
                 }}
               />
@@ -119,36 +139,47 @@ export default function Search() {
                 <option className="font-semibold bg-white">Organization</option>
               </select>
             </div>
-            <CollapsableConfig title="Name">
-              <FilterInput
-                onChange={(e) => {
-                  filters.current = { ...filters.current, name: e.value };
-                }}
-                onEnter={updateUrl}
-                defaultValue={filters.current.name}
-              />
-            </CollapsableConfig>
-            <CollapsableConfig title="Tag">
-              <FilterInput
-                onChange={(e) => {
-                  filters.current = {
-                    ...filters.current,
-                    tags: filters.current.tags
-                      ? [...filters.current.tags, e.value]
-                      : [e.value],
-                  };
-                }}
-                onEnter={() => {
+
+            <form>
+              <CollapsableConfig title="Name">
+                <FilterInput
+                  onChange={(e) => {
+                    filters.current = { ...filters.current, name: e.value };
+                  }}
+                  onEnter={updateUrl}
+                  defaultValue={filters.current.name}
+                />
+              </CollapsableConfig>
+              <CollapsableConfig title="Tag">
+                <FilterInput
+                  onChange={(e) => {
+                    const val = e.value.trim();
+                    if (val) {
+                      if (filters.current.tags) {
+                        filters.current.tags.add(val);
+                      } else {
+                        filters.current = {
+                          ...filters.current,
+                          tags: new Set(val),
+                        };
+                      }
+                    }
+                  }}
+                  onEnter={() => {
+                    updateUrl();
+                  }}
+                />
+              </CollapsableConfig>
+              <button
+                className="bg-maroon text-white w-full py-2 rounded-lg"
+                onClick={(e) => {
                   updateUrl();
                 }}
-              />
-            </CollapsableConfig>
-            <button
-              className="bg-maroon text-white w-full py-2 rounded-lg"
-              onClick={updateUrl}
-            >
-              Submit
-            </button>
+                type={"submit"}
+              >
+                Submit
+              </button>
+            </form>
           </div>
 
           <div className="grow py-3 px-5">

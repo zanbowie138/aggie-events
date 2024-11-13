@@ -6,15 +6,15 @@ export default function TagList({
   tags,
   onTagClose,
 }: {
-  tags: string[];
+  tags: Set<string>;
   onTagClose: (tag: string) => void;
 }) {
-  const [myTags, setTags] = useState(() => tags);
+  const [myTags, setTags] = useState<Set<string>>(() => tags);
   console.log("Tags: " + tags);
   return (
     <div className="flex flex-wrap gap-1 m-2">
-      {myTags.length > 0 &&
-        myTags.map((tag) => (
+      {myTags.size > 0 &&
+        Array.from(myTags).map((tag) => (
           <TagDisplay
             text={tag}
             key={tag}
