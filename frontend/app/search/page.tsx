@@ -36,7 +36,7 @@ const sortOptions = [
 const viewOptions = ["List View", "Calendar View"];
 
 export default function Search() {
-  const [query, setQuery] = useState<string | null>(null); // TODO: bring the query into a context. Will make things faster
+  const [query, setQuery] = useState<SearchFilters | null>(null); // TODO: bring the query into a context. Will make things faster
   const [results, setResults] = useState<Event[] | undefined>(undefined);
   // TODO: these filter params are going to be done in a very inefficient way. Need to change this. Currently will have a bajillion states
   // TODO: Solution: use one state variable, SearchFilters, from query-types.ts
@@ -46,7 +46,7 @@ export default function Search() {
   const [currentTags, setCurrentTags] = useState<string[]>([]);
   const [currentNames, setCurrentNames] = useState<string[]>([]);
 
-  const handleSearch = async (query: string | null) => {
+  const handleSearch = async (query: SearchFilters | null) => {
     // response is an array of events that are similar to the query
     const response = await searchEvents(query);
     setResults(response);
@@ -56,14 +56,17 @@ export default function Search() {
     const urlParams = new URLSearchParams(window.location.search);
     const tags = urlParams.getAll("tag");
     const name = urlParams.getAll("name");
-    const query = urlParams.get("query");
+    const queryParam = urlParams.get("query");
 
     setCurrentTags(tags);
     setCurrentNames(name);
-    setQuery(query ? query : "");
-    console.log("Query is now: " + query);
-    await handleSearch(query);
+    setQuery({ tags: tags, name: queryParam! });
   };
+
+  useEffect(() => {
+    console.log("Query is now: " + query);
+    handleSearch(query);
+  }, [query]);
 
   // // update the query according the url on mount (might need to change if component doesn't remount everytime the url changes)
   // useEffect(() => {

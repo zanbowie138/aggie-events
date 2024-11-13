@@ -1,12 +1,16 @@
 import { fetchUtil } from "@/api/fetch";
 import { Event } from "@/config/dbtypes";
 import { EventCreate, EventPageInformation } from "@/config/query-types";
+import { SearchFilters } from "@/config/query-types";
 
-export const searchEvents = async (query: string | null): Promise<Event[]> => {
+export const searchEvents = async (
+  filters: SearchFilters | null,
+): Promise<Event[]> => {
   try {
     // TODO: Implement pages for search results
     // If there is a query, search for events with that query
     // Otherwise, return all events
+    const { name: query } = filters ?? { query: "" };
     const response = await fetchUtil(
       `${process.env.NEXT_PUBLIC_API_URL}` + `/search?query=${query}`,
       {
