@@ -6,18 +6,18 @@ import { HiEye } from "react-icons/hi";
 import { FaHeart } from "react-icons/fa";
 import { Event } from "@/config/dbtypes";
 import EventTagList from "@/app/search/components/EventTagList";
-import { getEventTags } from "@/api/event";
+// import { getEventTags } from "@/api/event";
 
 export default function EventCard({ event }: { event: Event }) {
   const [tags, setTags] = useState<string[]>([]);
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      const tagList = await getEventTags(event.event_id);
-      setTags(tagList);
-    };
-    fetchTags();
-  }, []);
+  // useEffect(() => {
+  //   const fetchTags = async () => {
+  //     const tagList = await getEventTags(event.event_id);
+  //     setTags(tagList);
+  //   };
+  //   fetchTags();
+  // }, []);
 
   return (
     <div className="flex flex-col gap-1 bg-gray-50 rounded-lg py-2 px-4 grow">
