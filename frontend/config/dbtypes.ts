@@ -1,6 +1,6 @@
 export interface Event {
   event_id: number;
-  contributor_id: number;
+  contributer_id: number;
   event_name: string;
   event_description: string;
   event_likes: number;
