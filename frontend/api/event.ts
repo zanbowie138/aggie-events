@@ -4,7 +4,7 @@ import { EventCreate, EventPageInformation } from "@/config/query-types";
 import { SearchFilters } from "@/config/query-types";
 
 export const searchEvents = async (
-  filters: SearchFilters | null,
+  filters: SearchFilters | undefined,
 ): Promise<Event[]> => {
   try {
     // TODO: Implement pages for search results

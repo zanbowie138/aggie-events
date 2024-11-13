@@ -2,32 +2,27 @@ import React from "react";
 import TagDisplay from "@/app/search/components/TagDisplay";
 import { useEffect, useState } from "react";
 
-export default function TagList({ tags }: { tags: string[] }) {
-  const [myTags, setTags] = useState(tags);
-
-  useEffect(() => {
-    setTags(tags);
-  }, [tags]);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      // Trigger a re-render by updating state or any other method
-      let newTags = new URLSearchParams(window.location.search).getAll("tag");
-      setTags(newTags);
-    };
-
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, []);
-
+export default function TagList({
+  tags,
+  onTagClose,
+}: {
+  tags: string[];
+  onTagClose: (tag: string) => void;
+}) {
+  const [myTags, setTags] = useState(() => tags);
+  console.log("Tags: " + tags);
   return (
     <div className="flex flex-wrap gap-1 m-2">
-      {myTags.map((tag) => (
-        <TagDisplay text={tag} key={tag}></TagDisplay>
-      ))}
+      {myTags.length > 0 &&
+        myTags.map((tag) => (
+          <TagDisplay
+            text={tag}
+            key={tag}
+            onClose={() => {
+              onTagClose(tag);
+            }}
+          ></TagDisplay>
+        ))}
     </div>
   );
 }

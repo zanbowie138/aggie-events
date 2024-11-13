@@ -1,6 +1,16 @@
 import React from "react";
 
-export default function FilterInput({ onChange, onEnter }: { onChange: (value: HTMLInputElement) => void, onEnter: () => void }) {
+type FilterInputProps = {
+  onChange: (value: HTMLInputElement) => void;
+  onEnter: () => void;
+  defaultValue?: string;
+};
+
+export default function FilterInput({
+  onChange,
+  onEnter,
+  defaultValue,
+}: FilterInputProps) {
   return (
     <input
       type="text"
@@ -12,6 +22,7 @@ export default function FilterInput({ onChange, onEnter }: { onChange: (value: H
           onEnter();
         }
       }}
+      defaultValue={defaultValue}
     />
   );
 }

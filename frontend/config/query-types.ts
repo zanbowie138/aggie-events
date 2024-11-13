@@ -23,10 +23,12 @@ export interface EventCreate {
   tags: string[];
 }
 
-export interface SearchFilters {
+// TODO: Add general query type
+export type SearchFilters = {
   name?: string;
   tags?: string[];
   dateRange?: Date[];
   location?: string;
+  page?: number;
   organizations?: string[];
-}
+};

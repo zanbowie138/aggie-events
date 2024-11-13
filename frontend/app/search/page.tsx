@@ -1,11 +1,8 @@
 "use client";
-import EventList from "@/app/search/components/EventList";
-import { Event } from "@/config/dbtypes";
 import CollapsableConfig from "@/app/search/components/CollapsableConfig";
 import FilterInput from "@/app/search/components/FilterInput";
-import React, { useState, useEffect } from "react";
-import { searchEvents } from "@/api/event";
-import { useSearchParams } from "next/navigation";
+import React, { useState, useEffect, useRef } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import TagList from "@/app/search/components/TagList";
 import { SearchFilters } from "@/config/query-types";
 
@@ -36,73 +33,37 @@ const sortOptions = [
 const viewOptions = ["List View", "Calendar View"];
 
 export default function Search() {
-  const [query, setQuery] = useState<SearchFilters | null>(null); // TODO: bring the query into a context. Will make things faster
-  const [results, setResults] = useState<Event[] | undefined>(undefined);
-  // TODO: these filter params are going to be done in a very inefficient way. Need to change this. Currently will have a bajillion states
-  // TODO: Solution: use one state variable, SearchFilters, from query-types.ts
-  const [newTag, setNewTag] = useState<HTMLInputElement | undefined>(undefined);
-  const [name, setNewName] = useState<HTMLInputElement | undefined>(undefined);
-  const searchParams = useSearchParams(); // TODO: really need to clean up these state variables. Should create a query.ts to track everything
-  const [currentTags, setCurrentTags] = useState<string[]>([]);
-  const [currentNames, setCurrentNames] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const filters = useRef<SearchFilters>(getFilters());
+  const pathname = usePathname();
+  const { push } = useRouter();
 
-  const handleSearch = async (query: SearchFilters | null) => {
-    // response is an array of events that are similar to the query
-    const response = await searchEvents(query);
-    setResults(response);
-  };
-
-  const updateFilters = async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const tags = urlParams.getAll("tag");
-    const name = urlParams.getAll("name");
-    const queryParam = urlParams.get("query");
-
-    setCurrentTags(tags);
-    setCurrentNames(name);
-    setQuery({ tags: tags, name: queryParam! });
-  };
-
-  useEffect(() => {
-    console.log("Query is now: " + query);
-    handleSearch(query);
-  }, [query]);
-
-  // // update the query according the url on mount (might need to change if component doesn't remount everytime the url changes)
-  // useEffect(() => {
-  //   // TODO: change all this listening to one system based on url search params where everything is just listening for changes in the url search params instead of creating a bunch of random bs events
-  //   // set the current tags and current name and query to the url search params on component mount (ex: if someone sent the link with the search in it)
-  //   updateFilters();
-  //
-  //   window.addEventListener("popstate", updateFilters);
-  //   return () => {
-  //     window.removeEventListener("popstate", updateFilters);
-  //   };
-  // }, []);
-
-  useEffect(() => {
-    updateFilters();
-  }, [searchParams]);
-
-  const updateQuery = async () => {
-    // TODO: make this add to currently existing tags instead of replacing the tabs query // TODO: fix the results disappearing if submitting the same requests twice
-    const params = new URLSearchParams(window.location.search); // TODO: set the value of the forms to blank after submitting
-    if (newTag && !currentTags.includes(newTag.value)) {
-      params.append("tag", newTag.value); // TODO: if the x is pressed on the tag it will disappear and get removed from the URL query
-      setCurrentTags([...currentTags, newTag.value]);
+  function getFilters(): SearchFilters {
+    const params = new URLSearchParams(searchParams);
+    let newFilters: SearchFilters = {};
+    // TODO: Goofy ahh typescript
+    for (const [key, value] of params.entries()) {
+      newFilters[key as keyof SearchFilters] = value as any;
     }
-    if (name && !currentNames.includes(name.value)) {
-      params.append("name", name.value);
-      setCurrentNames([...currentNames, name.value]);
-    }
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.pushState({}, "", newUrl);
-    // setQuery(params.toString());
-    console.log("Setting query to: " + params.toString());
-    if (newTag) newTag.value = "";
-    if (name) name.value = "";
-    await handleSearch(query);
-  };
+    console.log("Filters: ", newFilters);
+    return newFilters;
+  }
+
+  function updateUrl() {
+    // Manipulate url query parameters
+    const params = new URLSearchParams(searchParams);
+    Object.keys(filters.current).forEach((key) => {
+      if (filters.current[key as keyof SearchFilters]) {
+        params.set(
+          key,
+          filters.current[key as keyof SearchFilters]!.toString(),
+        );
+      } else {
+        params.delete(key);
+      }
+    });
+    push(`${pathname}?${params.toString()}`);
+  }
 
   return (
     <div className="flex flex-row w-full grow justify-center">
@@ -123,7 +84,18 @@ export default function Search() {
           </div>
 
           <div className="flex grow">
-            <TagList tags={currentTags} />
+            {filters.current.tags && (
+              <TagList
+                tags={filters.current.tags}
+                onTagClose={(tag) => {
+                  filters.current = {
+                    ...filters.current,
+                    tags: filters.current.tags?.filter((t) => t !== tag),
+                  };
+                  updateUrl();
+                }}
+              />
+            )}
           </div>
 
           <div className="flex border-l-[1px] border-gray-200 px-3 py-1 items-center shrink-0">
@@ -149,23 +121,31 @@ export default function Search() {
             </div>
             <CollapsableConfig title="Name">
               <FilterInput
-                onChange={(val) => {
-                  setNewName(val);
+                onChange={(e) => {
+                  filters.current = { ...filters.current, name: e.value };
                 }}
-                onEnter={updateQuery}
+                onEnter={updateUrl}
+                defaultValue={filters.current.name}
               />
             </CollapsableConfig>
             <CollapsableConfig title="Tag">
               <FilterInput
-                onChange={(val) => {
-                  setNewTag(val);
+                onChange={(e) => {
+                  filters.current = {
+                    ...filters.current,
+                    tags: filters.current.tags
+                      ? [...filters.current.tags, e.value]
+                      : [e.value],
+                  };
                 }}
-                onEnter={updateQuery}
+                onEnter={() => {
+                  updateUrl();
+                }}
               />
             </CollapsableConfig>
             <button
               className="bg-maroon text-white w-full py-2 rounded-lg"
-              onClick={updateQuery}
+              onClick={updateUrl}
             >
               Submit
             </button>
@@ -174,7 +154,7 @@ export default function Search() {
           <div className="grow py-3 px-5">
             <h1 className="text-2xl font-bold">Search Results</h1>
             <h3>3 results (0.12 seconds)</h3>
-            <EventList events={results} />
+            {/*<EventList events={results} />*/}
           </div>
         </div>
       </div>

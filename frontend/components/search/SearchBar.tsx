@@ -1,25 +1,23 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 
 export default function SearchBar() {
-  const [query, setQuery] = useState<string | null>(null);
-  const router = useRouter();
+  const [searchInput, setSearchInput] = useState<string>("");
+  const searchParams = useSearchParams();
+  const { push } = useRouter();
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const queryParam = urlParams.get("query");
-    setQuery(queryParam);
-    document
-      .getElementById("search-input")
-      ?.setAttribute("value", queryParam ?? "");
-  }, []);
-
-  const addSearchParam = () => {
-    router.push(`/search` + (query !== null ? `?query=${query}` : "")); // TODO: should I make it not remove all the search params when a new main search term is entered
-    window.dispatchEvent(new Event("popstate"));
-  };
+  function handleSearch() {
+    // Manipulate url query parameters
+    const params = new URLSearchParams(searchParams);
+    if (searchInput) {
+      params.set("query", searchInput);
+    } else {
+      params.delete("query");
+    }
+    push(`/search?${params.toString()}`);
+  }
 
   return (
     <form className="flex grow justify-center hover:drop-shadow-lg">
@@ -30,11 +28,11 @@ export default function SearchBar() {
             w-full h-10 outline-none
             focus:border-[#202020] focus:border-y-2 focus:border-l-2 peer"
         placeholder="Search..."
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => setSearchInput(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            addSearchParam();
+            handleSearch();
           }
         }}
       />
@@ -43,7 +41,7 @@ export default function SearchBar() {
           peer-focus:border-[#202020] peer-focus:border-y-2 peer-focus:border-r-2"
         onClick={(e) => {
           e.preventDefault();
-          addSearchParam();
+          handleSearch();
           // TODO: fix this to update the tags on the first popstate
         }}
       >
