@@ -32,3 +32,13 @@ export type SearchFilters = {
   page?: number;
   organizations?: string[];
 };
+
+// Set a filter in the filters object
+// This is a function because typescript shenanigans
+export function setFilterParam<T extends keyof SearchFilters>(
+  filters: SearchFilters,
+  key: T,
+  value: SearchFilters[T],
+) {
+  filters[key] = value;
+}

@@ -4,7 +4,7 @@ import FilterInput from "@/app/search/components/FilterInput";
 import React, { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import TagList from "@/app/search/components/TagList";
-import { SearchFilters } from "@/config/query-types";
+import { SearchFilters, setFilterParam } from "@/config/query-types";
 
 // Filters
 // - Date Range
@@ -20,7 +20,7 @@ import { SearchFilters } from "@/config/query-types";
 // Topic Page (browse popular tags)
 // Tag page (browse events with a specific tag)
 
-// By default, search1 will be for future events
+// By default, search will be for future events
 
 const sortOptions = [
   "Chronological",
@@ -51,16 +51,14 @@ export default function Search() {
     }
   }
 
-  // Get the filters from the URL query parameters
+  // Returns SearchFilters object from the URL query parameters
   function getFilters(): SearchFilters {
     const params = new URLSearchParams(searchParams);
     let newFilters: SearchFilters = {};
-    console.log("Getting filters!");
-    // TODO: Goofy ahh typescript
     for (const [key, value] of params.entries()) {
+      const castKey = key as keyof SearchFilters;
       const val = castParam(key, value);
-      // TODO: Figure out how to type this
-      newFilters[key as keyof SearchFilters] = val as any;
+      setFilterParam(newFilters, castKey, val);
     }
     console.log("Filters: ", newFilters);
     return newFilters;
