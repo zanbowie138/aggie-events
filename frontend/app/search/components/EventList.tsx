@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import EventDisplay from "../../search/components/EventDisplay";
+import EventDisplay from "@/app/search/components/event-display/EventDisplay";
 import { Event } from "@/config/dbtypes";
 import { SearchEventsReturn } from "@/api/event";
 
@@ -9,8 +9,6 @@ export default function EventList({
 }: {
   events: SearchEventsReturn[] | undefined;
 }) {
-  const [lastEvents, setLastEvents] = useState<Event[]>([]);
-
   if (!events) {
     return (
       <div className="my-2">
@@ -22,7 +20,7 @@ export default function EventList({
   } else {
     return (
       <div className="flex flex-col gap-3 my-2">
-        {events.map((event: Event) => (
+        {events.map((event: SearchEventsReturn) => (
           <EventDisplay event={event} key={event.event_id} />
         ))}
       </div>

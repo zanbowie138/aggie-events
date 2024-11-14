@@ -1,9 +1,9 @@
 "use client";
-import CollapsableConfig from "@/app/search/components/CollapsableConfig";
-import FilterInput from "@/app/search/components/FilterInput";
+import CollapsableConfig from "@/app/search/components/filter-list/CollapsableConfig";
+import FilterInput from "@/app/search/components/filter-list/FilterInput";
 import React, { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import TagList from "@/app/search/components/TagList";
+import FilterTagList from "@/app/search/components/filter-tag-list/FilterTagList";
 import {
   SearchFilters,
   setFilterParam,
@@ -14,7 +14,7 @@ import { Event } from "@/config/dbtypes";
 import EventList from "@/app/search/components/EventList";
 import FilterList, {
   FilterListOutput,
-} from "@/app/search/components/FilterList";
+} from "@/app/search/components/filter-list/FilterList";
 
 // Filters
 // - Date Range
@@ -79,7 +79,7 @@ export default function Search() {
     });
   }, [searchParams]);
 
-  // Updates the query parameters in the URL using the filters variable
+  // Updates the query parameters in the URL using the filter-list variable
   function updateUrl() {
     // Manipulate url query parameters
     const params = new URLSearchParams(searchParams);
@@ -109,7 +109,7 @@ export default function Search() {
   }
 
   function updateFilters(filtersUpdate: FilterListOutput) {
-    // Update the filters object
+    // Update the filter-list object
     filters.current = {
       ...filters.current,
       name: filtersUpdate.name?.trim(),
@@ -152,7 +152,7 @@ export default function Search() {
 
           <div className="flex grow">
             {tags && (
-              <TagList
+              <FilterTagList
                 tags={tags}
                 onTagClose={(tag) => {
                   filters.current.tags?.delete(tag);

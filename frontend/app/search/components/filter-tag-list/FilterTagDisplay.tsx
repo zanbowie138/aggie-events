@@ -1,7 +1,7 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
 
-export default function TagDisplay({
+export default function FilterTagDisplay({
   text,
   onClose,
 }: {

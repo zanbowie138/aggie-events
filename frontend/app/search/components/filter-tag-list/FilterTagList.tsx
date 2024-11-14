@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import TagDisplay from "@/app/search/components/TagDisplay";
+import FilterTagDisplay from "@/app/search/components/filter-tag-list/FilterTagDisplay";
 import { useState } from "react";
 
-export default function TagList({
+export default function FilterTagList({
   tags,
   onTagClose,
 }: {
@@ -13,13 +13,13 @@ export default function TagList({
     <div className="flex flex-wrap gap-1 m-2">
       {tags.length > 0 &&
         Array.from(tags).map((tag) => (
-          <TagDisplay
+          <FilterTagDisplay
             text={tag}
             key={tag}
             onClose={() => {
               onTagClose(tag);
             }}
-          ></TagDisplay>
+          ></FilterTagDisplay>
         ))}
     </div>
   );

@@ -8,7 +8,7 @@ import { formatDateInterval } from "@/utils/date";
 import SoloTagDisplay from "@/components/tag/SoloTagDisplay";
 import { EventPageInformation } from "@/config/query-types";
 import { FaClock } from "react-icons/fa";
-import TagDisplay from "@/app/search/components/TagDisplay";
+import FilterTagDisplay from "@/app/search/components/filter-tag-list/FilterTagDisplay";
 import EventTagList from "@/components/tag/EventTagList";
 
 export default function EventDetails() {

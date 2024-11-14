@@ -3,13 +3,10 @@ import React from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaClock } from "react-icons/fa";
 import IconLabel from "@/app/search/components/IconLabel";
-import EventCard from "@/app/search/components/EventCard";
+import EventCard from "@/app/search/components/event-display/EventCard";
 import { motion } from "framer-motion";
-import { Event } from "@/config/dbtypes";
 import { SearchEventsReturn } from "@/api/event";
 import { formatTimeInterval } from "@/utils/date";
-
-const hasOrg = true;
 
 export default function EventDisplay({ event }: { event: SearchEventsReturn }) {
   return (
