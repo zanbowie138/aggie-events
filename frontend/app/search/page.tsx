@@ -112,7 +112,7 @@ export default function Search() {
     // Update the filters object
     filters.current = {
       ...filters.current,
-      name: filtersUpdate.name,
+      name: filtersUpdate.name?.trim(),
     };
 
     console.log("Updating Filters: ", filtersUpdate.tag);
@@ -120,11 +120,11 @@ export default function Search() {
     // Add the tag to the set of tags
     if (filtersUpdate.tag) {
       if (filters.current.tags) {
-        filters.current.tags.add(filtersUpdate.tag!);
+        filters.current.tags.add(filtersUpdate.tag!.trim());
       } else {
         filters.current = {
           ...filters.current,
-          tags: new Set([filtersUpdate.tag!]),
+          tags: new Set([filtersUpdate.tag!.trim()]),
         };
       }
     }

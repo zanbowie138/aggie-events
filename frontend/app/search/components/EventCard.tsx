@@ -31,7 +31,8 @@ export default function EventCard({ event }: { event: SearchEventsReturn }) {
               Aggie Events
             </Link>
             <Link className="text-sm" href="/">
-              Posted by <span className="text-maroon">John Doe</span>
+              Posted by{" "}
+              <span className="text-maroon">{event.contributor_name}</span>
             </Link>
           </h3>
         </div>

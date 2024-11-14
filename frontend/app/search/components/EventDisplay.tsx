@@ -7,6 +7,7 @@ import EventCard from "@/app/search/components/EventCard";
 import { motion } from "framer-motion";
 import { Event } from "@/config/dbtypes";
 import { SearchEventsReturn } from "@/api/event";
+import { formatTimeInterval } from "@/utils/date";
 
 const hasOrg = true;
 
@@ -24,7 +25,7 @@ export default function EventDisplay({ event }: { event: SearchEventsReturn }) {
           opacity: 1,
         }}
       >
-        <div className="flex flex-col border-r-2 border-gray-100 shrink-0 pr-2 ">
+        <div className="flex flex-col border-r-2 border-gray-100 shrink-0 pr-2 basis-[150px]">
           <div className="text-maroon-400 font-semibold text-xl">
             {new Date(event.start_time).toLocaleDateString("en-US", {
               weekday: "long",
@@ -41,7 +42,10 @@ export default function EventDisplay({ event }: { event: SearchEventsReturn }) {
               <FaLocationDot color="maroon" />
             </IconLabel>
           )}
-          <IconLabel text={event.start_time.toString()}>
+          <IconLabel
+            text={formatTimeInterval(event.start_time, event.end_time)}
+            className={"text-sm"}
+          >
             <FaClock color="maroon" />
           </IconLabel>
         </div>

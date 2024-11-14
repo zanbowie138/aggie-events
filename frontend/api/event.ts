@@ -36,6 +36,10 @@ export const searchEvents = async (
     return {
       events: response.map((e: any) => ({
         ...e,
+        start_time: new Date(e.start_time),
+        end_time: new Date(e.end_time),
+        date_created: new Date(e.date_created),
+        date_modified: new Date(e.date_modified),
         tags: e.tags.map((t: any) => t.tag_name),
       })),
       duration: duration,

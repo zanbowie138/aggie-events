@@ -49,3 +49,26 @@ export function formatDateInterval(start: Date, end: Date): string {
     return `${startDayStr}, ${startTimeStr} - ${endDayStr}, ${endTimeStr}`;
   }
 }
+
+export const formatTimeInterval = (start: Date, end: Date): string => {
+  // const startDayStr = start.toLocaleDateString("en-US", {
+  //   weekday: "long",
+  //   month: "long",
+  //   day: "numeric",
+  // });
+  // const endDayStr = end.toLocaleDateString("en-US", {
+  //   weekday: "long",
+  //   month: "long",
+  //   day: "numeric",
+  // });
+  const startTimeStr = start.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  const endTimeStr = end.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  return `${startTimeStr} - ${endTimeStr}`;
+};
