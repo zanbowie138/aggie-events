@@ -8,6 +8,7 @@ searchRouter.get("/", async (req, res) => {
   console.log(req.query);
   const { query: queryString, tags: tags, name: name } = req.query;
 
+  console.log("Tags: ", tags);
   try {
     // TODO: check for typos
     let query = db.selectFrom("events as e");
@@ -19,6 +20,16 @@ searchRouter.get("/", async (req, res) => {
     if (name) {
       query = query.where("e.event_name", "ilike", `%${name}%`);
     }
+
+    // Filtering by tags
+    if (tags) {
+      const tagArray = (tags as string).split(",");
+      query = query
+        .innerJoin("eventtags as e_t", "e.event_id", "e_t.event_id")
+        .innerJoin("tags as t", "e_t.tag_id", "t.tag_id")
+        .where("t.tag_name", "in", tagArray); // Filter by tags
+    }
+
     query = query.select((eb) => [
       "e.event_id",
       "e.event_name",
@@ -39,7 +50,6 @@ searchRouter.get("/", async (req, res) => {
       ).as("tags"),
     ]);
     const results = await query.execute();
-    console.log(results);
     res.status(200).json(results);
   } catch (error) {
     console.error("Error searching events:", error);

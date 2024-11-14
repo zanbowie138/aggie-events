@@ -9,9 +9,12 @@ import {
   setFilterParam,
   castFilterParam,
 } from "@/config/query-types";
-import { searchEvents } from "@/api/event";
+import { searchEvents, SearchEventsReturn } from "@/api/event";
 import { Event } from "@/config/dbtypes";
 import EventList from "@/app/search/components/EventList";
+import FilterList, {
+  FilterListOutput,
+} from "@/app/search/components/FilterList";
 
 // Filters
 // - Date Range
@@ -44,7 +47,9 @@ export default function Search() {
   const filters = useRef<SearchFilters>(getFilters());
   const pathname = usePathname();
   const { push } = useRouter();
-  const [results, setResults] = useState<Event[] | undefined>(undefined);
+  const [results, setResults] = useState<SearchEventsReturn[] | undefined>(
+    undefined,
+  );
   // Mostly to trigger a re-render when the tags are updated
   const [tags, setTags] = useState<string[]>(
     filters.current.tags ? Array.from(filters.current.tags) : [],
@@ -97,8 +102,34 @@ export default function Search() {
         params.delete(key);
       }
     });
-    setTags(Array.from(filters.current.tags!));
+    if (filters.current.tags) {
+      setTags(Array.from(filters.current.tags!));
+    }
     push(`${pathname}?${params.toString()}`);
+  }
+
+  function updateFilters(filtersUpdate: FilterListOutput) {
+    // Update the filters object
+    filters.current = {
+      ...filters.current,
+      name: filtersUpdate.name,
+    };
+
+    console.log("Updating Filters: ", filtersUpdate.tag);
+
+    // Add the tag to the set of tags
+    if (filtersUpdate.tag) {
+      if (filters.current.tags) {
+        filters.current.tags.add(filtersUpdate.tag!);
+      } else {
+        filters.current = {
+          ...filters.current,
+          tags: new Set([filtersUpdate.tag!]),
+        };
+      }
+    }
+
+    updateUrl();
   }
 
   return (
@@ -152,52 +183,7 @@ export default function Search() {
                 <option className="font-semibold bg-white">Organization</option>
               </select>
             </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                updateUrl();
-              }}
-            >
-              <CollapsableConfig title="Name">
-                <FilterInput
-                  onChange={(e) => {
-                    filters.current = { ...filters.current, name: e.value };
-                  }}
-                  onEnter={updateUrl}
-                  defaultValue={filters.current.name}
-                />
-              </CollapsableConfig>
-              <CollapsableConfig title="Tag">
-                <FilterInput
-                  onChange={(e) => {
-                    const val = e.value.trim();
-                    if (val) {
-                      if (filters.current.tags) {
-                        filters.current.tags.add(val);
-                      } else {
-                        filters.current = {
-                          ...filters.current,
-                          tags: new Set(val),
-                        };
-                      }
-                    }
-                  }}
-                  onEnter={() => {
-                    // updateUrl();
-                  }}
-                />
-              </CollapsableConfig>
-              <button
-                className="bg-maroon text-white w-full py-2 rounded-lg"
-                onClick={(e) => {
-                  updateUrl();
-                }}
-                type={"submit"}
-              >
-                Submit
-              </button>
-            </form>
+            <FilterList onSubmit={updateFilters} />
           </div>
 
           <div className="grow py-3 px-5">

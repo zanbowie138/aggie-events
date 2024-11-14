@@ -6,10 +6,11 @@ import IconLabel from "@/app/search/components/IconLabel";
 import EventCard from "@/app/search/components/EventCard";
 import { motion } from "framer-motion";
 import { Event } from "@/config/dbtypes";
+import { SearchEventsReturn } from "@/api/event";
 
 const hasOrg = true;
 
-export default function EventDisplay({ event }: { event: Event }) {
+export default function EventDisplay({ event }: { event: SearchEventsReturn }) {
   return (
     <div>
       <motion.div

@@ -3,9 +3,25 @@ import { Event } from "@/config/dbtypes";
 import { EventCreate, EventPageInformation } from "@/config/query-types";
 import { SearchFilters } from "@/config/query-types";
 
+export interface SearchEventsReturn {
+  event_id: number;
+  org_id?: number;
+  org_name?: string;
+  contributor_id: number;
+  contributor_name: string;
+  event_name: string;
+  event_description: string;
+  event_likes: number;
+  start_time: Date;
+  end_time: Date;
+  event_location: string | null;
+  date_created: Date;
+  date_modified: Date;
+  tags: string[];
+}
 export const searchEvents = async (
   queryString: string,
-): Promise<{ events: Event[]; duration: number }> => {
+): Promise<{ events: SearchEventsReturn[]; duration: number }> => {
   try {
     const startTime = performance.now();
     // TODO: Implement pages for search results
@@ -14,10 +30,16 @@ export const searchEvents = async (
       {
         method: "GET",
       },
-    );
+    ).then((res) => res.json());
     const duration = performance.now() - startTime;
 
-    return { events: (await response.json()) ?? [], duration: duration };
+    return {
+      events: response.map((e: any) => ({
+        ...e,
+        tags: e.tags.map((t: any) => t.tag_name),
+      })),
+      duration: duration,
+    };
   } catch (error) {
     throw new Error("Error searching events" + error);
   }

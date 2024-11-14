@@ -2,8 +2,13 @@
 import React, { useEffect, useState } from "react";
 import EventDisplay from "../../search/components/EventDisplay";
 import { Event } from "@/config/dbtypes";
+import { SearchEventsReturn } from "@/api/event";
 
-export default function EventList({ events }: { events: Event[] | undefined }) {
+export default function EventList({
+  events,
+}: {
+  events: SearchEventsReturn[] | undefined;
+}) {
   const [lastEvents, setLastEvents] = useState<Event[]>([]);
 
   if (!events) {

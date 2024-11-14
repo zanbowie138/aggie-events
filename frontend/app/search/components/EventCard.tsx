@@ -7,8 +7,9 @@ import { FaHeart } from "react-icons/fa";
 import { Event } from "@/config/dbtypes";
 import EventTagList from "@/components/tag/EventTagList";
 import Link from "next/link";
+import { SearchEventsReturn } from "@/api/event";
 
-export default function EventCard({ event }: { event: Event }) {
+export default function EventCard({ event }: { event: SearchEventsReturn }) {
   return (
     <div className="flex flex-col gap-1 bg-gray-50 rounded-lg py-2 px-4 grow">
       <div className="flex flex-col">
@@ -43,9 +44,7 @@ export default function EventCard({ event }: { event: Event }) {
           {event.event_name}
         </Link>
       </h1>
-      <div>
-        <EventTagList tags={["Engineering", "Yes"]} />
-      </div>
+      <div>{event.tags && <EventTagList tags={event.tags} />}</div>
       <div className="">
         <span>
           <p className="h-max line-clamp-3">{event.event_description}</p>
