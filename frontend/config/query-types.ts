@@ -32,6 +32,7 @@ export type SearchFilters = {
   location?: string;
   page?: number;
   organizations?: string[];
+  sortBy?: string;
 };
 
 // Set a filter in the filters object

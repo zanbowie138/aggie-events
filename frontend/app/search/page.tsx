@@ -44,11 +44,12 @@ export default function Search() {
   const filters = useRef<SearchFilters>(getFilters());
   const pathname = usePathname();
   const { push } = useRouter();
-  const [response, setResponse] = useState<Event[] | undefined>(undefined);
+  const [results, setResults] = useState<Event[] | undefined>(undefined);
   // Mostly to trigger a re-render when the tags are updated
   const [tags, setTags] = useState<string[]>(
     filters.current.tags ? Array.from(filters.current.tags) : [],
   );
+  const [duration, setDuration] = useState<number>(0);
 
   // Returns SearchFilters object from the URL query parameters
   function getFilters(): SearchFilters {
@@ -68,7 +69,8 @@ export default function Search() {
     console.log("Searching with parameters: " + filters.current.name);
     searchEvents(searchParams.toString()).then((res) => {
       console.log("Search results: ", res);
-      setResponse(res);
+      setResults(res.events);
+      setDuration(res.duration);
     });
   }, [searchParams]);
 
@@ -200,8 +202,12 @@ export default function Search() {
 
           <div className="grow py-3 px-5">
             <h1 className="text-2xl font-bold">Search Results</h1>
-            <h3>3 results (0.12 seconds)</h3>
-            <EventList events={response} />
+            {results && (
+              <h3>
+                {results.length} results ({duration.toFixed(2)} ms)
+              </h3>
+            )}
+            <EventList events={results} />
           </div>
         </div>
       </div>

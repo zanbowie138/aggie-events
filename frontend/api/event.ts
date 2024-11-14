@@ -3,8 +3,11 @@ import { Event } from "@/config/dbtypes";
 import { EventCreate, EventPageInformation } from "@/config/query-types";
 import { SearchFilters } from "@/config/query-types";
 
-export const searchEvents = async (queryString: string): Promise<Event[]> => {
+export const searchEvents = async (
+  queryString: string,
+): Promise<{ events: Event[]; duration: number }> => {
   try {
+    const startTime = performance.now();
     // TODO: Implement pages for search results
     const response = await fetchUtil(
       `${process.env.NEXT_PUBLIC_API_URL}` + `/search?${queryString}`,
@@ -12,7 +15,9 @@ export const searchEvents = async (queryString: string): Promise<Event[]> => {
         method: "GET",
       },
     );
-    return response.json() ?? [];
+    const duration = performance.now() - startTime;
+
+    return { events: (await response.json()) ?? [], duration: duration };
   } catch (error) {
     throw new Error("Error searching events" + error);
   }
