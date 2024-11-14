@@ -25,6 +25,7 @@ export interface EventCreate {
 
 // TODO: Add general query type
 export type SearchFilters = {
+  query?: string;
   name?: string;
   tags?: Set<string>;
   dateRange?: Date[];
@@ -41,4 +42,18 @@ export function setFilterParam<T extends keyof SearchFilters>(
   value: SearchFilters[T],
 ) {
   filters[key] = value;
+}
+
+// Deserializes a query parameter into the correct type
+export function castFilterParam(
+  key: string,
+  value: string,
+): SearchFilters[keyof SearchFilters] {
+  // TODO: Add all the other types
+  switch (key) {
+    case "tags":
+      return new Set(value.split(","));
+    default:
+      return value;
+  }
 }

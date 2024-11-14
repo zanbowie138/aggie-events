@@ -4,7 +4,8 @@ import express from "express";
 export const searchRouter = express.Router();
 
 searchRouter.get("/", async (req, res) => {
-  const { query } = req.query;
+  console.log(req.query);
+  const { query: queryString } = req.query;
 
   // if (!query) {
   //   res.status(400).json({ message: "Query parameter required" });
@@ -13,7 +14,7 @@ searchRouter.get("/", async (req, res) => {
 
   try {
     // TODO: check for typos
-    const results = await db
+    let query = db
       .selectFrom("events")
       .select([
         "event_id",
@@ -24,11 +25,16 @@ searchRouter.get("/", async (req, res) => {
         "end_time",
         "date_created",
         "date_modified",
-      ])
-      .where("event_name", "ilike", `%${query}%`)
-      .execute();
-    // console.log(results);
+      ]);
 
+    if (queryString != null) {
+      console.log("Searching for events with query: ", queryString);
+      query = query.where("event_name", "ilike", `%${queryString}%`);
+    } else {
+      console.log("Searching for all events");
+    }
+
+    const results = await query.execute();
     res.status(200).json(results);
   } catch (error) {
     console.error("Error searching events:", error);

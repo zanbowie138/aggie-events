@@ -18,7 +18,6 @@ export default function FilterInput({
       onChange={(e) => onChange(e.target)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
-          e.preventDefault(); // prevent the page from refreshing (default behaviour for inputs)
           onEnter();
         }
       }}

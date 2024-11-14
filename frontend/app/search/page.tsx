@@ -4,7 +4,14 @@ import FilterInput from "@/app/search/components/FilterInput";
 import React, { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import TagList from "@/app/search/components/TagList";
-import { SearchFilters, setFilterParam } from "@/config/query-types";
+import {
+  SearchFilters,
+  setFilterParam,
+  castFilterParam,
+} from "@/config/query-types";
+import { searchEvents } from "@/api/event";
+import { Event } from "@/config/dbtypes";
+import EventList from "@/app/search/components/EventList";
 
 // Filters
 // - Date Range
@@ -37,19 +44,11 @@ export default function Search() {
   const filters = useRef<SearchFilters>(getFilters());
   const pathname = usePathname();
   const { push } = useRouter();
-
-  function castParam(
-    key: string,
-    value: string,
-  ): SearchFilters[keyof SearchFilters] {
-    // TODO: Add all the other types
-    switch (key) {
-      case "tags":
-        return new Set(value.split(" "));
-      default:
-        return value;
-    }
-  }
+  const [response, setResponse] = useState<Event[] | undefined>(undefined);
+  // Mostly to trigger a re-render when the tags are updated
+  const [tags, setTags] = useState<string[]>(
+    filters.current.tags ? Array.from(filters.current.tags) : [],
+  );
 
   // Returns SearchFilters object from the URL query parameters
   function getFilters(): SearchFilters {
@@ -57,12 +56,21 @@ export default function Search() {
     let newFilters: SearchFilters = {};
     for (const [key, value] of params.entries()) {
       const castKey = key as keyof SearchFilters;
-      const val = castParam(key, value);
+      const val = castFilterParam(key, value);
       setFilterParam(newFilters, castKey, val);
     }
     console.log("Filters: ", newFilters);
     return newFilters;
   }
+
+  useEffect(() => {
+    filters.current = getFilters();
+    console.log("Searching with parameters: " + filters.current.name);
+    searchEvents(searchParams.toString()).then((res) => {
+      console.log("Search results: ", res);
+      setResponse(res);
+    });
+  }, [searchParams]);
 
   // Updates the query parameters in the URL using the filters variable
   function updateUrl() {
@@ -73,9 +81,13 @@ export default function Search() {
       if (val) {
         // TODO: Consider just hard typing this to remove jank
         if (val instanceof Set) {
-          params.set(key, Array.from(val).join(" "));
+          if (val.size > 0) {
+            params.set(key, Array.from(val).join(","));
+          } else {
+            params.delete(key);
+          }
         } else if (Array.isArray(val)) {
-          params.set(key, val.join(" "));
+          params.set(key, val.join(","));
         } else {
           params.set(key, val.toString());
         }
@@ -83,6 +95,7 @@ export default function Search() {
         params.delete(key);
       }
     });
+    setTags(Array.from(filters.current.tags!));
     push(`${pathname}?${params.toString()}`);
   }
 
@@ -105,9 +118,9 @@ export default function Search() {
           </div>
 
           <div className="flex grow">
-            {filters.current.tags && (
+            {tags && (
               <TagList
-                tags={filters.current.tags}
+                tags={tags}
                 onTagClose={(tag) => {
                   filters.current.tags?.delete(tag);
                   updateUrl();
@@ -138,7 +151,12 @@ export default function Search() {
               </select>
             </div>
 
-            <form>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateUrl();
+              }}
+            >
               <CollapsableConfig title="Name">
                 <FilterInput
                   onChange={(e) => {
@@ -164,7 +182,7 @@ export default function Search() {
                     }
                   }}
                   onEnter={() => {
-                    updateUrl();
+                    // updateUrl();
                   }}
                 />
               </CollapsableConfig>
@@ -183,7 +201,7 @@ export default function Search() {
           <div className="grow py-3 px-5">
             <h1 className="text-2xl font-bold">Search Results</h1>
             <h3>3 results (0.12 seconds)</h3>
-            {/*<EventList events={results} />*/}
+            <EventList events={response} />
           </div>
         </div>
       </div>
