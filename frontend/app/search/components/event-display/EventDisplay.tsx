@@ -4,7 +4,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaClock } from "react-icons/fa";
 import IconLabel from "@/app/search/components/IconLabel";
 import EventCard from "@/app/search/components/event-display/EventCard";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { SearchEventsReturn } from "@/api/event";
 import { formatTimeInterval } from "@/utils/date";
 import EventDateDisplay from "@/app/search/components/event-display/EventDateDisplay";

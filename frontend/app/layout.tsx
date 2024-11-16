@@ -1,5 +1,5 @@
-import React from 'react'
-import './globals.css'
+import React from "react";
+import "./globals.css";
 import Header from "@/components/headers/Header";
 import Footer from "@/components/footers/Footer";
 import { AuthProvider } from "@/components/auth/AuthContext";

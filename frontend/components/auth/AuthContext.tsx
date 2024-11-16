@@ -2,17 +2,12 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { ReactNode } from "react";
 
-interface User {
-  user_name: string;
-  user_email: string;
-  picture: string;
-}
-
 interface AuthContextType {
   user: User | undefined | null;
   setUser: (user: User | null) => void;
   logout: () => Promise<void>;
 }
+
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = (): AuthContextType => {

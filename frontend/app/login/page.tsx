@@ -4,7 +4,6 @@ import { useAuth } from "@/components/auth/AuthContext";
 import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
-  const { user, logout } = useAuth();
   const handleGoogleLogin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_AUTH_URL}/google`;
   };
