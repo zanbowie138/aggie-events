@@ -10,8 +10,13 @@ import IconLabel from "@/app/search/components/IconLabel";
 import { FaLocationDot } from "react-icons/fa6";
 import { createEvent } from "@/api/event";
 import ToastManager from "@/components/toast/ToastManager";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from "dayjs";
 
-export default function AddUserForm() {
+
+export default function Dashboard() {
   const { user } = useAuth();
   const [page, setPage] = useState<number>(0);
   const options = ["Users", "Events", "Organizations"];
@@ -98,6 +103,7 @@ function EventForm() {
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
   const [tags, setTags] = useState<string>();
+  const [value, setValue] = useState<Date | null>(null);
 
   const addEvent = async () => {
     const event: EventCreate = {
@@ -131,19 +137,13 @@ function EventForm() {
             className="border border-gray-300 bg-gray-100 p-1 rounded mr-2 text-lg"
           />
           <div className="flex gap-2 items-center">
-            <input
-              type="text"
-              placeholder="Enter start time"
-              onChange={(e) => setStartTime(e.target.value)}
-              className="border border-gray-300 bg-gray-100 p-1 rounded"
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker onChange={(newValue: Dayjs | null) => setValue(newValue ? newValue.toDate() : null)} />
+            </LocalizationProvider>
             <div>to</div>
-            <input
-              type="text"
-              placeholder="Enter end time"
-              onChange={(e) => setEndTime(e.target.value)}
-              className="border border-gray-300 bg-gray-100 p-1 rounded"
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker onChange={(newValue: Dayjs | null) => setValue(newValue ? newValue.toDate() : null)} />
+            </LocalizationProvider>
           </div>
           <div className="flex items-center gap-1 text-md mt-5">
             <FaLocationDot color="maroon" />
