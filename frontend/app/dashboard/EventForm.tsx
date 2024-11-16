@@ -4,10 +4,8 @@ import { EventCreate } from "@/config/query-types";
 import { FaLocationDot } from "react-icons/fa6";
 import { createEvent } from "@/api/event";
 import ToastManager from "@/components/toast/ToastManager";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Dayjs } from "dayjs";
+import { TimeInput } from "@nextui-org/date-input";
+import { DatePicker } from "@nextui-org/date-picker";
 
 
 export default function EventForm() {
@@ -51,13 +49,37 @@ export default function EventForm() {
             className="border border-gray-300 bg-gray-100 p-1 rounded mr-2 text-lg"
           />
           <div className="flex gap-2 items-center">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker onChange={(newValue: Dayjs | null) => setValue(newValue ? newValue.toDate() : null)} />
-            </LocalizationProvider>
+            <TimeInput
+              isRequired
+              label="Start Time"
+              aria-label="start-time-input"
+              radius="sm"
+              description="A or P key to switch AM/PM"
+            />
+            <DatePicker
+              aria-label="start-date-input"
+              label="Start Date"
+              className="max-w-[284px]"
+              isRequired
+              radius="sm"
+              description="Enter start date"
+            />
             <div>to</div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker onChange={(newValue: Dayjs | null) => setValue(newValue ? newValue.toDate() : null)} />
-            </LocalizationProvider>
+            <TimeInput
+              isRequired
+              label="End Time"
+              aria-label="end-time-input"
+              radius="sm"
+              description="A or P key to switch AM/PM"
+            />
+            <DatePicker
+              aria-label="end-date-input"
+              label="End Date"
+              className="max-w-[284px]"
+              isRequired
+              radius="sm"
+              description="Enter end date"
+            />
           </div>
           <div className="flex items-center gap-1 text-md mt-5">
             <FaLocationDot color="maroon" />
