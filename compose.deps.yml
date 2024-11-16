@@ -32,6 +32,7 @@ services:
     restart: always
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+      - ./table_create.sql:/docker-entrypoint-initdb.d/table_create.sql
     expose:
       - "5432"
     environment:
