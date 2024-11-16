@@ -46,7 +46,7 @@ export default function FilterList({
         />
       </CollapsableConfig>
       <button
-        className="bg-maroon text-white w-full py-2 rounded-lg"
+        className="bg-maroon text-white w-full py-2 my-4 rounded-lg font-semibold hover:shadow-md"
         type={"submit"}
       >
         Submit

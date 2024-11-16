@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FaLocationDot } from "react-icons/fa6";
 import IconLabel from "@/app/search/components/IconLabel";
 import { formatDateInterval } from "@/utils/date";
-import SoloTagDisplay from "@/components/tag/SoloTagDisplay";
+import SoloTagDisplay from "@/components/tag/TagDisplay";
 import { EventPageInformation } from "@/config/query-types";
 import { FaClock } from "react-icons/fa";
 import FilterTagDisplay from "@/app/search/components/filter-tag-list/FilterTagDisplay";

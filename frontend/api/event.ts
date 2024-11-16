@@ -32,7 +32,7 @@ export const searchEvents = async (
       },
     ).then((res) => res.json());
     const duration = performance.now() - startTime;
-
+    console.log("API Output: ", response);
     return {
       events: response.map((e: any) => ({
         ...e,

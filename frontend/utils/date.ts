@@ -26,12 +26,12 @@ export function isSameDay(date1: Date, date2: Date): boolean {
 export function formatDateInterval(start: Date, end: Date): string {
   const startDayStr = start.toLocaleDateString("en-US", {
     weekday: "long",
-    month: "long",
+    month: "short",
     day: "numeric",
   });
   const endDayStr = end.toLocaleDateString("en-US", {
     weekday: "long",
-    month: "long",
+    month: "short",
     day: "numeric",
   });
   const startTimeStr = start.toLocaleTimeString([], {
@@ -42,11 +42,14 @@ export function formatDateInterval(start: Date, end: Date): string {
     hour: "numeric",
     minute: "2-digit",
   });
+  const startYear = start.getFullYear();
+  console.log(startYear);
+  const endYear = end.getFullYear();
 
   if (isSameDay(start, end)) {
-    return `${startDayStr}, ${startTimeStr} - ${endTimeStr}`;
+    return `${startDayStr}, ${startYear}, ${startTimeStr} - ${endTimeStr}`;
   } else {
-    return `${startDayStr}, ${startTimeStr} - ${endDayStr}, ${endTimeStr}`;
+    return `${startDayStr}, ${startYear}, ${startTimeStr} - ${endDayStr}, ${startYear !== endYear ? endYear + "," : ""} ${endTimeStr}`;
   }
 }
 

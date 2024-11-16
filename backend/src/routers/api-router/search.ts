@@ -40,6 +40,7 @@ searchRouter.get("/", async (req, res) => {
       .select((eb) => [
         "e.event_id as event_id",
         "e.event_name as event_name",
+        "e.event_location as event_location",
         "e.event_description as event_description",
         "e.event_likes as event_likes",
         "e.start_time as start_time",

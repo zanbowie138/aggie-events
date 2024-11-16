@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import EventDisplay from "@/app/search/components/event-display/EventDisplay";
 import { Event } from "@/config/dbtypes";
 import { SearchEventsReturn } from "@/api/event";
@@ -20,9 +20,11 @@ export default function EventList({
   } else {
     return (
       <div className="flex flex-col gap-3 my-2">
-        {events.map((event: SearchEventsReturn) => (
-          <EventDisplay event={event} key={event.event_id} />
-        ))}
+        <Suspense fallback={<div>Loading...</div>}>
+          {events.map((event: SearchEventsReturn) => (
+            <EventDisplay event={event} key={event.event_id} />
+          ))}
+        </Suspense>
       </div>
     );
   }
