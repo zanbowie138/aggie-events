@@ -22,6 +22,10 @@ export default function EventDisplay({ event }: { event: SearchEventsReturn }) {
           transform: "translateY(0px)",
           opacity: 1,
         }}
+        exit={{
+          opacity: 0,
+          transform: "translateY(4px)",
+        }}
       >
         <EventDateDisplay event={event} />
         <EventCard event={event} />

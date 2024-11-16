@@ -26,7 +26,8 @@ searchRouter.get("/", async (req, res) => {
       query = query
         .innerJoin("eventtags as e_t", "e.event_id", "e_t.event_id")
         .innerJoin("tags as t", "e_t.tag_id", "t.tag_id")
-        .where("t.tag_name", "in", tagArray); // Filter by tags
+        .where("t.tag_name", "in", tagArray)
+        .distinctOn("e.event_id"); // Filter by tags
     }
 
     query = query
@@ -60,6 +61,7 @@ searchRouter.get("/", async (req, res) => {
         ).as("tags"),
       ]);
     const results = await query.execute();
+    console.log(results);
     res.status(200).json(results);
   } catch (error) {
     console.error("Error searching events:", error);
