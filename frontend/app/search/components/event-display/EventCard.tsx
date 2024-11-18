@@ -11,7 +11,7 @@ import { SearchEventsReturn } from "@/api/event";
 
 export default function EventCard({ event }: { event: SearchEventsReturn }) {
   return (
-    <div className="flex flex-col gap-1 bg-gray-50 rounded-lg py-2 px-4 grow hover:shadow-sm">
+    <div className="flex flex-col gap-1 bg-gray-50 rounded-lg py-2 px-4 grow hover:shadow-md">
       <div className="flex flex-col">
         <div className="flex justify-center gap-2">
           {event.org_id && (
