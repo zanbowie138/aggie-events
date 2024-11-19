@@ -6,7 +6,6 @@
  * @returns {boolean} - Returns true if both dates are on the same day, otherwise false.
  */
 export function isSameDay(date1: Date, date2: Date): boolean {
-  console.log(typeof date1);
   return (
     date1.getFullYear() === date2.getFullYear() &&
     date1.getMonth() === date2.getMonth() &&
@@ -43,7 +42,6 @@ export function formatDateInterval(start: Date, end: Date): string {
     minute: "2-digit",
   });
   const startYear = start.getFullYear();
-  console.log(startYear);
   const endYear = end.getFullYear();
 
   if (isSameDay(start, end)) {

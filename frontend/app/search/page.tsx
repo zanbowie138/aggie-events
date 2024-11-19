@@ -15,6 +15,7 @@ import EventList from "@/app/search/components/EventList";
 import FilterList, {
   FilterListOutput,
 } from "@/app/search/components/filter-list/FilterList";
+import PageSelect from "@/app/search/components/PageSelect";
 
 // Filters
 // - Date Range
@@ -32,15 +33,22 @@ import FilterList, {
 
 // By default, search will be for future events
 
-const sortOptions = [
-  "Chronological",
-  "Most Popular",
-  "Date Posted",
-  "Date Updated",
-  "Alphabetical (A-Z)",
-  "Alphabetical (Z-A)",
+const sortOptions: { display: string; value: string }[] = [
+  { display: "Chronological", value: "start" },
+  { display: "Most Popular", value: "heart" },
+  { display: "Date Posted", value: "posted" },
+  { display: "Date Updated", value: "updated" },
+  { display: "Alphabetical (A-Z)", value: "alpha_asc" },
+  { display: "Alphabetical (Z-A)", value: "alpha_desc" },
 ];
 const viewOptions = ["List View", "Calendar View"];
+
+export interface SearchState {
+  page: number;
+  duration: number;
+  pageSize: number;
+  totalResultSize: number;
+}
 
 export default function Search() {
   const searchParams = useSearchParams();
@@ -54,7 +62,12 @@ export default function Search() {
   const [tags, setTags] = useState<string[]>(
     filters.current.tags ? Array.from(filters.current.tags) : [],
   );
-  const [duration, setDuration] = useState<number>(0);
+  const [searchState, setSearchState] = useState<SearchState>({
+    page: 1,
+    duration: 0,
+    pageSize: 0,
+    totalResultSize: 0,
+  });
 
   // Returns SearchFilters object from the URL query parameters
   function getFilters(): SearchFilters {
@@ -69,13 +82,26 @@ export default function Search() {
     return newFilters;
   }
 
+  function setPage(page: number) {
+    filters.current = {
+      ...filters.current,
+      page: page,
+    };
+    updateUrl();
+  }
+
   useEffect(() => {
     filters.current = getFilters();
     console.log("Searching with parameters: " + filters.current.name);
     searchEvents(searchParams.toString()).then((res) => {
       console.log("Search results: ", res);
       setResults(res.events);
-      setDuration(res.duration);
+      setSearchState({
+        page: filters.current.page ?? 1,
+        pageSize: res.pageSize,
+        duration: res.duration,
+        totalResultSize: res.resultSize,
+      });
     });
   }, [searchParams]);
 
@@ -164,10 +190,20 @@ export default function Search() {
 
           <div className="flex border-l-[1px] border-gray-200 px-3 py-1 items-center shrink-0">
             <span className="mr-2">Sort by:</span>
-            <select className="bg-gray-200 p-1 outline-0">
-              {sortOptions.map((option) => (
-                <option key={option} className="bg-gray-200">
-                  {option}
+            <select
+              className="bg-gray-200 p-1 outline-0"
+              onChange={(e) => {
+                filters.current = {
+                  ...filters.current,
+                  sort: e.target.value,
+                };
+                console.log("Sort by: ", e.target.value);
+                updateUrl();
+              }}
+            >
+              {sortOptions.map(({ display: display, value: value }) => (
+                <option key={display} value={value} className="bg-gray-200">
+                  {display}
                 </option>
               ))}
             </select>
@@ -186,14 +222,27 @@ export default function Search() {
             <FilterList onSubmit={updateFilters} />
           </div>
 
-          <div className="grow py-3 px-5">
+          <div className="flex flex-col gap-2 grow py-3 px-5">
             <h1 className="text-2xl font-bold">Search Results</h1>
             {results && (
-              <h3>
-                {results.length} results ({duration.toFixed(2)} ms)
-              </h3>
+              <>
+                <h3>
+                  {searchState.totalResultSize} results (
+                  {searchState.duration.toFixed(2)} ms)
+                </h3>
+
+                <EventList events={results} />
+
+                {results?.length < searchState.totalResultSize && (
+                  <PageSelect
+                    page={searchState.page}
+                    pageSize={searchState.pageSize}
+                    setPage={(pageNum) => setPage(pageNum)}
+                    maxResults={searchState.totalResultSize}
+                  />
+                )}
+              </>
             )}
-            <EventList events={results} />
           </div>
         </div>
       </div>

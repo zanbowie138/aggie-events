@@ -32,7 +32,7 @@ export type SearchFilters = {
   location?: string;
   page?: number;
   organizations?: string[];
-  sortBy?: string;
+  sort?: string;
 };
 
 // Set a filter in the filters object
@@ -54,6 +54,8 @@ export function castFilterParam(
   switch (key) {
     case "tags":
       return new Set(value.split(","));
+    case "page":
+      return parseInt(value);
     default:
       return value;
   }

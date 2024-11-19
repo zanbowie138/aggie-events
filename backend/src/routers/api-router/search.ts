@@ -1,24 +1,44 @@
 import { db } from "../../database";
 import express from "express";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
+import { Expression, ExpressionBuilder, Simplify, sql, SqlBool } from "kysely";
+import { DB } from "../../types/dbtypes";
 
 export const searchRouter = express.Router();
 
+function ArrayFrom<O>(expr: Expression<O>) {
+  return sql<
+    Simplify<O>[]
+  >`(select coalesce(array_agg(agg), '{}') from ${expr} as agg)`;
+}
+
 searchRouter.get("/", async (req, res) => {
   console.log(req.query);
-  const { query: queryString, tags: tags, name: name } = req.query;
+  const {
+    query: queryString,
+    tags: tags,
+    name: name,
+    page: page = 1,
+    pageSize: pageSize = 3,
+    sort: sortBy,
+  } = req.query;
+  console.log(((page as number) - 1) * (pageSize as number));
 
   try {
     // TODO: check for typos
-    let query = db.selectFrom("events as e");
+    let query = db.selectFrom("events as e").where((eb) => {
+      const filters: Expression<SqlBool>[] = [];
 
-    if (queryString) {
-      query = query.where("e.event_name", "ilike", `%${queryString}%`);
-    }
+      if (queryString) {
+        filters.push(eb("e.event_name", "ilike", `%${queryString}%`));
+      }
 
-    if (name) {
-      query = query.where("e.event_name", "ilike", `%${name}%`);
-    }
+      if (name) {
+        filters.push(eb("e.event_name", "ilike", `%${name}%`));
+      }
+
+      return eb.and(filters);
+    });
 
     // Filtering by tags
     if (tags) {
@@ -26,17 +46,48 @@ searchRouter.get("/", async (req, res) => {
       query = query
         .innerJoin("eventtags as e_t", "e.event_id", "e_t.event_id")
         .innerJoin("tags as t", "e_t.tag_id", "t.tag_id")
-        .where("t.tag_name", "in", tagArray)
-        .distinctOn("e.event_id"); // Filter by tags
+        .where("t.tag_name", "in", tagArray);
+      // .distinctOn("e.event_id")
+      // .orderBy("e.event_id");
+    }
+
+    // Count the total number of events after filter
+    // TODO: Maybe there is a more efficient way to count rows instead of repeating all filtering
+    const resultSize = await query
+      .select((eb) => eb.fn.count<number>("e.event_id").as("event_count"))
+      .executeTakeFirstOrThrow();
+
+    // query.orderBy((eb) => {
+    //   return eb.fn("orderBy", "e.start_time", "asc");
+    // });
+
+    switch (sortBy) {
+      case "start":
+        query = query.orderBy("e.start_time", "asc");
+        break;
+      case "heart":
+        query = query.orderBy("e.event_likes", "desc");
+        break;
+      case "posted":
+        query = query.orderBy("e.date_created", "desc");
+        break;
+      case "updated":
+        query = query.orderBy("e.date_modified", "desc");
+        break;
+      case "alpha_asc":
+        query = query.orderBy("e.event_name", "asc");
+        break;
+      case "alpha_desc":
+        query = query.orderBy("e.event_name", "desc");
+        break;
+      default:
+        query = query.orderBy("e.start_time", "asc");
+        break;
     }
 
     query = query
       .innerJoin("users as u", "e.contributor_id", "u.user_id")
-      // Join with eventorgs table (for organization id)
-      // If event has no organization, e_o.org_id will be null
       .leftJoin("eventorgs as e_o", "e.event_id", "e_o.event_id")
-      // Join with orgs table (for organization name)
-      // If e_o.org_id is null (from above), org_name will be null
       .leftJoin("orgs as o", "e_o.org_id", "o.org_id")
       .select((eb) => [
         "e.event_id as event_id",
@@ -52,17 +103,22 @@ searchRouter.get("/", async (req, res) => {
         "o.org_name as org_name",
         "o.org_id as org_id",
         jsonArrayFrom(
-          // Subquery that selects tags for each event and puts it in a json array
           eb
             .selectFrom("eventtags as e_t")
             .whereRef("e_t.event_id", "=", "e.event_id")
             .innerJoin("tags as t", "e_t.tag_id", "t.tag_id")
-            .select(["t.tag_name as tag_name"]),
+            .select(["t.tag_name as tag_name", "t.tag_id as tag_id"]),
         ).as("tags"),
       ]);
-    const results = await query.execute();
+    const results = await query
+      .limit(pageSize as number)
+      .offset(((page as number) - 1) * (pageSize as number))
+      .execute();
+
     console.log(results);
-    res.status(200).json(results);
+    res
+      .status(200)
+      .json({ results: results, resultSize: resultSize, pageSize: pageSize });
   } catch (error) {
     console.error("Error searching events:", error);
     res.status(500).json({ message: "Error searching events" });

@@ -21,17 +21,27 @@ export interface SearchEventsReturn {
 }
 export const searchEvents = async (
   queryString: string,
-): Promise<{ events: SearchEventsReturn[]; duration: number }> => {
+): Promise<{
+  events: SearchEventsReturn[];
+  duration: number;
+  pageSize: number;
+  resultSize: number;
+}> => {
   try {
     const startTime = performance.now();
     // TODO: Implement pages for search results
-    const response = await fetchUtil(
+    const {
+      results: response,
+      resultSize: resultSize,
+      pageSize: pageSize,
+    } = await fetchUtil(
       `${process.env.NEXT_PUBLIC_API_URL}` + `/search?${queryString}`,
       {
         method: "GET",
       },
     ).then((res) => res.json());
     const duration = performance.now() - startTime;
+
     console.log("API Output: ", response);
     return {
       events: response.map((e: any) => ({
@@ -43,6 +53,8 @@ export const searchEvents = async (
         tags: e.tags.map((t: any) => t.tag_name),
       })),
       duration: duration,
+      pageSize: pageSize,
+      resultSize: resultSize.event_count,
     };
   } catch (error) {
     throw new Error("Error searching events" + error);
