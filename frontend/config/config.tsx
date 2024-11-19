@@ -3,10 +3,10 @@ import { FaUserCircle } from "react-icons/fa";
 import { IconType } from "react-icons";
 import { IoIosSettings, IoMdSettings } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
-import { MdLogout } from "react-icons/md";
+import { MdDashboard, MdLogout } from "react-icons/md";
 
 export const HeaderLinks: { href: string; label: string }[] = [
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/search", label: "Search" },
   { href: "/tags", label: "Tags" },
   { href: "/calendar", label: "Calendar" },
 ];
@@ -17,6 +17,7 @@ export const UserMenuLinks: {
   icon: ReactElement<IconType>;
 }[] = [
   { href: "/profile", label: "Profile", icon: <FaUserCircle /> },
+  { href: "/dashboard", label: "Dashboard", icon: <MdDashboard /> },
   { href: "/settings", label: "Settings", icon: <IoMdSettings /> },
   // { href: "/logout", label: "Logout", icon: <MdLogout /> },
 ];

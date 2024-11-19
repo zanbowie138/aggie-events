@@ -51,9 +51,12 @@ export default function EventCard({ event }: { event: SearchEventsReturn }) {
         </span>
       </div>
       <hr />
-      <Link className="text-sm w-fit" href={`/users/${event.contributor_id}`}>
-        Posted by <span className="text-maroon">{event.contributor_name}</span>
-      </Link>
+      <p className="text-sm w-fit ">
+        Posted by{" "}
+        <Link className="text-maroon" href={`/users/${event.contributor_id}`}>
+          {event.contributor_name}
+        </Link>
+      </p>
       {/*<div className="flex gap-2">*/}
       {/*  <IconLabel text={"1000"}>*/}
       {/*    <HiEye color="maroon" />*/}
