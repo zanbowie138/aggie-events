@@ -39,6 +39,8 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: "agev"
+    labels:
+      - "pgbackup.enable=true"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -46,6 +48,14 @@ services:
       retries: 5
     networks:
       - traefik-network
+  db_backup:
+    image: justb4/pgbackup:11
+    container_name: pg_backup_11
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./backup:/backup
+    environment:
+      - PGB_SCHEDULE=0 0 * * * # every day at midnight
 networks:
   traefik-network:
     name: traefik-network
