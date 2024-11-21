@@ -7,9 +7,11 @@ import IconLabel from "@/app/(other)/search/components/IconLabel";
 import { formatDateInterval } from "@/utils/date";
 import SoloTagDisplay from "@/components/tag/TagDisplay";
 import { EventPageInformation } from "@/config/query-types";
-import { FaClock } from "react-icons/fa";
+import { FaCalendar, FaCalendarDay, FaClock, FaTag } from "react-icons/fa";
 import FilterTagDisplay from "@/app/(other)/search/components/filter-tag-list/FilterTagDisplay";
 import EventTagList from "@/components/tag/EventTagList";
+import { MdEdit } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
 
 export default function EventDetails() {
   const [event, setEvent] = useState<EventPageInformation | undefined | null>(
@@ -63,26 +65,61 @@ export default function EventDetails() {
 //   tags: string[];
 // }
 
+const EventOptions: string[] = [
+  "Add to Personal Calendar",
+  "Add to Google Calendar",
+  "Export as ICS",
+  "Export event file",
+];
+
 function EventData({ event }: { event: EventPageInformation }) {
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-3xl font-bold text-maroon">{event.event_name}</h1>
-      <h2 className="font-semibold">
-        {formatDateInterval(
-          new Date(event.start_time),
-          new Date(event.end_time),
-        )}
-      </h2>
-      {event.event_location && (
-        <IconLabel text={event.event_location}>
-          <FaLocationDot color="maroon" />
-        </IconLabel>
-      )}
-      <EventTagList tags={event.tags} />
+    <div className="bg-gray-100 rounded-b-lg shadow-md">
+      <div className="bg-maroon rounded-t-lg h-[50px]"></div>
+      <div className="flex flex-col gap-2  p-4">
+        <div className="flex justify-between">
+          <h1 className="text-3xl font-bold text-maroon">{event.event_name}</h1>
+          <button className="bg-maroon text-white rounded-2xl py-1 px-4 ml-2 font-medium flex items-center gap-2">
+            <div>Edit Event</div>
+            <FiEdit />
+          </button>
+        </div>
+        <div className="flex gap-6">
+          <div className="border-maroon border-2 rounded-md p-4 grow flex flex-col gap-3">
+            <div>
+              <IconLabel
+                text={formatDateInterval(
+                  new Date(event.start_time),
+                  new Date(event.end_time),
+                )}
+              >
+                <FaCalendarDay color="maroon" />
+              </IconLabel>
+              {event.event_location && (
+                <IconLabel text={event.event_location}>
+                  <FaLocationDot color="maroon" />
+                </IconLabel>
+              )}
+            </div>
+            <EventTagList tags={event.tags} />
+          </div>
+          <div className="border-2 border-maroon p-2 rounded-md h-fit">
+            <ul className="text-center">
+              {EventOptions.map((option, index) => (
+                <li key={index} className="text-maroon">
+                  {option}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="">
+          <p className="text-md text-black">{event.event_description}</p>
+        </div>
+        <hr />
 
-      <p className="text-md text-black my-2">{event.event_description}</p>
-      <hr />
-      <p className="text-gray-400">Posted by: {event.contributor_name}</p>
+        <p className="text-gray-700">Posted by: {event.contributor_name}</p>
+      </div>
     </div>
   );
 }
