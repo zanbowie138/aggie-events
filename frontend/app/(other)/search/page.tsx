@@ -209,7 +209,7 @@ export default function Search() {
         </div>
 
         <div className="flex gap-2 grow">
-          <div className="px-5 py-5 basis-72 shrink-0 bg-gray-100 rounded-md m-3 h-fit border-2 border-maroon">
+          <div className="px-5 py-5 basis-72 shrink-0 bg-gray-100 rounded-md m-3 h-fit border-2 border-gray-300">
             <div className="font-bold text-xl">Filters:</div>
             <div className="flex gap-2">
               <div className="text-lg font-semibold">Search For:</div>
@@ -221,7 +221,7 @@ export default function Search() {
             <FilterList onSubmit={updateFilters} />
           </div>
 
-          <div className="flex flex-col gap-2 py-3 px-5 rounded-md w-max my-3 ">
+          <div className="py-3 px-5 rounded-md w-full my-3">
             <h1 className="text-2xl font-bold">Search Results</h1>
             {results && (
               <>

@@ -19,6 +19,7 @@ export default function SearchBar() {
     } else {
       params.delete("query");
     }
+    setFocused(false);
     push(`/search?${params.toString()}`);
   }
 

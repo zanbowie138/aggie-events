@@ -11,25 +11,23 @@ import EventDateDisplay from "@/app/(other)/search/components/event-display/Even
 
 export default function EventDisplay({ event }: { event: SearchEventsReturn }) {
   return (
-    <div>
-      <motion.div
-        className="flex gap-2 max-w-[800px]"
-        initial={{
-          opacity: 0,
-          transform: "translateY(4px)",
-        }}
-        animate={{
-          transform: "translateY(0px)",
-          opacity: 1,
-        }}
-        exit={{
-          opacity: 0,
-          transform: "translateY(4px)",
-        }}
-      >
-        <EventDateDisplay event={event} />
-        <EventCard event={event} />
-      </motion.div>
-    </div>
+    <motion.div
+      className="flex gap-2 w-full"
+      initial={{
+        opacity: 0,
+        transform: "translateY(4px)",
+      }}
+      animate={{
+        transform: "translateY(0px)",
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+        transform: "translateY(4px)",
+      }}
+    >
+      <EventDateDisplay event={event} />
+      <EventCard event={event} />
+    </motion.div>
   );
 }

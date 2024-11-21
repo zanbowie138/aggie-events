@@ -18,7 +18,7 @@ export default function EventList({
     );
   } else {
     return (
-      <div className="flex flex-col gap-3 my-2">
+      <div className="flex flex-col gap-3 my-2 max-w-[800px] w-full">
         <Suspense fallback={<div>Loading...</div>}>
           {events.map((event: SearchEventsReturn) => (
             <EventDisplay event={event} key={event.event_id} />
