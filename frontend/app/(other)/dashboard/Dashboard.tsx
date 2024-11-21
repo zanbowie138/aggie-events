@@ -11,7 +11,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { createEvent } from "@/api/event";
 import ToastManager from "@/components/toast/ToastManager";
 
-export default function AddUserForm() {
+export default function Dashboard() {
   const { user } = useAuth();
   const [page, setPage] = useState<number>(0);
   const options = ["Users", "Events", "Organizations"];

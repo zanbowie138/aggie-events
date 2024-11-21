@@ -5,10 +5,10 @@ import { HeaderLinks } from "@/config/config";
 import SearchBar from "@/components/search/SearchBar";
 import UserLogoToggle from "@/components/headers/user-menu/UserLogoToggle";
 
-export default function Header() {
+export default function HomeHeader() {
   return (
     <>
-      <header className="dark:bg-gray-950 bg-lightmaroon flex relative">
+      <header className="dark:bg-gray-950 bg-gradient-to-b from-40% from-lightmaroon/90 h-[120px] relative flex items-start">
         <nav className="flex items-center mx-5 w-full text-white dark:text-white">
           {/* Logo section */}
           <div className="mb-2">

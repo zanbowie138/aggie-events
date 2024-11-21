@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import AddUserForm from "./AddUserForm";
+import Dashboard from "./Dashboard";
 import AuthSuspense from "@/components/auth/AuthSuspense";
 
-export default function Database() {
+export default function DashboardPage() {
   return (
     <>
       <AuthSuspense>
-        <AddUserForm />
+        <Dashboard />
       </AuthSuspense>
     </>
   );
