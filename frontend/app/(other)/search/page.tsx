@@ -104,6 +104,7 @@ export default function Search() {
 
   // Updates the query parameters in the URL using the filter-list variable
   function updateUrl() {
+    // TODO: If search query changes, reset page to 1
     // Manipulate url query parameters
     const params = new URLSearchParams(searchParams);
     Object.keys(filters.current).forEach((key) => {
@@ -208,9 +209,10 @@ export default function Search() {
         </div>
 
         <div className="flex gap-2 grow">
-          <div className="px-5 py-5 basis-72 shrink-0">
+          <div className="px-5 py-5 basis-72 shrink-0 bg-gray-100 rounded-md m-3 h-fit border-2 border-maroon">
+            <div className="font-bold text-xl">Filters:</div>
             <div className="flex gap-2">
-              <div className="text-lg font-semibold">Search For: </div>
+              <div className="text-lg font-semibold">Search For:</div>
               <select className="bg-gray-100 text-lg px-1 outline-0 font-semibold">
                 <option className="font-semibold bg-white">Event</option>
                 <option className="font-semibold bg-white">Organization</option>
@@ -219,7 +221,7 @@ export default function Search() {
             <FilterList onSubmit={updateFilters} />
           </div>
 
-          <div className="flex flex-col gap-2 grow py-3 px-5">
+          <div className="flex flex-col gap-2 py-3 px-5 rounded-md w-max my-3 ">
             <h1 className="text-2xl font-bold">Search Results</h1>
             {results && (
               <>

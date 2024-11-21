@@ -6,7 +6,7 @@ import { CiLogout } from "react-icons/ci";
 import { MdDashboard, MdLogout } from "react-icons/md";
 
 export const HeaderLinks: { href: string; label: string }[] = [
-  { href: "/search", label: "Search" },
+  { href: "/search", label: "Browse" },
   { href: "/tags", label: "Tags" },
   { href: "/calendar", label: "Calendar" },
 ];
