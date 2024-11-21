@@ -1,7 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
-import EventDisplay from "@/app/search/components/event-display/EventDisplay";
-import { Event } from "@/config/dbtypes";
+import EventDisplay from "@/app/(other)/search/components/event-display/EventDisplay";
 import { SearchEventsReturn } from "@/api/event";
 
 export default function EventList({

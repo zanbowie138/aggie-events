@@ -1,7 +1,5 @@
 import React from "react";
 import "./globals.css";
-import Header from "@/components/headers/Header";
-import Footer from "@/components/footers/Footer";
 import { AuthProvider } from "@/components/auth/AuthContext";
 import { ToastRenderer } from "@/components/toast/ToastRenderer";
 
@@ -14,12 +12,8 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body className="flex flex-col min-h-screen relative">
-        <AuthProvider>
-          <Header />
-          <ToastRenderer />
-          {children}
-          <Footer />
-        </AuthProvider>
+        <ToastRenderer />
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

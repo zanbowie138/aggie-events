@@ -1,21 +1,18 @@
 "use client";
-import CollapsableConfig from "@/app/search/components/filter-list/CollapsableConfig";
-import FilterInput from "@/app/search/components/filter-list/FilterInput";
 import React, { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import FilterTagList from "@/app/search/components/filter-tag-list/FilterTagList";
+import FilterTagList from "@/app/(other)/search/components/filter-tag-list/FilterTagList";
 import {
   SearchFilters,
   setFilterParam,
   castFilterParam,
 } from "@/config/query-types";
 import { searchEvents, SearchEventsReturn } from "@/api/event";
-import { Event } from "@/config/dbtypes";
-import EventList from "@/app/search/components/EventList";
+import EventList from "@/app/(other)/search/components/EventList";
 import FilterList, {
   FilterListOutput,
-} from "@/app/search/components/filter-list/FilterList";
-import PageSelect from "@/app/search/components/PageSelect";
+} from "@/app/(other)/search/components/filter-list/FilterList";
+import PageSelect from "@/app/(other)/search/components/PageSelect";
 
 // Filters
 // - Date Range

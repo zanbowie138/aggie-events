@@ -6,7 +6,7 @@ import { addUser, deleteUser } from "@/api/user";
 import { testAuth } from "@/api/auth";
 import { Event } from "@/config/dbtypes";
 import { EventCreate } from "@/config/query-types";
-import IconLabel from "@/app/search/components/IconLabel";
+import IconLabel from "@/app/(other)/search/components/IconLabel";
 import { FaLocationDot } from "react-icons/fa6";
 import { createEvent } from "@/api/event";
 import ToastManager from "@/components/toast/ToastManager";

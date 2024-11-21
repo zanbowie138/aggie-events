@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import CollapsableConfig from "@/app/search/components/filter-list/CollapsableConfig";
-import FilterInput from "@/app/search/components/filter-list/FilterInput";
+import CollapsableConfig from "@/app/(other)/search/components/filter-list/CollapsableConfig";
+import FilterInput from "@/app/(other)/search/components/filter-list/FilterInput";
 import { SearchFilters } from "@/config/query-types";
 
 export type FilterListOutput = {

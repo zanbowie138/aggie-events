@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import IconLabel from "@/app/search/components/IconLabel";
+import IconLabel from "@/app/(other)/search/components/IconLabel";
 import { HiEye } from "react-icons/hi";
 import { FaHeart } from "react-icons/fa";
 import { Event } from "@/config/dbtypes";
