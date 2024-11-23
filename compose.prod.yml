@@ -1,31 +1,4 @@
 services:
-#  traefik:
-#    image: traefik:v3.1.4
-#    container_name: traefik
-#    restart: always
-#    ports:
-#      - "80:80"        # HTTP
-#      - "443:443"      # HTTPS
-#      - "8080:8080"    # Traefik dashboard (optional)
-#    command:
-#      - "--api.dashboard=true"
-#      - "--api.insecure=true"
-#      - "--log.level=INFO"
-#
-#      - "--providers.docker=true"
-#      - "--providers.docker.exposedbydefault=false"
-#
-#      - "--entryPoints.web.address=:80"
-#      - "--entrypoints.websecure.address=:443"
-#      - "--entrypoints.websecure.http.tls.certresolver=letsencrypt"
-#      - "--certificatesresolvers.letsencrypt.acme.email=zanbowie138@gmail.com"
-#      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
-#      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
-#    volumes:
-#      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-#      - "./letsencrypt:/letsencrypt"  # Store SSL certificates
-#    networks:
-#      - traefik-network
   app:
     image: agev/frontend:latest
     container_name: app_container
