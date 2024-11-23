@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:v3.1.4
+    image: traefik:v3.2.1
     container_name: traefik
     restart: always
     ports:
@@ -17,10 +17,11 @@ services:
 
       - "--entryPoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.websecure.http.tls.certresolver=letsencrypt"
+
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
       - "--certificatesresolvers.letsencrypt.acme.email=zanbowie138@gmail.com"
       - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
-      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"  # Store SSL certificates
