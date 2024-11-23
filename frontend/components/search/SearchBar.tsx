@@ -7,15 +7,17 @@ import { searchEvents } from "@/api/event";
 
 export default function SearchBar() {
   const [searchInput, setSearchInput] = useState<string>("");
-  const searchParams = useSearchParams();
   const [focused, setFocused] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+
   const searchRef = useRef<HTMLFormElement>(null);
-  const { push } = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { push } = useRouter();
 
   function handleSearch() {
     // Manipulate url query parameters
     const params = new URLSearchParams(searchParams);
+    console.log("Searching for: " + searchInput);
     if (searchInput) {
       params.set("query", searchInput);
     } else {
@@ -59,7 +61,14 @@ export default function SearchBar() {
         ref={searchRef}
       >
         <div
-          className={`relative flex max-w-[700px] w-full items-center ${focused ? "rounded-t-md bg-white" : "rounded-md bg-gray-100"}`}
+          className={`relative flex max-w-[700px] w-full items-center 
+          ${
+            focused
+              ? (searchInput.length > 0 ? "rounded-t-md" : "rounded-md") +
+                " bg-white"
+              : "rounded-md bg-gray-100"
+          }
+            `}
         >
           <FaSearch className="text-gray-700 mx-2" />
           <input
@@ -81,7 +90,9 @@ export default function SearchBar() {
             }}
             onClick={() => setFocused(true)}
           />
-          {focused && <SearchPrompt />}
+          {focused && (
+            <SearchPrompt prompt={searchInput} onClick={handleSearch} />
+          )}
         </div>
       </form>
       {focused && (
