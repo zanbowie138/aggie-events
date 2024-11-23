@@ -11,7 +11,7 @@ export default function HomeHeader() {
       <header className="dark:bg-gray-950 bg-gradient-to-b from-40% from-lightmaroon/90 h-[120px] relative flex items-start">
         <nav className="flex items-center mx-5 w-full text-white dark:text-white">
           {/* Logo section */}
-          <div className="mb-2">
+          <div className="mb-2 w-fit">
             <a href="/" className="flex items-center gap-2">
               <Image
                 src="/logo2.png"
@@ -21,8 +21,9 @@ export default function HomeHeader() {
                 priority={true}
                 className="mb-2 mt-1"
               />
-              <div className="text-xl font-bold italic leading-none w-10 mt-2">
-                Aggie Events
+              <div className="text-xl font-bold italic leading-none w-fit mt-2 justify-center flex flex-col">
+                <div className="">Aggie</div>
+                <div className="">Events</div>
               </div>
             </a>
           </div>

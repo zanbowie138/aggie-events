@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
+import SearchPrompt from "@/components/search/SearchPrompt";
+import { searchEvents } from "@/api/event";
 
 export default function SearchBar() {
   const [searchInput, setSearchInput] = useState<string>("");
@@ -44,41 +46,43 @@ export default function SearchBar() {
     };
   }, [focused]);
 
+  useEffect(() => {
+    if (searchParams.has("query")) {
+      setSearchInput(searchParams.get("query") as string);
+    }
+  }, [searchParams]);
+
   return (
     <>
       <form
         className={`flex grow justify-center hover:drop-shadow-lg ${focused && "z-[999]"}`}
         ref={searchRef}
       >
-        <input
-          id="search-input"
-          alt="Test"
-          className="text-black bg-gray-100 rounded-l-md px-2 py-1 max-w-[700px]
-            w-full h-10 outline-none"
-          placeholder="Search..."
-          ref={inputRef}
-          onChange={(e) => setSearchInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              handleSearch();
-            }
-            if (e.key === "Escape") {
-              setFocused(false);
-            }
-          }}
-          onClick={() => setFocused(true)}
-        />
-        <button
-          className="bg-maroon rounded-r-md py-2 px-3"
-          onClick={(e) => {
-            e.preventDefault();
-            handleSearch();
-            // TODO: fix this to update the tags on the first popstate
-          }}
+        <div
+          className={`relative flex max-w-[700px] w-full items-center ${focused ? "rounded-t-md bg-white" : "rounded-md bg-gray-100"}`}
         >
-          <FaSearch color="white" />
-        </button>
+          <FaSearch className="text-gray-700 mx-2" />
+          <input
+            id="search-input"
+            alt="Test"
+            className={`text-black py-1 w-full h-10 outline-none bg-transparent`}
+            placeholder="Search..."
+            ref={inputRef}
+            onChange={(e) => setSearchInput(e.target.value)}
+            value={searchInput}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSearch();
+              }
+              if (e.key === "Escape") {
+                setFocused(false);
+              }
+            }}
+            onClick={() => setFocused(true)}
+          />
+          {focused && <SearchPrompt />}
+        </div>
       </form>
       {focused && (
         <div className="fixed h-screen w-screen bg-black/20 top-0 left-0 z-[998]"></div>
