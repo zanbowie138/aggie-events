@@ -6,12 +6,6 @@ import { DB } from "../../types/dbtypes";
 
 export const searchRouter = express.Router();
 
-function ArrayFrom<O>(expr: Expression<O>) {
-  return sql<
-    Simplify<O>[]
-  >`(select coalesce(array_agg(agg), '{}') from ${expr} as agg)`;
-}
-
 searchRouter.get("/", async (req, res) => {
   console.log(req.query);
   const {
@@ -36,19 +30,32 @@ searchRouter.get("/", async (req, res) => {
       if (name) {
         filters.push(eb("e.event_name", "ilike", `%${name}%`));
       }
-
       return eb.and(filters);
     });
 
     // Filtering by tags
     if (tags) {
       const tagArray = (tags as string).split(",");
-      query = query
-        .innerJoin("eventtags as e_t", "e.event_id", "e_t.event_id")
-        .innerJoin("tags as t", "e_t.tag_id", "t.tag_id")
-        .where("t.tag_name", "in", tagArray);
-      // .distinctOn("e.event_id")
-      // .orderBy("e.event_id");
+      query = query.where((eb) => {
+        return eb(
+          "e.event_id",
+          "in",
+          eb
+            .selectFrom("events as e")
+            .innerJoin("eventtags as e_t", "e.event_id", "e_t.event_id")
+            .innerJoin("tags as t", "e_t.tag_id", "t.tag_id")
+            .where("t.tag_name", "in", tagArray)
+            .groupBy("e.event_id")
+            .having((eb) => {
+              return eb(
+                eb.fn.count<number>("e.event_id"),
+                ">=", // Technically it doesn't matter if we use >= or = (I think)
+                tagArray.length,
+              );
+            })
+            .select("e.event_id"),
+        );
+      });
     }
 
     // Count the total number of events after filter
@@ -56,10 +63,6 @@ searchRouter.get("/", async (req, res) => {
     const resultSize = await query
       .select((eb) => eb.fn.count<number>("e.event_id").as("event_count"))
       .executeTakeFirstOrThrow();
-
-    // query.orderBy((eb) => {
-    //   return eb.fn("orderBy", "e.start_time", "asc");
-    // });
 
     switch (sortBy) {
       case "start":
@@ -110,6 +113,7 @@ searchRouter.get("/", async (req, res) => {
             .select(["t.tag_name as tag_name", "t.tag_id as tag_id"]),
         ).as("tags"),
       ]);
+
     const results = await query
       .limit(pageSize as number)
       .offset(((page as number) - 1) * (pageSize as number))
