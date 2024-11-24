@@ -3,6 +3,7 @@ import { usersRouter } from "./api-router/users";
 import { orgRouter } from "./api-router/orgs";
 import { searchRouter } from "./api-router/search";
 import { eventRouter } from "./api-router/events";
+import { tagRouter } from "./api-router/tag";
 
 export const apiRouter = express.Router();
 
@@ -23,3 +24,4 @@ apiRouter.use("/users", usersRouter);
 apiRouter.use("/orgs", orgRouter);
 apiRouter.use("/search", searchRouter);
 apiRouter.use("/events", eventRouter);
+apiRouter.use("/tags", tagRouter);

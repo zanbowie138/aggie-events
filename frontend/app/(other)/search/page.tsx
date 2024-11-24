@@ -50,7 +50,6 @@ export interface SearchState {
 export default function Search() {
   const searchParams = useSearchParams();
   const filters = useRef<SearchFilters>(getFilters());
-  const pathname = usePathname();
   const { push } = useRouter();
   const [results, setResults] = useState<SearchEventsReturn[] | undefined>(
     undefined,
@@ -93,6 +92,7 @@ export default function Search() {
     searchEvents(searchParams.toString()).then((res) => {
       console.log("Search results: ", res);
       setResults(res.events);
+      setTags(Array.from(filters.current.tags ?? []));
       setSearchState({
         page: filters.current.page ?? 1,
         pageSize: res.pageSize,
@@ -129,7 +129,7 @@ export default function Search() {
     if (filters.current.tags) {
       setTags(Array.from(filters.current.tags!));
     }
-    push(`${pathname}?${params.toString()}`);
+    push(`/search?${params.toString()}`);
   }
 
   function updateFilters(filtersUpdate: FilterListOutput) {

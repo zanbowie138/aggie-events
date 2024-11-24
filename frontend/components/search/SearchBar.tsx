@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 import SearchPrompt from "@/components/search/SearchPrompt";
 import { searchEvents } from "@/api/event";
+import { SearchFilters } from "@/config/query-types";
 
 export default function SearchBar() {
   const [searchInput, setSearchInput] = useState<string>("");
@@ -24,6 +25,23 @@ export default function SearchBar() {
       params.delete("query");
     }
     setFocused(false);
+    setSearchInput("");
+    push(`/search?${params.toString()}`);
+  }
+
+  function tagSearch(tag: string) {
+    const params = new URLSearchParams(searchParams);
+    if (params.has("tags")) {
+      const tags = params.get("tags")!.split(",");
+      if (!tags.includes(tag)) {
+        tags.push(tag);
+      }
+      params.set("tags", tags.join(","));
+    } else {
+      params.set("tags", tag);
+    }
+    setFocused(false);
+    setSearchInput("");
     push(`/search?${params.toString()}`);
   }
 
@@ -48,11 +66,11 @@ export default function SearchBar() {
     };
   }, [focused]);
 
-  useEffect(() => {
-    if (searchParams.has("query")) {
-      setSearchInput(searchParams.get("query") as string);
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   if (searchParams.has("query")) {
+  //     setSearchInput(searchParams.get("query") as string);
+  //   }
+  // }, [searchParams]);
 
   return (
     <>
@@ -61,7 +79,7 @@ export default function SearchBar() {
         ref={searchRef}
       >
         <div
-          className={`relative flex max-w-[700px] w-full items-center 
+          className={`relative flex max-w-[700px] w-full items-center
           ${
             focused
               ? (searchInput.length > 0 ? "rounded-t-md" : "rounded-md") +
@@ -91,7 +109,11 @@ export default function SearchBar() {
             onClick={() => setFocused(true)}
           />
           {focused && (
-            <SearchPrompt prompt={searchInput} onClick={handleSearch} />
+            <SearchPrompt
+              prompt={searchInput}
+              onNameSearch={handleSearch}
+              onTagSearch={(t) => tagSearch(t)}
+            />
           )}
         </div>
       </form>

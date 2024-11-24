@@ -85,7 +85,7 @@ function EventData({ event }: { event: EventPageInformation }) {
           </button>
         </div>
         <div className="flex gap-6">
-          <div className="border-maroon border-2 rounded-md p-4 grow flex flex-col gap-3">
+          <div className="border-maroon border-2 rounded-md px-4 pt-4 grow flex flex-col gap-1">
             <div>
               <IconLabel
                 text={formatDateInterval(
