@@ -14,7 +14,7 @@ export default function Header() {
           <div className="mb-2 w-fit">
             <a href="/" className="flex items-center gap-2">
               <Image
-                src="/logo2.png"
+                src="/logo/logo2.png"
                 alt="logo"
                 width={50}
                 height={50}
