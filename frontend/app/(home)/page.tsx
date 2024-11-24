@@ -18,7 +18,7 @@ export default function Homepage() {
           <div className="w-fit">
             <hr></hr>
             <h2 className="text-white mt-2 text-xl">
-              One stop shop for events and organizations happening on campus
+              One stop shop for events and organizations in the Texas A&M campus
             </h2>
           </div>
         </div>
