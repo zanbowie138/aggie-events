@@ -44,7 +44,7 @@ export default function Homepage() {
       </ParallaxBanner>
 
       <div className="bg-white text-black px-4 py-8 h-[1000px]">
-        <h1 className="text-3xl font-semibold">Featured Events</h1>
+        {/*<h1 className="text-3xl font-semibold">Featured Events</h1>*/}
         {/*<div className="my-3 grid grid-cols-1 md:grid-cols-3 gap-4">*/}
         {/*  <EventCard />*/}
         {/*  <EventCard />*/}
