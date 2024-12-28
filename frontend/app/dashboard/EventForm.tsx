@@ -26,7 +26,7 @@ export default function EventForm() {
   const setDateTime = (date: CalendarDate, time: TimeInputValue) => {
     console.log("time zone code" + getLocalTimeZone());
     const dateObj = date.toDate('gmt');
-    const dateTime = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), time.hour, time.minute)); // will prevent it from applying an offset to convert to UTC +0 time. Remember, it stores the date in the database with no timezone id, then just decides the timezone when u get it later;
+    const dateTime = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), time.hour, time.minute)); // will prevent it from applying an offset to convert to UTC +0 time. Remember, it stores the date in the database with no timezone id, then just decides the timezone when u get it later; this works bc its gonna convert to GMT anyways and if it starts from UTC +0 there's no conversion necessary
     return dateTime;
   }
 

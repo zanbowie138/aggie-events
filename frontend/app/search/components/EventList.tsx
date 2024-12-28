@@ -22,7 +22,7 @@ export default function EventList({
   } else {
     return (
       <div className="flex flex-col gap-3 my-2">
-        {events.map((event: Event) => (
+        {events.map((event: SearchEventsReturn) => (
           <EventDisplay event={event} key={event.event_id} />
         ))}
       </div>
