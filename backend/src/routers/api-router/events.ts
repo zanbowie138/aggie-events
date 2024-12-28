@@ -1,3 +1,4 @@
+import { start } from "repl";
 import { db } from "../../database";
 import { authMiddleware } from "../../middlewares/authMiddleware";
 import { SerializedUser } from "../../types/customtypes";
@@ -109,6 +110,7 @@ export interface EventCreate {
 }
 
 eventRouter.post("/", authMiddleware, async (req, res) => {
+  console.log("Working");
   const {
     event_name,
     event_description,
@@ -117,8 +119,10 @@ eventRouter.post("/", authMiddleware, async (req, res) => {
     end_time,
     tags,
   } = req.body as EventCreate;
-
+ 
   try {
+    console.log(req.body);
+    // console.log(start_time.toUTCString());
     const event = await db
       .insertInto("events")
       .values({

@@ -1,32 +1,54 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EventCreate } from "@/config/query-types";
 import { FaLocationDot } from "react-icons/fa6";
 import { createEvent } from "@/api/event";
 import ToastManager from "@/components/toast/ToastManager";
-import { TimeInput } from "@nextui-org/date-input";
+import { TimeInput, TimeInputValue } from "@nextui-org/date-input";
 import { DatePicker } from "@nextui-org/date-picker";
+import { getLocalTimeZone, today, CalendarDate, Calendar, toTimeZone } from "@internationalized/date";
 
+// TODO: add delete event functionality and update event functionality
+// TODO clear the items in the form after succesful event creation
 
 export default function EventForm() {
+  // TODO: use proper useStates
   const [eventName, setEventName] = useState<string>();
   const [eventDescription, setEventDescription] = useState<string>();
   const [eventLocation, setEventLocation] = useState<string>();
-  const [startTime, setStartTime] = useState<string>();
-  const [endTime, setEndTime] = useState<string>();
+  const [startTime, setStartTime] = useState<TimeInputValue>();
+  const [endTime, setEndTime] = useState<TimeInputValue>();
+  const [startDate, setStartDate] = useState<CalendarDate | null>(today(getLocalTimeZone()));
+  const [endDate, setEndDate] = useState<CalendarDate | null>(today(getLocalTimeZone()));
   const [tags, setTags] = useState<string>();
   const [value, setValue] = useState<Date | null>(null);
+
+  const setDateTime = (date: CalendarDate, time: TimeInputValue) => {
+    console.log("time zone code" + getLocalTimeZone());
+    const dateObj = date.toDate('gmt');
+    const dateTime = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), time.hour, time.minute)); // will prevent it from applying an offset to convert to UTC +0 time. Remember, it stores the date in the database with no timezone id, then just decides the timezone when u get it later;
+    return dateTime;
+  }
+
+
+  useEffect(() => {
+    if (startDate){
+      console.log(startDate);
+      setEndDate(startDate);
+    }
+  }, [startDate]);
 
   const addEvent = async () => {
     const event: EventCreate = {
       event_name: eventName!,
       event_description: eventDescription?.trim() || null,
       event_location: eventLocation?.trim() || null,
-      start_time: new Date(startTime!),
-      end_time: new Date(endTime!),
+      start_time: setDateTime(startDate!, startTime!),
+      end_time: setDateTime(endDate!, endTime!),
       tags: tags?.split(",").map((tag) => tag.trim()) || [],
     };
     console.log(event as EventCreate);
+    console.log("start time", event.start_time.toISOString());
     createEvent(event)
       .then((res) => {
         ToastManager.addToast("Event created successfully", "success");
@@ -55,14 +77,18 @@ export default function EventForm() {
               aria-label="start-time-input"
               radius="sm"
               description="A or P key to switch AM/PM"
+              onChange={(e) => {setStartTime(e); console.log(typeof e);}}
             />
             <DatePicker
+              defaultValue={today(getLocalTimeZone())}
               aria-label="start-date-input"
               label="Start Date"
               className="max-w-[284px]"
               isRequired
               radius="sm"
               description="Enter start date"
+              showMonthAndYearPickers
+              onChange={(e) => setStartDate(e)}
             />
             <div>to</div>
             <TimeInput
@@ -71,14 +97,19 @@ export default function EventForm() {
               aria-label="end-time-input"
               radius="sm"
               description="A or P key to switch AM/PM"
+              onChange={(e) => setEndTime(e)}
             />
             <DatePicker
+              defaultValue={today(getLocalTimeZone())}
               aria-label="end-date-input"
               label="End Date"
               className="max-w-[284px]"
               isRequired
               radius="sm"
               description="Enter end date"
+              showMonthAndYearPickers
+              onChange={(e) => setStartDate(e)}
+              value={endDate}
             />
           </div>
           <div className="flex items-center gap-1 text-md mt-5">
@@ -108,7 +139,7 @@ export default function EventForm() {
           >
             Create Event
           </button>
-        </div>
+        </div> {/*TODO: clear all inputs when successful event submission*/}
       </div>
       <div className="mx-3 w-2/5">{/*<UserList update={update} />*/}</div>
     </>

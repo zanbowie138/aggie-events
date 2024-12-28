@@ -10,7 +10,6 @@ export const fetchUtil = async (
   throwErrOnUnauthorized: boolean = true,
 ) => {
   const { body, ...restOptions } = options;
-
   const response = await fetch(url, {
     ...restOptions,
     headers: {
