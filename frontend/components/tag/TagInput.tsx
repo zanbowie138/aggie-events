@@ -1,6 +1,6 @@
 import React from "react";
 import useTagInput from "@/app/hooks/useTagInput";
-import SoloTagDisplay from "./SoloTagDisplay";
+import TagDisplay from "@/app/search/components/TagDisplay";
 
 interface TagInputProps {
   onTagAdd: (tags: string[]) => void;
@@ -13,7 +13,7 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
     <div className="flex flex-col w-[700px] gap-1">
       <input
         type="text"
-        placeholder="Add a tag"
+        placeholder="Add a tag (enter to add, backspace to remove)"
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             handleAddTag(e.currentTarget.value);
@@ -27,7 +27,7 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
       <div>
         <div className="flex flex-wrap gap-1">
           {tags.map((tag) => (
-            <SoloTagDisplay text={tag} key={tag} />
+            <TagDisplay text={tag} key={tag} onClose={() => handleRemoveTag(tag)} />
           ))}
         </div>
       </div>
