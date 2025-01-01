@@ -10,24 +10,26 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
   const { tags, handleAddTag, handleRemoveTag } = useTagInput(10, onTagAdd);
 
   return (
-    <div>
+    <div className="flex flex-col w-[700px] gap-1">
+      <input
+        type="text"
+        placeholder="Add a tag"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleAddTag(e.currentTarget.value);
+            e.currentTarget.value = "";
+          } else if (e.key === "Backspace" && e.currentTarget.value === "") {
+            handleRemoveTag(tags[tags.length - 1]);
+          }
+        }}
+        className="border border-gray-300 bg-gray-100 p-1 rounded"
+      />
       <div>
-        <input
-          type="text"
-          placeholder="Add a tag"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleAddTag(e.currentTarget.value);
-              e.currentTarget.value = "";
-            }
-          }}
-          className="border border-gray-300 bg-gray-100 p-1 rounded basis-32"
-        />
-      </div>
-      <div>
-        {tags.map((tag) => (
-          <SoloTagDisplay text={tag} key={tag} />
-        ))}
+        <div className="flex flex-wrap gap-1">
+          {tags.map((tag) => (
+            <SoloTagDisplay text={tag} key={tag} />
+          ))}
+        </div>
       </div>
     </div>
   )
