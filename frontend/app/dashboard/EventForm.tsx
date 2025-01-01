@@ -7,6 +7,7 @@ import ToastManager from "@/components/toast/ToastManager";
 import { TimeInput, TimeInputValue } from "@nextui-org/date-input";
 import { DatePicker } from "@nextui-org/date-picker";
 import { getLocalTimeZone, today, CalendarDate, Calendar, toTimeZone } from "@internationalized/date";
+import TagInput from "@/components/tag/TagInput";
 
 // TODO: add delete event functionality and update event functionality
 // TODO clear the items in the form after succesful event creation
