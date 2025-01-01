@@ -21,6 +21,7 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
               e.currentTarget.value = "";
             }
           }}
+          className="border border-gray-300 bg-gray-100 p-1 rounded basis-32"
         />
       </div>
       <div>

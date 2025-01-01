@@ -21,7 +21,7 @@ export default function EventForm() {
   const [endTime, setEndTime] = useState<TimeInputValue>();
   const [startDate, setStartDate] = useState<CalendarDate | null>(today(getLocalTimeZone()));
   const [endDate, setEndDate] = useState<CalendarDate | null>(today(getLocalTimeZone()));
-  const [tags, setTags] = useState<string>();
+  const [tags, setTags] = useState<string[]>();
   const [value, setValue] = useState<Date | null>(null);
 
   const setDateTime = (date: CalendarDate, time: TimeInputValue) => {
@@ -46,7 +46,7 @@ export default function EventForm() {
       event_location: eventLocation?.trim() || null,
       start_time: setDateTime(startDate!, startTime!),
       end_time: setDateTime(endDate!, endTime!),
-      tags: tags?.split(",").map((tag) => tag.trim()) || [],
+      tags: tags || [],
     };
     console.log(event as EventCreate);
     console.log("start time", event.start_time.toISOString());
@@ -127,11 +127,7 @@ export default function EventForm() {
             onChange={(e) => setEventDescription(e.target.value)}
             className="border border-gray-300 bg-gray-100 p-1 rounded basis-32"
           />
-          <textarea
-            placeholder="Add tags (comma seperated)..."
-            onChange={(e) => setTags(e.target.value)}
-            className="border border-gray-300 bg-gray-100 p-1 rounded basis-32"
-          />
+          <TagInput onTagAdd={(newTags) => setTags(newTags)}/>
           <button
             onClick={() => {
               addEvent();
