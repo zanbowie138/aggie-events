@@ -127,7 +127,7 @@ export default function EventForm() {
             onChange={(e) => setEventDescription(e.target.value)}
             className="border border-gray-300 bg-gray-100 p-1 rounded basis-32"
           />
-          <TagInput onTagAdd={(newTags) => setTags(newTags)}/>
+          <TagInput onTagChange={(newTags) => setTags(newTags)}/>
           <button
             onClick={() => {
               addEvent();

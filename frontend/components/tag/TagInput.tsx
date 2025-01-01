@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useTagInput from "@/app/hooks/useTagInput";
 import TagDisplay from "@/app/search/components/TagDisplay";
 
 interface TagInputProps {
-  onTagAdd: (tags: string[]) => void;
+  onTagChange: (tags: string[]) => void;
 }
 
-export default function TagInput({ onTagAdd }: TagInputProps) {
-  const { tags, handleAddTag, handleRemoveTag } = useTagInput(10, onTagAdd);
+
+export default function TagInput({ onTagChange }: TagInputProps) {
+  const { tags, handleAddTag, handleRemoveTag } = useTagInput(10);
+
+  useEffect(() => {
+    onTagChange(tags);
+  }, [tags]);
 
   return (
     <div className="flex flex-col w-[700px] gap-1">

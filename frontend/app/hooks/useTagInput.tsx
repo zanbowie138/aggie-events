@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 
 // hook to track tags
-export default function useTagInput(maxTags = 5, onTagAdd: (tags: string[]) => void) {
+export default function useTagInput(maxTags = 5) {
   const [tags, setTags] = useState<string[]>([]);
 
   const handleAddTag = (newTag: string) => {
     if (newTag && !tags.includes(newTag) && tags.length < maxTags) {
       setTags([...tags, newTag]);
-      onTagAdd(tags);
     }
   };
 
