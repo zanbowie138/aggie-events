@@ -16,14 +16,15 @@
 
 IS_RUNNING_TRAEFIK=`docker compose -f compose.deps.yml ps -q traefik`
 IS_RUNNING_DB=`docker compose -f compose.deps.yml ps -q db`
-if [[ "$IS_RUNNING_TRAEFIK" == "" || "$IS_RUNNING_DB" == "" ]]; then
-    echo "Traefik or DB is not running. Running now..."
+IS_RUNNING_BACKUP=`docker compose -f compose.deps.yml ps -q db_backup`
+if [[ "$IS_RUNNING_TRAEFIK" == "" || "$IS_RUNNING_DB" == "" || "$IS_RUNNING_BACKUP" == ""]]; then
+    echo "One or more dependency containers are running. Running now..."
     docker compose -f compose.deps.yml up -d
 else
-    echo "Traefik and DB are running."
+    echo "Dependency containers are running."
 fi
 
 docker compose -f compose.prod.yml down 
 docker compose -f compose.prod.yml pull
 docker compose -f compose.prod.yml up -d
-docker image prune -a
+yes | docker image prune -a
