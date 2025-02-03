@@ -10,7 +10,7 @@ The website source code for Aggie Events, an all-in-one crowdsourced database fo
 5. `npm run dev` runs the development server
 
 ### Backend
-Follow [this blog post](https://aggie-events.github.io/posts/onboarding/) to get your local backend environment set up.
+Follow [this blog post](https://blog.aggieevents.tech/posts/onboarding/) to get your local backend environment set up.
 
 ## How to contribute
 1. `git branch [INSERT NEW BRANCH NAME HERE]` to create branch
