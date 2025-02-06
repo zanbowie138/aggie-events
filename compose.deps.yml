@@ -49,14 +49,31 @@ services:
       retries: 5
     networks:
       - traefik-network
-  db_backup:
-    image: justb4/pgbackup:11
-    container_name: pg_backup_11
+  pgbackups:
+    container_name: pgbackups
+    image: prodrigestivill/postgres-backup-local
+    restart: always
+    user: postgres:postgres # Optional: see below
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./backup:/backup
+        - ./pgbackups:/backups
+    links:
+        - db
+    depends_on:
+        - db
     environment:
-      - PGB_SCHEDULE=0 0 * * * # every day at midnight
+        - POSTGRES_HOST=postgres_container
+        - POSTGRES_DB=agev
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_EXTRA_OPTS=-Z1 --schema=public --blobs
+        - SCHEDULE=@daily
+        - BACKUP_ON_START=TRUE
+        - BACKUP_KEEP_DAYS=7
+        - BACKUP_KEEP_WEEKS=4
+        - BACKUP_KEEP_MONTHS=6
+        - HEALTHCHECK_PORT=8080
+    networks:
+      - traefik-network
 networks:
   traefik-network:
     name: traefik-network
