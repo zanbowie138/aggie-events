@@ -24,10 +24,10 @@ export const testDB = async () => {
     .selectAll("users")
     .execute()
     .then(() => {
-      console.log("DB is valid");
+      console.log("Database connection successful!");
     })
     .catch((error) => {
-      console.log("DB is invalid with db string: " + process.env.DATABASE_URL);
+      console.log("PostgreSQL database is invalid with db string: " + process.env.DATABASE_URL);
       throw new Error("Error testing db: " + error);
     });
 };
