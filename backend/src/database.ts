@@ -36,7 +36,10 @@ export const testDB = async () => {
       console.log("Database connection successful!");
     })
     .catch((error) => {
-      console.log("PostgreSQL database is invalid with db string: " + process.env.DATABASE_URL);
+      console.log(
+        "PostgreSQL database is invalid with db string: " +
+          process.env.DATABASE_URL,
+      );
       throw new Error("Error testing db: " + error);
     });
 };
