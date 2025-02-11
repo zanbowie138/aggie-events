@@ -4,8 +4,6 @@
  */
 
 import { db } from "../database";
-import { Users } from "../types/dbtypes";
-import { UserStorage } from "../types/customtypes";
 
 /**
  * Fetches a user by their user ID.
@@ -13,13 +11,17 @@ import { UserStorage } from "../types/customtypes";
  * @returns {Promise<Users>} A promise that resolves to the user object.
  * @throws {Error} If there is an error fetching the user.
  */
-export async function getUserById(userId: number): Promise<Users> {
+export async function getUserById(
+  userId: number,
+): Promise<{ user_name: string; user_email: string }> {
   try {
-    return await db
+    // Find the user by their user ID
+    const result = await db
       .selectFrom("users")
       .where("user_id", "=", userId)
       .select(["user_email", "user_name"])
       .executeTakeFirstOrThrow();
+    return result;
   } catch (error) {
     throw new Error("Error fetching user!");
   }

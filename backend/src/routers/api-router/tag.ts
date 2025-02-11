@@ -3,10 +3,8 @@
  * @module routers/api-router/tag
  */
 
-import { authMiddleware } from "../../middlewares/authMiddleware";
 import { db } from "../../database";
 import express from "express";
-import { usersRouter } from "./users";
 
 export const tagRouter = express.Router();
 

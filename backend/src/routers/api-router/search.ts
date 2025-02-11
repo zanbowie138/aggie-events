@@ -6,8 +6,7 @@
 import { db } from "../../database";
 import express from "express";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
-import { Expression, ExpressionBuilder, Simplify, sql, SqlBool } from "kysely";
-import { DB } from "../../types/dbtypes";
+import { Expression, SqlBool } from "kysely";
 
 export const searchRouter = express.Router();
 
