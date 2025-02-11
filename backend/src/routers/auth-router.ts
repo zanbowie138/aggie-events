@@ -1,10 +1,23 @@
+/**
+ * Authentication Router module for handling authentication-related routes.
+ * @module routers/auth-router
+ */
+
 import express from "express";
 import passport from "passport";
 import { UserStorage } from "../types/customtypes";
 
 export const authRouter = express.Router();
 
-// Route to check if user is authenticated
+/**
+ * Route to check if user is authenticated.
+ * @name get/user
+ * @function
+ * @memberof module:routers/auth-router
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing user information if authenticated, otherwise an empty object.
+ */
 authRouter.get("/user", async (req, res) => {
   const user = req.user as UserStorage;
   res.send(
@@ -18,7 +31,14 @@ authRouter.get("/user", async (req, res) => {
   );
 });
 
-// Route to start Google OAuth login
+/**
+ * Route to start Google OAuth login.
+ * @name get/google
+ * @function
+ * @memberof module:routers/auth-router
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 authRouter.get(
   "/google",
   passport.authenticate("google", {
@@ -26,7 +46,14 @@ authRouter.get(
   }),
 );
 
-// OAuth callback route
+/**
+ * OAuth callback route.
+ * @name get/google/callback
+ * @function
+ * @memberof module:routers/auth-router
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -39,6 +66,15 @@ authRouter.get(
   },
 );
 
+/**
+ * Route to log out the user.
+ * @name post/logout
+ * @function
+ * @memberof module:routers/auth-router
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object with a message indicating the logout status.
+ */
 authRouter.post("/logout", (req, res) => {
   // Destroy the session
   req.logout((err) => {

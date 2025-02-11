@@ -1,3 +1,8 @@
+/**
+ * Search Router module for handling search-related API routes.
+ * @module routers/api-router/search
+ */
+
 import { db } from "../../database";
 import express from "express";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
@@ -6,6 +11,21 @@ import { DB } from "../../types/dbtypes";
 
 export const searchRouter = express.Router();
 
+/**
+ * Route to search for events based on query parameters.
+ * @name get/
+ * @function
+ * @memberof module:routers/api-router/search
+ * @param {Object} req - The request object.
+ * @param {string} req.query.query - The search query string.
+ * @param {string} req.query.tags - Comma-separated list of tags to filter by.
+ * @param {string} req.query.name - The name of the event to search for.
+ * @param {number} req.query.page - The page number for pagination (default: 1).
+ * @param {number} req.query.pageSize - The number of results per page (default: 3).
+ * @param {string} req.query.sort - The sorting criteria (start, heart, posted, updated, alpha_asc, alpha_desc).
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing the search results and pagination information.
+ */
 searchRouter.get("/", async (req, res) => {
   console.log(req.query);
   const {

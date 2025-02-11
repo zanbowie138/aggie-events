@@ -5,6 +5,15 @@ import express from "express";
 
 export const eventRouter = express.Router();
 
+/**
+ * Route to fetch all events.
+ * @name get/
+ * @function
+ * @memberof module:routers/api-router/events
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing all events.
+ */
 eventRouter.get("/", async (req, res) => {
   try {
     const events = await db.selectFrom("events").selectAll().execute();
@@ -32,7 +41,15 @@ interface EventPageInformation {
   tags: string[];
 }
 
-// Returns all information needed for event page
+/**
+ * Route to fetch detailed information for a specific event.
+ * @name get/:event_id
+ * @function
+ * @memberof module:routers/api-router/events
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing detailed information for the specified event.
+ */
 eventRouter.get("/:event_id", async (req, res) => {
   const event_id: number = parseInt(req.params.event_id, 10);
   try {
@@ -108,6 +125,15 @@ export interface EventCreate {
   tags: string[];
 }
 
+/**
+ * Route to create a new event.
+ * @name post/
+ * @function
+ * @memberof module:routers/api-router/events
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} JSON object containing the created event.
+ */
 eventRouter.post("/", authMiddleware, async (req, res) => {
   const {
     event_name,

@@ -1,3 +1,8 @@
+/**
+ * Server initialization module for setting up and starting the Express server.
+ * @module server
+ */
+
 import express from "express";
 import passport from "passport";
 import session from "express-session";
@@ -10,6 +15,11 @@ import cors from "cors";
 import { UserStorage } from "./types/customtypes";
 import { getUserById } from "./dbapi/user";
 
+/**
+ * Initializes the Express server, sets up middleware, and configures authentication.
+ * @returns {Promise<express.Application>} A promise that resolves to the initialized Express application.
+ * @throws {Error} If the DATABASE_URL environment variable is not set.
+ */
 const init = async () => {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL is not set. Did you forget to set a .env file?");

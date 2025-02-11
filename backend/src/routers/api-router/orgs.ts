@@ -1,9 +1,26 @@
+/**
+ * Organization Router module for handling organization-related API routes.
+ * @module routers/api-router/orgs
+ */
+
 import { authMiddleware } from "../../middlewares/authMiddleware";
 import { db } from "../../database";
 import express from "express";
 
 export const orgRouter = express.Router();
 
+/**
+ * Route to create a new organization.
+ * @name post/
+ * @function
+ * @memberof module:routers/api-router/orgs
+ * @param {Object} req - The request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.username - The name of the organization.
+ * @param {string} req.body.email - The email of the organization.
+ * @param {Object} res - The response object.
+ * @returns {string} A message indicating the organization creation status.
+ */
 orgRouter.post("/", authMiddleware, async (req, res) => {
   const { username, email } = req.body;
   console.log("Post user req.user: " + req.user);
@@ -19,6 +36,15 @@ orgRouter.post("/", authMiddleware, async (req, res) => {
   }
 });
 
+/**
+ * Route to fetch all organizations.
+ * @name get/
+ * @function
+ * @memberof module:routers/api-router/orgs
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Array} JSON array containing all organizations.
+ */
 orgRouter.get("/", async (req, res) => {
   try {
     const orgs = await db.selectFrom("orgs").selectAll().execute();
@@ -31,6 +57,15 @@ orgRouter.get("/", async (req, res) => {
   }
 });
 
+/**
+ * Route to delete all organizations.
+ * @name delete/
+ * @function
+ * @memberof module:routers/api-router/orgs
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {string} A message indicating the organization deletion status.
+ */
 orgRouter.delete("/", authMiddleware, async (req, res) => {
   try {
     await db.deleteFrom("orgs").execute();
