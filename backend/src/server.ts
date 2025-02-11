@@ -11,6 +11,10 @@ import { UserStorage } from "./types/customtypes";
 import { getUserById } from "./dbapi/user";
 
 const init = async () => {
+  if (!process.env.DATABASE_URL) {
+    throw new Error("DATABASE_URL is not set. Did you forget to set a .env file?");
+  }
+  
   const app = express();
 
   app.use(express.json());

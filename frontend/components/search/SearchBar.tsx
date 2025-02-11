@@ -66,12 +66,6 @@ export default function SearchBar() {
     };
   }, [focused]);
 
-  // useEffect(() => {
-  //   if (searchParams.has("query")) {
-  //     setSearchInput(searchParams.get("query") as string);
-  //   }
-  // }, [searchParams]);
-
   return (
     <>
       <form
@@ -79,7 +73,7 @@ export default function SearchBar() {
         ref={searchRef}
       >
         <div
-          className={`relative flex max-w-[700px] w-full items-center
+          className={`relative flex w-full items-center
           ${
             focused
               ? (searchInput.length > 0 ? "rounded-t-md" : "rounded-md") +

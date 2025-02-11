@@ -19,6 +19,9 @@ export const useAuth = (): AuthContextType => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  // If user is undefined, we don't know if they are logged in or not
+  // If user is null, they are logged out
+  // If user is an object, they are logged in
   const [user, setUser] = useState<User | undefined | null>(undefined);
 
   useEffect(() => {
@@ -37,9 +40,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             console.log("Auth context: " + JSON.stringify(data));
           }
         })
-        .catch((error) =>
-          console.error("Error checking user authentication:", error),
-        );
+        .catch((error) => {
+          console.error("Error checking user authentication:", error);
+          setUser(null);
+        });
     fetchUser();
   }, []);
 
@@ -55,7 +59,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           console.error("Failed to log out:", response.statusText);
         }
       })
-      .catch((error) => console.error("Error logging out:", error));
+      .catch((error) => {
+        console.error("Error logging out:", error);
+        setUser(null);
+      });
   }
 
   return (
