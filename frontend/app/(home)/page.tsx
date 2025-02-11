@@ -6,6 +6,10 @@ import HomeHeader from "@/components/headers/HomeHeader";
 import ParallaxBanner from "@/app/(home)/components/ParallaxBanner";
 import EventCard from "@/components/cards/EventCard";
 
+/**
+ * The Homepage component is the main component for the homepage of the website.
+ * It includes the layout and structure of the homepage, such as the header, banner, and featured events section.
+ */
 export default function Homepage() {
   return (
     <>

@@ -3,6 +3,11 @@ import React, { useEffect, useState } from "react";
 import { User, fetchUsernames } from "@/api/user";
 import { useAuth } from "@/components/auth/AuthContext";
 
+/**
+ * The UserList component is used to display a list of all users.
+ * It fetches the list of users from the server and displays them in a table.
+ * The component updates the list of users whenever the `update` prop changes.
+ */
 export default function UserList({ update = false }: { update: boolean }) {
   const [users, setUsers] = useState<User[]>();
   const { user } = useAuth();

@@ -11,6 +11,10 @@ import { FaLocationDot } from "react-icons/fa6";
 import { createEvent } from "@/api/event";
 import ToastManager from "@/components/toast/ToastManager";
 
+/**
+ * The Dashboard component is the main component for the dashboard, which is used for managing users, events, and organizations.
+ * It includes sub-components for user and event forms, as well as a user list.
+ */
 export default function Dashboard() {
   const { user } = useAuth();
   const [page, setPage] = useState<number>(0);
@@ -43,6 +47,10 @@ export default function Dashboard() {
   );
 }
 
+/**
+ * The UserForm component is used for managing user-related actions, such as adding and deleting users.
+ * It includes input fields for entering user details and buttons for performing actions.
+ */
 function UserForm() {
   const [username, setUsername] = useState<string>();
   const [email, setEmail] = useState<string>();
@@ -91,6 +99,10 @@ function UserForm() {
   );
 }
 
+/**
+ * The EventForm component is used for managing event-related actions, such as creating new events.
+ * It includes input fields for entering event details and a button for creating the event.
+ */
 function EventForm() {
   const [eventName, setEventName] = useState<string>();
   const [eventDescription, setEventDescription] = useState<string>();
