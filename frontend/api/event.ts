@@ -19,6 +19,12 @@ export interface SearchEventsReturn {
   date_modified: Date;
   tags: string[];
 }
+
+/**
+ * Searches for events based on a query string.
+ * @param queryString - The query string containing search parameters.
+ * @returns An object containing the search results, duration, page size, and result size.
+ */
 export const searchEvents = async (
   queryString: string,
 ): Promise<{
@@ -61,6 +67,10 @@ export const searchEvents = async (
   }
 };
 
+/**
+ * Fetches a list of all events.
+ * @returns An array of Event objects.
+ */
 export const fetchEvents = async (): Promise<Event[]> => {
   try {
     const response = await fetchUtil(
@@ -75,6 +85,11 @@ export const fetchEvents = async (): Promise<Event[]> => {
   }
 };
 
+/**
+ * Fetches details of a specific event by its ID.
+ * @param eventID - The ID of the event to fetch.
+ * @returns An EventPageInformation object containing event details.
+ */
 export const fetchEventById = async (
   eventID: number,
 ): Promise<EventPageInformation> => {
@@ -91,6 +106,11 @@ export const fetchEventById = async (
   }
 };
 
+/**
+ * Creates a new event.
+ * @param event - The EventCreate object containing event details.
+ * @returns The created event object.
+ */
 export const createEvent = async (event: EventCreate) => {
   try {
     const response = await fetchUtil(
