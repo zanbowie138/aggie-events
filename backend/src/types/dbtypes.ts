@@ -1,3 +1,8 @@
+/**
+ * This file was generated using Kysely (kysely-codegen) and defines Kysely's knowledge of the database schema.
+ * DO NOT MODIFY THIS (unless you know what you are doing).
+ */
+
 import type { ColumnType } from "kysely";
 
 export type Generated<T> =

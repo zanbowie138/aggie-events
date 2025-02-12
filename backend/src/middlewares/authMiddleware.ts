@@ -1,5 +1,18 @@
+/**
+ * Middleware for authenticating users.
+ * @module middlewares/authMiddleware
+ */
+
 import { Request, Response, NextFunction } from "express";
 
+/**
+ * Middleware function to check if the user is authenticated.
+ * If the user is not authenticated, it returns a 401 Unauthorized response.
+ * If the user is authenticated, it calls the next middleware function.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next middleware function.
+ */
 export const authMiddleware = (
   req: Request,
   res: Response,
