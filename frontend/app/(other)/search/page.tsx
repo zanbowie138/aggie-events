@@ -13,6 +13,7 @@ import FilterList, {
   FilterListOutput,
 } from "@/app/(other)/search/components/filter-list/FilterList";
 import PageSelect from "@/app/(other)/search/components/PageSelect";
+import { IoFilter } from "react-icons/io5";
 
 // Filters
 // - Date Range
@@ -31,14 +32,28 @@ import PageSelect from "@/app/(other)/search/components/PageSelect";
 // By default, search will be for future events
 
 const sortOptions: { display: string; value: string }[] = [
-  { display: "Chronological", value: "start" },
+  { display: "Date: Upcoming", value: "start" },
   { display: "Most Popular", value: "heart" },
-  { display: "Date Posted", value: "posted" },
-  { display: "Date Updated", value: "updated" },
+  { display: "Recently Added", value: "posted" },
+  { display: "Recently Updated", value: "updated" },
   { display: "Alphabetical (A-Z)", value: "alpha_asc" },
   { display: "Alphabetical (Z-A)", value: "alpha_desc" },
 ];
-const viewOptions = ["List View", "Calendar View"];
+
+const categories = [
+  "All Events",
+  "Today",
+  "This Week",
+  "Free Food",
+  "Career Fairs",
+  "Sports",
+  "Academic",
+  "Social",
+  "Greek Life",
+  "Workshops"
+] as const;
+
+type Category = typeof categories[number];
 
 export interface SearchState {
   page: number;
@@ -64,6 +79,7 @@ export default function Search() {
     pageSize: 0,
     totalResultSize: 0,
   });
+  const [selectedCategory, setSelectedCategory] = useState<Category>("All Events");
 
   // Returns SearchFilters object from the URL query parameters
   function getFilters(): SearchFilters {
@@ -88,9 +104,17 @@ export default function Search() {
 
   useEffect(() => {
     filters.current = getFilters();
-    console.log("Searching with parameters: " + filters.current.name);
+    if (filters.current.tags) {
+      // Update selected category if it matches a tag
+      const tagArray = Array.from(filters.current.tags);
+      if (tagArray.length === 1 && categories.includes(tagArray[0])) {
+        setSelectedCategory(tagArray[0] as Category);
+      } else {
+        setSelectedCategory("All Events");
+      }
+    }
+    
     searchEvents(searchParams.toString()).then((res) => {
-      console.log("Search results: ", res);
       setResults(res.events);
       setTags(Array.from(filters.current.tags ?? []));
       setSearchState({
@@ -133,118 +157,158 @@ export default function Search() {
   }
 
   function updateFilters(filtersUpdate: FilterListOutput) {
-    // Update the filter-list object
-    filters.current = {
-      ...filters.current,
-      name: filtersUpdate.name?.trim(),
-    };
+    if (filtersUpdate.name !== undefined) {
+      filters.current.name = filtersUpdate.name.trim();
+    }
 
-    console.log("Updating Filters: ", filtersUpdate.tag);
-
-    // Add the tag to the set of tags
     if (filtersUpdate.tag) {
-      if (filters.current.tags) {
-        filters.current.tags.add(filtersUpdate.tag!.trim());
-      } else {
-        filters.current = {
-          ...filters.current,
-          tags: new Set([filtersUpdate.tag!.trim()]),
-        };
+      const newTag = filtersUpdate.tag.trim();
+      const currentTags = filters.current.tags || new Set();
+      
+      if (!currentTags.has(newTag)) {
+        filters.current.tags = new Set([...currentTags, newTag]);
+        // Reset selected category when adding custom tags
+        setSelectedCategory("All Events");
       }
     }
 
+    // Reset to page 1 when changing filters
+    filters.current.page = 1;
+    updateUrl();
+  }
+
+  // Change the function signature to use Category type
+  function handleCategorySelect(category: Category) {
+    if (category === "All Events") {
+      filters.current.tags = new Set();
+    } else {
+      filters.current.tags = new Set([category]);
+    }
+    setSelectedCategory(category); // No need for type assertion
+    filters.current.page = 1;
     updateUrl();
   }
 
   return (
-    <div className="flex flex-row w-full grow justify-center">
-      <div className="flex flex-col grow-0 h-full min-h-fit basis-[1500px] relative">
-        {/* Banner footer */}
-        <div
-          className="flex w-full border-b-[1px] border-gray-200 min-h-12 items-center
-        sticky top-0 bg-white z-20"
-        >
-          <div className="px-3">
-            <select className="bg-gray-100 text-md px-1 outline-0">
-              {viewOptions.map((option) => (
-                <option key={option} className="bg-white">
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex grow">
-            {tags && (
-              <FilterTagList
-                tags={tags}
-                onTagClose={(tag) => {
-                  filters.current.tags?.delete(tag);
-                  updateUrl();
-                }}
-              />
-            )}
-          </div>
-
-          <div className="flex border-l-[1px] border-gray-200 px-3 py-1 items-center shrink-0">
-            <span className="mr-2">Sort by:</span>
-            <select
-              className="bg-gray-200 p-1 outline-0"
-              onChange={(e) => {
-                filters.current = {
-                  ...filters.current,
-                  sort: e.target.value,
-                };
-                console.log("Sort by: ", e.target.value);
-                updateUrl();
-              }}
-            >
-              {sortOptions.map(({ display: display, value: value }) => (
-                <option key={display} value={value} className="bg-gray-200">
-                  {display}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="flex gap-2 grow">
-          <div className="px-5 py-5 basis-72 shrink-0 bg-gray-100 rounded-md m-3 h-fit border-2 border-gray-300">
-            <div className="font-bold text-xl">Filters:</div>
-            <div className="flex gap-2">
-              <div className="text-lg font-semibold">Search For:</div>
-              <select className="bg-gray-100 text-lg px-1 outline-0 font-semibold">
-                <option className="font-semibold bg-white">Event</option>
-                <option className="font-semibold bg-white">Organization</option>
-              </select>
+    <div className="flex flex-col w-full">
+      {/* Modern Search Header - reduced vertical padding */}
+      <div className="bg-white shadow-md px-4 py-4 sticky top-0 z-20">
+        <div className="max-w-6xl mx-auto">
+          {/* Search and Filter Bar - more compact spacing */}
+          <div className="bg-white rounded-lg p-3 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div className="col-span-2">
+                <input
+                  type="text"
+                  placeholder="Search events, organizations, or keywords"
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-maroon"
+                  onChange={(e) => {
+                    filters.current = {
+                      ...filters.current,
+                      name: e.target.value,
+                    };
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") updateUrl();
+                  }}
+                />
+              </div>
+              <div>
+                <select className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-maroon">
+                  <option>Any Location</option>
+                  <option>MSC</option>
+                  <option>Kyle Field</option>
+                  <option>Zachry</option>
+                  <option>Evans Library</option>
+                </select>
+              </div>
+              <div>
+                <select 
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-maroon"
+                  onChange={(e) => {
+                    filters.current = {
+                      ...filters.current,
+                      sort: e.target.value,
+                    };
+                    updateUrl();
+                  }}
+                >
+                  {sortOptions.map(({ display, value }) => (
+                    <option key={value} value={value}>
+                      {display}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <FilterList onSubmit={updateFilters} />
           </div>
 
-          <div className="py-3 px-5 rounded-md w-full my-3">
-            <h1 className="text-2xl font-bold">Search Results</h1>
-            {results && (
-              <>
-                <h3>
-                  {searchState.totalResultSize} results (
-                  {searchState.duration.toFixed(2)} ms)
-                </h3>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            {/* Category Pills - more compact */}
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  className={`px-4 py-1 rounded-full border text-sm transition-all duration-300
+                    ${category === selectedCategory
+                      ? 'bg-maroon text-white border-maroon' 
+                      : 'border-gray-200 hover:border-maroon hover:text-maroon'
+                    }`}
+                  onClick={() => handleCategorySelect(category as Category)}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
 
-                <EventList events={results} />
-
-                {results?.length < searchState.totalResultSize && (
-                  <PageSelect
-                    page={searchState.page}
-                    pageSize={searchState.pageSize}
-                    setPage={(pageNum) => setPage(pageNum)}
-                    maxResults={searchState.totalResultSize}
-                  />
-                )}
-              </>
+            {/* Active Filters - inline with categories */}
+            {tags && tags.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500 text-sm">|</span>
+                <FilterTagList
+                  tags={tags}
+                  onTagClose={(tag) => {
+                    const newTags = new Set(filters.current.tags);
+                    newTags.delete(tag);
+                    filters.current.tags = newTags;
+                    updateUrl();
+                  }}
+                />
+              </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Results Section - reduced top padding */}
+      <div className="max-w-6xl mx-auto w-full px-4 py-4">
+        {results && (
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h1 className="text-xl font-light">
+                {searchState.totalResultSize} Results{" "}
+                <span className="text-gray-500 text-sm">
+                  ({searchState.duration.toFixed(2)} ms)
+                </span>
+              </h1>
+            </div>
+
+            <EventList events={results} />
+
+            {results?.length < searchState.totalResultSize && (
+              <div className="flex justify-center mt-6">
+                <PageSelect
+                  page={searchState.page}
+                  pageSize={searchState.pageSize}
+                  setPage={(pageNum) => setPage(pageNum)}
+                  maxResults={searchState.totalResultSize}
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
+
