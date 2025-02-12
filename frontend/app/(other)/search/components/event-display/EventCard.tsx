@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import IconLabel from "@/app/(other)/search/components/IconLabel";
 import { HiEye } from "react-icons/hi";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaTag } from "react-icons/fa";
 import { Event } from "@/config/dbtypes";
 import EventTagList from "@/components/tag/EventTagList";
 import Link from "next/link";
@@ -44,7 +44,20 @@ export default function EventCard({ event }: { event: SearchEventsReturn }) {
       >
         {event.event_name}
       </Link>
-      {event.tags.length > 0 && <EventTagList tags={event.tags} />}
+      {event.tags && event.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 my-2">
+          {event.tags.map((tag) => (
+            <Link
+              key={tag}
+              href={`/search?tags=${encodeURIComponent(tag)}`}
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-200 text-sm text-gray-700 rounded-full hover:bg-maroon hover:text-white transition-colors"
+            >
+              <FaTag className="text-xs" />
+              {tag}
+            </Link>
+          ))}
+        </div>
+      )}
       <div className="">
         <span>
           <p className="h-max line-clamp-3">{event.event_description}</p>

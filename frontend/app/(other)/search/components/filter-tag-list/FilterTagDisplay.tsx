@@ -1,5 +1,6 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
+import { FaTag } from "react-icons/fa";
 
 export default function FilterTagDisplay({
   text,
@@ -10,11 +11,12 @@ export default function FilterTagDisplay({
 }) {
   return (
     <button
-      className="bg-maroon rounded-md py-1 px-2 text-sm text-white flex items-center font-semibold gap-1 w-max"
+      className="inline-flex items-center gap-1.5 px-3 py-1 bg-maroon text-white rounded-full hover:bg-darkmaroon transition-colors"
       onClick={onClose}
     >
-      <div>{text}</div>
-      <IoClose />
+      <FaTag className="text-xs" />
+      <span>{text}</span>
+      <IoClose className="text-white/80 hover:text-white" />
     </button>
   );
 }

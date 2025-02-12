@@ -11,7 +11,7 @@ export default function ParallaxBanner({
 }) {
   return (
     <div
-      className="relative w-full h-[500px] overflow-hidden -z-[-50] bg-no-repeat bg-cover"
+      className="relative w-full h-[450px] overflow-hidden -z-[-50] bg-no-repeat bg-cover"
       style={{ backgroundImage: `url(${imgSrc})` }}
     >
       {children}

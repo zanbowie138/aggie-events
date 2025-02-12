@@ -72,7 +72,7 @@ export default function TypeAnimMutator({
   }, []);
 
   return (
-    <motion.span className="inline text-7xl text-white font-medium">
+    <motion.span className="inline text-7xl font-medium">
       {displayText}
     </motion.span>
   );
