@@ -5,7 +5,7 @@
       "outDir": "./dist",              // Output directory for compiled JS files
       "rootDir": "./src",              // Root directory for TypeScript files
       "strict": true,                  // Enable strict type-checking options
-      "esModuleInterop": true          // Allow default imports from modules
+      "esModuleInterop": true,          // Allow default imports from modules
     },
     "include": ["src/**/*",
     "**/*.ts",
